@@ -1,15 +1,13 @@
 import * as React from 'react';
 import ReactDom from 'react-dom';
-
 import { Provider } from 'react-redux';
 import { applyMiddleware, compose, createStore } from 'redux';
 import thunk from 'redux-thunk';
+import { clearInstanceIdCounters, Log } from '../../src/index';
 
 import '../../src/style.scss';
 import { reducer } from '../../src/reducer';
 import Main from './Main';
-import Log from '../../src/Log';
-import { clearInstanceIdCounters } from '../../src/traceLifecycle';
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
