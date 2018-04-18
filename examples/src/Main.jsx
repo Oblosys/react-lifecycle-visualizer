@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 
-import * as ActionCreators from './actionCreators';
+import * as ActionCreators from '../../src/actionCreators';
 import { Button, LabeledCheckbox } from './Util';
 import SampleNew from './SampleNew';
 import SampleLegacy from './SampleLegacy';
