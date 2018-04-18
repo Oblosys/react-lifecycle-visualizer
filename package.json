@@ -4,7 +4,8 @@
   "description": "Visualizer for React lifecycle methods",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --mode development"
   },
   "repository": {
     "type": "git",
@@ -23,5 +24,17 @@
   "bugs": {
     "url": "https://github.com/Oblosys/react-lifecycle-visualizer/issues"
   },
-  "homepage": "https://github.com/Oblosys/react-lifecycle-visualizer#readme"
+  "homepage": "https://github.com/Oblosys/react-lifecycle-visualizer#readme",
+  "devDependencies": {
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "css-loader": "^0.28.11",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "webpack": "^4.6.0",
+    "webpack-cli": "^2.0.14",
+    "webpack-dev-server": "^3.1.3"
+  }
 }
