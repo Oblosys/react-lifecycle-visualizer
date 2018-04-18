@@ -13,8 +13,12 @@ module.exports = {
     rules: [{
       test: /\.(js|jsx)$/,
       use: [
-        'babel-loader',
-        'eslint-loader'
+        'babel-loader', {
+          loader: 'eslint-loader',
+          options: {
+            emitWarning: true
+          }
+        }
       ],
       exclude: /node_modules/
     }, {
