@@ -1,0 +1,27 @@
+{
+  "name": "react-lifecycle-visualizer",
+  "version": "0.1.0",
+  "description": "Visualizer for React lifecycle methods",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Oblosys/react-lifecycle-visualizer.git"
+  },
+  "keywords": [
+    "react",
+    "reactjs",
+    "lifecycle",
+    "trace",
+    "visualize",
+    "animated"
+  ],
+  "author": "Martijn Schrage",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Oblosys/react-lifecycle-visualizer/issues"
+  },
+  "homepage": "https://github.com/Oblosys/react-lifecycle-visualizer#readme"
+}
