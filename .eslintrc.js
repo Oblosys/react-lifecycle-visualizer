@@ -18,6 +18,7 @@ module.exports = {
     'arrow-parens': [1, 'always'],
     'import/prefer-default-export': 0,
     'import/no-duplicates': 0,
+    'import/no-extraneous-dependencies': [1, {'devDependencies': true}],
     'react/no-array-index-key': 0,
     'prefer-rest-params': 0,
     'react/sort-comp': 0,
