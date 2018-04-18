@@ -2,10 +2,12 @@
   "name": "react-lifecycle-visualizer",
   "version": "0.1.0",
   "description": "Visualizer for React lifecycle methods",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --hot --mode development"
+    "start": "webpack-dev-server --hot --mode development",
+    "build-lib": "babel src -d dist --copy-files",
+    "prepublishOnly": "npm run build-lib"
   },
   "repository": {
     "type": "git",
@@ -26,6 +28,7 @@
   },
   "homepage": "https://github.com/Oblosys/react-lifecycle-visualizer#readme",
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.3",
     "babel-loader": "^7.1.4",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
