@@ -54,4 +54,4 @@ const mapStateToProps = ({logEntries, highlightedIndex}) => ({
   : null
 });
 
-export default connect(mapStateToProps)(LifecyclePanel);
+export default connect(mapStateToProps, null, null, {storeKey: constants.reduxStoreKey})(LifecyclePanel);

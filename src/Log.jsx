@@ -101,4 +101,4 @@ const DelaySelector = ({value, onChange}) => (
   </select>
 );
 
-export default connect(mapStateToProps, ActionCreators)(Log);
+export default connect(mapStateToProps, ActionCreators, null, {storeKey: constants.reduxStoreKey})(Log);

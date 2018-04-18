@@ -50,7 +50,7 @@ export default function traceLifecycle(ComponentToTrace) {
       );
 
       this.trace = (methodName) => {
-        this.context.store.dispatch(
+        this.context[constants.reduxStoreKey].dispatch(
           ActionCreators.trace(ComponentToTrace.name, instanceId, methodName)
         );
       };
@@ -64,7 +64,7 @@ export default function traceLifecycle(ComponentToTrace) {
 
     // Get store from context, to prevent update blocking by `connect`.
     static contextTypes = {
-      store: PropTypes.object
+      [constants.reduxStoreKey]: PropTypes.object
     }
 
     componentWillMount() {
