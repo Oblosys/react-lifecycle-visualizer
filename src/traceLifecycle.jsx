@@ -16,7 +16,7 @@ export const clearInstanceIdCounters = () => {
 };
 
 const mkInstanceId = (componentName) => {
-  if (!instanceIdCounters.hasOwnProperty(componentName)) {
+  if (!Object.prototype.hasOwnProperty.call(instanceIdCounters, componentName)) {
     instanceIdCounters[componentName] = 0;
   }
   instanceIdCounters[componentName] += 1;
