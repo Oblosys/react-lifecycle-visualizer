@@ -1,27 +1,27 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 
-import * as constants from './constants.js';
+import * as constants from './constants';
 import * as ActionCreators from './actionCreators';
 import LifecyclePanel from './LifecyclePanel';
-import { M_Constructor, M_ShouldUpdate, M_Render, M_DidMount,
-         M_DidUpdate, M_WillUnmount, M_SetState, M_GetDerivedState,
-         M_GetSnapshot, M_WillMount, M_WillReceiveProps, M_WillUpdate } from './constants';
+import { MConstructor, MShouldUpdate, MRender, MDidMount,
+         MDidUpdate, MWillUnmount, MSetState, MGetDerivedState,
+         MGetSnapshot, MWillMount, MWillReceiveProps, MWillUpdate } from './constants';
 
 const instanceIdCounters = {};
 const traceSym = Symbol('trace'); // for sneaking trace function into the state
 
 export const clearInstanceIdCounters = () => {
   Object.keys(instanceIdCounters).forEach((k) => delete instanceIdCounters[k]);
-}
+};
 
 const mkInstanceId = (componentName) => {
   if (!instanceIdCounters.hasOwnProperty(componentName)) {
-    instanceIdCounters[componentName] = 0
+    instanceIdCounters[componentName] = 0;
   }
-  instanceIdCounters[componentName] = instanceIdCounters[componentName] + 1;
+  instanceIdCounters[componentName] += 1;
   return instanceIdCounters[componentName];
-}
+};
 
 export default function traceLifecycle(ComponentToTrace) {
   const superMembers = Object.keys(ComponentToTrace.prototype);
@@ -36,29 +36,30 @@ export default function traceLifecycle(ComponentToTrace) {
 
       const instanceId = mkInstanceId(ComponentToTrace.name);
 
-      this.lifecyclePanel =
+      this.lifecyclePanel = (
         <LifecyclePanel
           componentName={ComponentToTrace.name}
           isLegacy={isLegacy}
           instanceId={instanceId}
           implementedMethods={[
             ...superMembers,
-            ...(ComponentToTrace.getDerivedStateFromProps ? [M_GetDerivedState] : []),
-            M_SetState
+            ...(ComponentToTrace.getDerivedStateFromProps ? [MGetDerivedState] : []),
+            MSetState
           ]}
-        />;
+        />
+      );
 
       this.trace = (methodName) => {
         this.context.store.dispatch(
           ActionCreators.trace(ComponentToTrace.name, instanceId, methodName)
         );
-      }
+      };
 
       // HACK: need trace in state since static getDerivedStateFromProps can't access instance or context :-(
       if (this.state) {
         this.state[traceSym] = this.trace.bind(this);
       }
-      this.trace(M_Constructor);
+      this.trace(MConstructor);
     }
 
     // Get store from context, to prevent update blocking by `connect`.
@@ -67,85 +68,86 @@ export default function traceLifecycle(ComponentToTrace) {
     }
 
     componentWillMount() {
-      this.trace(M_WillMount);
+      this.trace(MWillMount);
       if (super.componentWillMount) {
         super.componentWillMount();
-      }      
+      }
     }
     static getDerivedStateFromProps(nextProps, prevState) {
       if (prevState && prevState[traceSym]) {
-        prevState[traceSym](M_GetDerivedState);
+        prevState[traceSym](MGetDerivedState);
       }
       return ComponentToTrace.getDerivedStateFromProps
-             ? ComponentToTrace.getDerivedStateFromProps(...arguments)
-             : null;
+               ? ComponentToTrace.getDerivedStateFromProps(...arguments)
+               : null;
     }
     componentDidMount() {
-      this.trace(M_DidMount);
+      this.trace(MDidMount);
       if (super.componentDidMount) {
         super.componentDidMount();
-      }      
+      }
     }
     componentWillUnmount() {
-      this.trace(M_WillUnmount);
+      this.trace(MWillUnmount);
       if (super.componentWillUnmount) {
         super.componentWillUnmount();
-      }      
+      }
     }
     componentWillReceiveProps() {
-      this.trace(M_WillReceiveProps);
+      this.trace(MWillReceiveProps);
       if (super.componentWillReceiveProps) {
         super.componentWillReceiveProps(...arguments);
-      }      
+      }
     }
     shouldComponentUpdate() {
-      this.trace(M_ShouldUpdate);
-      return super.shouldComponentUpdate 
+      this.trace(MShouldUpdate);
+      return super.shouldComponentUpdate
              ? super.shouldComponentUpdate(...arguments)
              : true;
     }
     componentWillUpdate() {
-      this.trace(M_WillUpdate);
+      this.trace(MWillUpdate);
       if (super.componentWillUpdate) {
         super.componentWillUpdate(...arguments);
-      }      
-    }
-    render() {
-      if (super.render) { // no super.render, this will trigger a React error
-        this.trace(M_Render);
-        return super.render();
       }
     }
+    render() {
+      if (super.render) {
+        this.trace(MRender);
+        return super.render();
+      }
+      return undefined; // no super.render, this will trigger a React error
+    }
     getSnapshotBeforeUpdate() {
-      this.trace(M_GetSnapshot);
+      this.trace(MGetSnapshot);
       return super.getSnapshotBeforeUpdate
              ? super.getSnapshotBeforeUpdate(...arguments)
              : null;
     }
     componentDidUpdate() {
-      this.trace(M_DidUpdate);
+      this.trace(MDidUpdate);
       if (super.componentDidUpdate) {
         super.componentDidUpdate(...arguments);
-      }      
+      }
     }
     setState(updater, callback) {
-      this.trace(M_SetState);
+      this.trace(MSetState);
 
       // Unlike the lifecycle methods we only trace the update function and callback
       // when they are actually defined.
       const tracingUpdater = typeof updater !== 'function' ? updater : () => {
-        this.trace(M_SetState + ':update fn');
+        this.trace(MSetState + ':update fn');
         return updater(...arguments);
-      }
-    
+      };
+
       const tracingCallback = !callback ? undefined : () => {
-        this.trace(M_SetState + ':callback');
+        this.trace(MSetState + ':callback');
         callback(...arguments);
-      }
+      };
       super.setState(tracingUpdater, tracingCallback);
     }
   }
-  TracingComponent.displayName = 
+  TracingComponent.displayName =
     `traceLifecycle(${ComponentToTrace.displayName || ComponentToTrace.name || 'Component'})`;
 
   // Removing the inappropriate methods is simpler than adding appropriate methods to prototype

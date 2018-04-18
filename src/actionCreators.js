@@ -1,8 +1,10 @@
-import * as constants from './constants.js';
+/* eslint no-unused-vars: [1, { "args": "none" }] */
+import * as constants from './constants';
+import * as util from './Util';
 
 // Primitive actions:
 
-const addLogEntry = (componentName, instanceId, methodName) => 
+const addLogEntry = (componentName, instanceId, methodName) =>
   ({type: 'ADD_LOG_ENTRY', componentName, instanceId, methodName});
 
 const clearLogEntries = () =>
@@ -22,32 +24,32 @@ const setSelectedSamplePrim = (selectedSample) =>
 
 // Thunk actions:
 
+export const pauseReplay = () => (dispatch, getState) => {
+  const {replayTimerId} = getState();
+  if (replayTimerId !== null) {
+    clearInterval(replayTimerId);
+    dispatch(setReplayTimerId(null));
+  }
+};
+
 const replayStep = () => (dispatch, getState) => {
   const {highlightedIndex, logEntries} = getState();
   if (highlightedIndex < logEntries.length - 1) {
     dispatch(setHighlight(highlightedIndex + 1));
-  } else { 
+  } else {
     dispatch(pauseReplay());
   }
-}
+};
 
 export const startReplay = () => (dispatch, getState) => {
-  const {highlightedIndex, logEntries, replayTimerId, replayTimerDelay} = getState();
+  const {replayTimerId, replayTimerDelay} = getState();
   if (replayTimerId === null) {
     const timerId = setInterval(
       () => dispatch(replayStep()),
       replayTimerDelay * 1000
     );
     dispatch(setReplayTimerId(timerId));
-  } 
-};
-
-export const pauseReplay = () => (dispatch, getState) => {
-  const {replayTimerId} = getState();
-  if (replayTimerId !== null) {
-    clearInterval(replayTimerId)
-    dispatch(setReplayTimerId(null));   
-  } 
+  }
 };
 
 export const highlight = (highlightedIndex) => (dispatch, getState) => {
@@ -65,7 +67,8 @@ export const stepLog = (step) => (dispatch, getState) => {
 
 export const trace = (componentName, instanceId, methodName) => (dispatch, getState) => {
   if (constants.shouldLogInConsole) {
-    console.log(`${getTimeStamp()} ${componentName}-${instanceId}: ${methodName}`);
+    /* eslint no-console: 0 */
+    console.log(`${util.getTimeStamp()} ${componentName}-${instanceId}: ${methodName}`);
   }
 
   setTimeout(() => { // Async, so we can log from render
@@ -79,9 +82,13 @@ export const trace = (componentName, instanceId, methodName) => (dispatch, getSt
 };
 
 export const clearLog = () => (dispatch, getState) => {
-  const {logEntries, replayTimerId} = getState();
   dispatch(pauseReplay());
   dispatch(clearLogEntries());
+};
+
+export const setReplayTimerDelay = (replayTimerDelay) => (dispatch, getState) => {
+  sessionStorage.setItem(constants.sessionReplayTimerDelayKey, replayTimerDelay);
+  dispatch(setReplayTimerDelayPrim(replayTimerDelay));
 };
 
 export const setDelay = (replayTimerDelay) => (dispatch, getState) => {
@@ -94,20 +101,7 @@ export const setDelay = (replayTimerDelay) => (dispatch, getState) => {
   }
 };
 
-export const setReplayTimerDelay = (replayTimerDelay) => (dispatch, getState) => {
-  sessionStorage.setItem(constants.sessionReplayTimerDelayKey, replayTimerDelay);
-  dispatch(setReplayTimerDelayPrim(replayTimerDelay));
-}
-
 export const setSelectedSample = (selectedSample) => (dispatch, getState) => {
   sessionStorage.setItem(constants.sessionSelectedSampleKey, selectedSample);
   dispatch(setSelectedSamplePrim(selectedSample));
-}
-
-const padZeroes = (width, n) => ('' + n).padStart(width, '0');
-
-const getTimeStamp = () => {
-  const now = new Date();
-  return `[${padZeroes(2, now.getHours())}:${padZeroes(2, now.getMinutes())}:` + 
-         `${padZeroes(2, now.getSeconds())}.${padZeroes(3, now.getMilliseconds())}]`;
-}
+};

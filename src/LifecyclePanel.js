@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import * as constants from './constants.js';
+import * as constants from './constants';
 
 const LifecyclePanel = (props) => {
   const {componentName, isLegacy, instanceId, highlightedMethod, implementedMethods} = props;
@@ -11,7 +11,7 @@ const LifecyclePanel = (props) => {
     <div className='lifecycle-panel'>
       <div className='lifecycle-panel-inner'>
         <div className='component-instance'>{componentName + '-' + instanceId}</div>
-        { lifecycleMethodNames.map((methodName) =>
+        { lifecycleMethodNames.map((methodName) => (
             <LifecycleMethod
               componentName={componentName}
               instanceId={instanceId}
@@ -20,12 +20,19 @@ const LifecyclePanel = (props) => {
               methodIsImplemented={implementedMethods.includes(methodName)}
               key={methodName}
             />
-          )
+          ))
         }
       </div>
     </div>
   );
 };
+
+const isHighlighted =  (hlMethod, method) => (
+  hlMethod !== null &&
+    hlMethod.componentName === method.componentName &&
+    hlMethod.instanceId === method.instanceId &&
+    hlMethod.methodName.startsWith(method.methodName) // for handling 'setState:update fn' & 'setState:callback'
+);
 
 const LifecycleMethod = (props) => {
   const {highlightedMethod, componentName, instanceId, methodName, methodIsImplemented} = props;
@@ -40,13 +47,6 @@ const LifecycleMethod = (props) => {
     </div>
   );
 };
-
-const isHighlighted =  (hlMethod, method) => {
-  return hlMethod !== null &&
-    hlMethod.componentName === method.componentName &&
-    hlMethod.instanceId === method.instanceId &&
-    hlMethod.methodName.startsWith(method.methodName) // for handling 'setState:update fn' & 'setState:callback'
-}
 
 const mapStateToProps = ({logEntries, highlightedIndex}) => ({
   highlightedMethod: highlightedIndex !== null && logEntries[highlightedIndex]

@@ -1,3 +1,4 @@
+/* eslint arrow-body-style: 0, react/no-multi-comp: 0, no-unused-vars: [1, { "args": "none" }] */
 import * as React from 'react';
 import { Component } from 'react';
 import traceLifecycle from './traceLifecycle';
@@ -17,9 +18,9 @@ export default class Parent extends Component {
   }
 
   incX = () => {
-    this.trace('Custom message, calling incX')
+    this.trace('Custom message, calling incX');
     this.setState(({x}) => {
-      return {x: x + 1}
+      return {x: x + 1};
     });
   }
 
@@ -31,14 +32,14 @@ export default class Parent extends Component {
           <Button value='forceUpdate' onClick={() => this.forceUpdate()}/>
           <Button value='inc x'       onClick={this.incX}/>
           <LabeledCheckbox
-            label='showLastChild' 
+            label='showLastChild'
             checked={this.state.showLastChild}
             onChange={this.onCheckboxChange}
           />
         </div>
         { this.lifecyclePanel }
         <Child incX={this.incX} x={this.state.x}/>
-        { this.state.showLastChild && 
+        { this.state.showLastChild &&
             <Child incX={this.incX} x={this.state.x}/> }
       </Tagged>
     );
@@ -53,7 +54,7 @@ class Child extends Component {
 
   incY = () => {
     this.setState((prevState) => {
-      return {y: prevState.y + 1}
+      return {y: prevState.y + 1};
     });
   }
 

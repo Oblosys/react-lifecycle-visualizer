@@ -29,7 +29,7 @@ class Main extends Component {
   onCheckboxChange = (evt) => {
     this.setState({
       isShowingParent: evt.currentTarget.checked
-    })
+    });
   }
 
   onSelectSample = (evt) => {
@@ -38,12 +38,13 @@ class Main extends Component {
   }
 
   render() {
-    const selectedSample = sampleElements[this.props.selectedSample]
+    const selectedSample = sampleElements[this.props.selectedSample];
     return (
       <div className='main'>
         <div className='header'>
           <Button value='forceUpdate' onClick={() => this.forceUpdate()}/>
-          <LabeledCheckbox label='Show element'
+          <LabeledCheckbox
+            label='Show element'
             checked={this.state.isShowingParent}
             onChange={this.onCheckboxChange}
           />
@@ -54,7 +55,11 @@ class Main extends Component {
               onChange={this.onSelectSample}
             />
           </span>
-          <a href={`https://stackblitz.com/edit/react-lifecycle-visualizer?file=${selectedSample.filename}`} target='_blanc'>edit source</a>
+          <a
+            href={`https://stackblitz.com/edit/react-lifecycle-visualizer?file=${selectedSample.filename}`}
+            target='_blanc'
+          >edit source
+          </a>
         </div>
         <div className='traced-component'>
           { this.state.isShowingParent && this.props.selectedSample < sampleElements.length &&

@@ -73,19 +73,19 @@ class Entries extends Component {
        ({componentName, instanceId}) => componentName.length + ('' + instanceId).length + 1)
       );
     return (
-      <div className='entries' ref={(elt) => {this.messagesElt = elt}}>
-        { this.props.entries.map(({componentName, instanceId, methodName}, i) => 
+      <div className='entries' ref={(elt) => { this.messagesElt = elt; }}>
+        { this.props.entries.map(({componentName, instanceId, methodName}, i) => (
             <div className='entry-wrapper' key={i}>
               <div
                 className='entry'
                 data-is-highlighted={i === this.props.highlightedIndex}
-                onMouseEnter={(evt) => this.highlight(i)}
+                onMouseEnter={() => this.highlight(i)}
               >{ ('' + i).padStart(indexWidth) +  ' ' +
                  (componentName + '-' + instanceId + ':').padEnd(componentNameWidth) +
                  methodName }
               </div>
             </div>
-          )
+          ))
         }
       </div>
     );

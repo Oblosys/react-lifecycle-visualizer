@@ -1,4 +1,5 @@
 const path = require('path');
+
 const devServerPort = 8001;
 
 module.exports = {
@@ -12,20 +13,20 @@ module.exports = {
     rules: [{
       test: /\.(js|jsx)$/,
       use: [
-        "babel-loader",
-        "eslint-loader"
+        'babel-loader',
+        'eslint-loader'
       ],
       exclude: /node_modules/
     }, {
       test: /\.(css|scss)$/,
-      use: ["style-loader", "css-loader", "sass-loader"]
+      use: ['style-loader', 'css-loader', 'sass-loader']
     }]
   },
   resolve: {
-      extensions: [".js", ".jsx"]
+      extensions: ['.js', '.jsx']
   },
   devServer: {
     port: devServerPort,
-    contentBase: "./public"
+    contentBase: './public'
   }
 };

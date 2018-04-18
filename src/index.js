@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Component } from 'react';
 import ReactDom from 'react-dom';
 
 import { Provider } from 'react-redux';
@@ -8,7 +7,6 @@ import thunk from 'redux-thunk';
 
 import './style.scss';
 import { reducer } from './reducer';
-import * as ActionCreators from './actionCreators';
 import Main from './Main';
 import Log from './Log';
 import { clearInstanceIdCounters } from './traceLifecycle';
@@ -20,15 +18,11 @@ const store = createStore(
 );
 clearInstanceIdCounters(); // clear instance counters on Stackblitz hot reload
 
-class App extends Component {
-  render() {
-    return (
-      <div className='app'>
-        <Main/>
-        <Log/>
-      </div>
-    );
-  }
-}
+const App = () => (
+  <div className='app'>
+    <Main/>
+    <Log/>
+  </div>
+);
 
 ReactDom.render(<Provider store={store}><App/></Provider>, document.getElementById('root'));

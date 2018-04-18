@@ -1,3 +1,4 @@
+/* eslint arrow-body-style: 0, react/no-multi-comp: 0, no-unused-vars: [1, { "args": "none" }] */
 import * as React from 'react';
 import { Component } from 'react';
 import traceLifecycle from './traceLifecycle';
@@ -17,14 +18,14 @@ export default class OldParent extends Component {
   }
 
   incX = () => {
-    this.trace('Custom message, calling incX')
+    this.trace('Custom message, calling incX');
     this.setState(({x}) => {
-      return {x: x + 1}
+      return {x: x + 1};
     });
   }
 
   componentWillMount() {
-    this.trace('Don\'t use componentWillMount!')
+    this.trace('Don\'t use componentWillMount!');
   }
 
   render() {
@@ -35,14 +36,14 @@ export default class OldParent extends Component {
           <Button value='forceUpdate' onClick={() => this.forceUpdate()}/>
           <Button value='inc x'       onClick={this.incX}/>
           <LabeledCheckbox
-            label='showLastChild' 
+            label='showLastChild'
             checked={this.state.showLastChild}
             onChange={this.onCheckboxChange}
           />
         </div>
         { this.lifecyclePanel }
         <OldChild incX={this.incX} x={this.state.x}/>
-        { this.state.showLastChild && 
+        { this.state.showLastChild &&
             <OldChild incX={this.incX} x={this.state.x}/> }
       </Tagged>
     );
@@ -58,12 +59,12 @@ class OldChild extends Component {
 
   incY = () => {
     this.setState((prevState) => {
-      return {y: prevState.y + 1}
+      return {y: prevState.y + 1};
     });
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({squaredX: nextProps.x ** 2})
+    this.setState({squaredX: nextProps.x ** 2});
   }
 
   render() {

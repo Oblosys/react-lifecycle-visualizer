@@ -2,34 +2,34 @@ export const shouldLogInConsole = false;
 
 export const delayValues = [0.25, 0.5, 1, 2, 5, 10];
 
-export const M_Constructor      = 'constructor';
-export const M_DidMount         = 'componentDidMount';
-export const M_ShouldUpdate     = 'shouldComponentUpdate';
-export const M_Render           = 'render';
-export const M_DidUpdate        = 'componentDidUpdate';
-export const M_WillUnmount      = 'componentWillUnmount';
-export const M_SetState         = 'setState';
+export const MConstructor      = 'constructor';
+export const MDidMount         = 'componentDidMount';
+export const MShouldUpdate     = 'shouldComponentUpdate';
+export const MRender           = 'render';
+export const MDidUpdate        = 'componentDidUpdate';
+export const MWillUnmount      = 'componentWillUnmount';
+export const MSetState         = 'setState';
 
-export const M_GetDerivedState  = 'static getDerivedStateFromProps';
-export const M_GetSnapshot      = 'getSnapshotBeforeUpdate';
+export const MGetDerivedState  = 'static getDerivedStateFromProps';
+export const MGetSnapshot      = 'getSnapshotBeforeUpdate';
 
-export const M_WillMount        = 'componentWillMount';
-export const M_WillReceiveProps = 'componentWillReceiveProps';
-export const M_WillUpdate       = 'componentWillUpdate';
+export const MWillMount        = 'componentWillMount';
+export const MWillReceiveProps = 'componentWillReceiveProps';
+export const MWillUpdate       = 'componentWillUpdate';
 
 const lifecycleMethods = [
-  {isLegacy: false, isNew: false, name: M_Constructor},
-  {isLegacy: true,  isNew: false, name: M_WillMount},
-  {isLegacy: false, isNew: true,  name: M_GetDerivedState},
-  {isLegacy: true,  isNew: false, name: M_WillReceiveProps},
-  {isLegacy: false, isNew: false, name: M_ShouldUpdate},
-  {isLegacy: true,  isNew: false, name: M_WillUpdate},
-  {isLegacy: false, isNew: false, name: M_Render},
-  {isLegacy: false, isNew: false, name: M_DidMount},
-  {isLegacy: false, isNew: true,  name: M_GetSnapshot},
-  {isLegacy: false, isNew: false, name: M_DidUpdate},
-  {isLegacy: false, isNew: false, name: M_WillUnmount},
-  {isLegacy: false, isNew: false, name: M_SetState}
+  {isLegacy: false, isNew: false, name: MConstructor},
+  {isLegacy: true,  isNew: false, name: MWillMount},
+  {isLegacy: false, isNew: true,  name: MGetDerivedState},
+  {isLegacy: true,  isNew: false, name: MWillReceiveProps},
+  {isLegacy: false, isNew: false, name: MShouldUpdate},
+  {isLegacy: true,  isNew: false, name: MWillUpdate},
+  {isLegacy: false, isNew: false, name: MRender},
+  {isLegacy: false, isNew: false, name: MDidMount},
+  {isLegacy: false, isNew: true,  name: MGetSnapshot},
+  {isLegacy: false, isNew: false, name: MDidUpdate},
+  {isLegacy: false, isNew: false, name: MWillUnmount},
+  {isLegacy: false, isNew: false, name: MSetState}
 ];
 
 export const lifecycleMethodNames =
