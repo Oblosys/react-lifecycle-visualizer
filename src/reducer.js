@@ -1,6 +1,5 @@
 import * as constants from './constants';
 
-const sessionSelectedSample = sessionStorage.getItem(constants.sessionSelectedSampleKey);
 const sessionReplayTimerDelay = sessionStorage.getItem(constants.sessionReplayTimerDelayKey);
 
 const initialState = {
@@ -8,7 +7,6 @@ const initialState = {
   highlightedIndex: null,
   replayTimerId: null,
   replayTimerDelay: sessionReplayTimerDelay ? +sessionReplayTimerDelay : constants.delayValues[1],
-  selectedSample: sessionSelectedSample ? +sessionSelectedSample : 0
 };
 
 export const reducer = (state = initialState, action) => {
@@ -32,9 +30,6 @@ export const reducer = (state = initialState, action) => {
     }
     case 'SET_REPLAY_TIMER_DELAY': {
       return {...state, replayTimerDelay: action.replayTimerDelay};
-    }
-    case 'SET_SELECTED_SAMPLE': {
-      return {...state, selectedSample: action.selectedSample};
     }
     default: {
       return state;

@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { connect } from 'react-redux';
 
-import * as ActionCreators from '../../src/actionCreators';
 import { Button, LabeledCheckbox } from './Util';
 import SampleNew from './SampleNew';
 import SampleLegacy from './SampleLegacy';
@@ -11,6 +9,10 @@ const sampleElements = [
   { label: 'New lifecycle methods',    element: <SampleNew/>,   filename: 'SampleNew.js' },
   { label: 'Legacy lifecycle methods', element: <SampleLegacy/>, filename: 'SampleLegacy.js' }
 ];
+
+const sessionStorageKey = '@@react-lifecycle-visualizer-demo--persistent-state:';
+export const sessionSelectedSampleIxKey = sessionStorageKey + 'selectedSampleIx';
+const sessionSelectedSampleIx = sessionStorage.getItem(sessionSelectedSampleIxKey);
 
 const SampleSelector = ({value, onChange}) => (
   <select value={value} onChange={onChange}>
@@ -21,8 +23,9 @@ const SampleSelector = ({value, onChange}) => (
   </select>
 );
 
-class Main extends Component {
+export default class Main extends Component {
   state = {
+    selectedSampleIx: sessionSelectedSampleIx ? +sessionSelectedSampleIx : 0,
     isShowingParent: true
   }
 
@@ -33,12 +36,14 @@ class Main extends Component {
   }
 
   onSelectSample = (evt) => {
-    this.props.setSelectedSample(+evt.currentTarget.value);
-    this.props.clearLog();
+    const selectedSampleIx = +evt.currentTarget.value;
+    this.setState({selectedSampleIx});
+    sessionStorage.setItem(sessionSelectedSampleIxKey, selectedSampleIx);
+    // this.props.clearLog();
   }
 
   render() {
-    const selectedSample = sampleElements[this.props.selectedSample];
+    const selectedSample = sampleElements[this.state.selectedSampleIx];
     return (
       <div className='main'>
         <div className='header'>
@@ -51,7 +56,7 @@ class Main extends Component {
           <span>
             {'Sample: '}
             <SampleSelector
-              value={this.props.selectedSample}
+              value={this.state.selectedSampleIx}
               onChange={this.onSelectSample}
             />
           </span>
@@ -62,7 +67,7 @@ class Main extends Component {
           </a>
         </div>
         <div className='traced-component'>
-          { this.state.isShowingParent && this.props.selectedSample < sampleElements.length &&
+          { this.state.isShowingParent &&
             selectedSample.element
           }
         </div>
@@ -70,5 +75,3 @@ class Main extends Component {
     );
   }
 }
-
-export default connect(({selectedSample}) => ({selectedSample}), ActionCreators)(Main);

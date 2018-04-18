@@ -45,5 +45,4 @@ export const lifecycleMethodNamesLegacyOnly =
   lifecycleMethods.filter((mthd) => mthd.isLegacy).map(({name}) => name);
 
 const sessionStorageKey = '@@react-lifecycle-visualizer--persistent-state:';
-export const sessionSelectedSampleKey   = sessionStorageKey + 'selectedSample';
 export const sessionReplayTimerDelayKey = sessionStorageKey + 'replayTimerDelay';

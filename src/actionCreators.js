@@ -19,9 +19,6 @@ const setReplayTimerId = (replayTimerId) =>
 const setReplayTimerDelayPrim = (replayTimerDelay) =>
   ({type: 'SET_REPLAY_TIMER_DELAY', replayTimerDelay});
 
-const setSelectedSamplePrim = (selectedSample) =>
-  ({type: 'SET_SELECTED_SAMPLE', selectedSample});
-
 // Thunk actions:
 
 export const pauseReplay = () => (dispatch, getState) => {
@@ -99,9 +96,4 @@ export const setDelay = (replayTimerDelay) => (dispatch, getState) => {
     const timerId = setInterval(() => dispatch(replayStep()), replayTimerDelay * 1000);
     dispatch(setReplayTimerId(timerId));
   }
-};
-
-export const setSelectedSample = (selectedSample) => (dispatch, getState) => {
-  sessionStorage.setItem(constants.sessionSelectedSampleKey, selectedSample);
-  dispatch(setSelectedSamplePrim(selectedSample));
 };
