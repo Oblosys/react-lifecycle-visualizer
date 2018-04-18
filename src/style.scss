@@ -1,44 +1,3 @@
-body {
-  font-family: Consolas;
-  font-size: 13px;
-  height: 100vh;
-  width: 100vw;
-  margin: 0;
-  display: flex;
-}
-#root {
-  margin: 0;
-  flex-grow: 1;
-  display: flex;
-}
-.app {
-  flex-grow: 1;
-  display: flex;
-}
-.main {
-  flex-grow: 1;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  border-right: solid #aaa 1px;
-
-  .header {
-    padding: 1px 5px 1px 5px;
-    border-bottom: solid #aaa 1px;
-
-    > *:not(:last-child) {
-      margin-right: 20px;
-    }
-  }
-  .traced-component {
-    padding: 5px;
-    flex-grow: 1;
-    display: flex;
-    overflow-y: scroll;
-  }
-}
-
-
 .log {
   padding: 1px 5px 5px 10px;
   flex-shrink: 0;
@@ -85,6 +44,20 @@ body {
       background-color: yellow;
     }
   }
+
+  .simple-button {
+    padding: 1px 3px 0 3px;
+    font-size: 90%;
+    border: solid #aaa 1px;
+    border-radius: 4px;
+    user-select: none;
+  }
+  .simple-button:not(:last-child) {
+    margin-right: 5px;
+  }
+  .simple-button:hover {
+    background-color: #ddd;
+  }
 }
 
 .lifecycle-panel {
@@ -125,28 +98,4 @@ body {
   .lifecycle-method[data-is-highlighted='true'] {
     background-color: yellow;
   }
-}
-
-
-.simple-button {
-  padding: 1px 3px 0 3px;
-  font-size: 90%;
-  border: solid #aaa 1px;
-  border-radius: 4px;
-  user-select: none;
-}
-.simple-button:not(:last-child) {
-  margin-right: 5px;
-}
-.simple-button:hover {
-  background-color: #ddd;
-}
-.tagged {
-  margin-top: 6px;
-  // background-color: #eee;
-  // border: dotted 1px #999;
-  // border-radius: 4px;
-}
-.indented {
-  padding-left: 1.5em;
 }

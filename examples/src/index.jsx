@@ -5,7 +5,7 @@ import { applyMiddleware, compose, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import { clearInstanceIdCounters, Log } from '../../src/index';
 
-import '../../src/style.scss';
+import './style.scss';
 import { reducer } from '../../src/reducer';
 import Main from './Main';
 
