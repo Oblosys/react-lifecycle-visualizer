@@ -30,7 +30,6 @@ module.exports = {
     'jsx-a11y/label-has-for': 0,
     'jsx-a11y/no-static-element-interactions': 0,
     'no-prototype-builtins': 0,
-    'react/jsx-filename-extension': 0,
 
     // Maybe enable later:
     'prefer-template': 0,
