@@ -24,7 +24,7 @@ const mkInstanceId = (componentName) => {
 };
 
 export default function traceLifecycle(ComponentToTrace) {
-  const superMembers = Object.keys(ComponentToTrace.prototype);
+  const superMembers = Object.getOwnPropertyNames(ComponentToTrace.prototype);
 
   const isLegacy = // component is legacy if it includes one of the legacy methods and no new methods.
     superMembers.some((member) => constants.lifecycleMethodNamesLegacyOnly.includes(member)) &&
