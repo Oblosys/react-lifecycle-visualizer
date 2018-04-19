@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import * as constants from '../constants';
 import * as ActionCreators from '../redux/actionCreators';
-import { Button } from '../Util';
+import SimpleButton from './SimpleButton';
 
 const mapStateToProps = ({logEntries, highlightedIndex, replayTimerId, replayTimerDelay}) =>
   ({logEntries, highlightedIndex, replayTimerId, replayTimerDelay});
@@ -34,7 +34,7 @@ class Log extends Component {
       <div className='log'>
         <div className='header'>
           <span className='title'>Log</span>{' '}
-          <Button value='clear log'          onClick={() => this.props.clearLog()}/>{' '}
+          <SimpleButton value='clear log'    onClick={() => this.props.clearLog()}/>{' '}
           <span className='emoji-button'     onClick={() => this.props.stepLog(-1)}>{'\u23EA'}</span>
           { this.props.replayTimerId === null
             ? <span className='emoji-button' onClick={() => this.props.startReplay()}>{'\u25B6\uFE0F'}</span>
