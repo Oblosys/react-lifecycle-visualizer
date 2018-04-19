@@ -1,3 +1,4 @@
+/* global document:false */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 

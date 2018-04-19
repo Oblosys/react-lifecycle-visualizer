@@ -24,23 +24,15 @@ module.exports = {
     'class-methods-use-this': 0,
     'default-case': 0,
 
-    // Temporarily disabled:
-    'react/no-multi-comp': 0,
+    // Maybe enable later:
     'jsx-a11y/click-events-have-key-events': 0,
     'jsx-a11y/label-has-for': 0,
     'jsx-a11y/no-static-element-interactions': 0,
-
-    // Maybe enable later:
     'prefer-template': 0,
     'indent': 0,
     'function-paren-newline': 0,
     'object-curly-newline': 0,
     'react/jsx-indent': 0,
     'react/prop-types': 0,
-  },
-  'globals': {
-    'window' : true,
-    'document': true,
-    'sessionStorage': true,
   }
 };

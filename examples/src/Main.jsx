@@ -1,3 +1,4 @@
+/* global sessionStorage:false */
 import React, { Component } from 'react';
 import { clearLog } from '../../src';
 

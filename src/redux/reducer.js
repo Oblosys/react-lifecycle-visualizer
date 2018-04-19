@@ -1,3 +1,4 @@
+/* global sessionStorage:false */
 import * as constants from '../constants';
 
 const sessionReplayTimerDelay = sessionStorage.getItem(constants.sessionReplayTimerDelayKey);
