@@ -3,7 +3,7 @@ import { createProvider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
 
-import * as constants from './constants';
+import * as constants from '../constants';
 import * as actionCreators from './actionCreators';
 import { reducer } from './reducer';
 

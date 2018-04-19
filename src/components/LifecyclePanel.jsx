@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import * as constants from './constants';
+import * as constants from '../constants';
 
 const LifecyclePanel = (props) => {
   const {componentName, isLegacy, instanceId, highlightedMethod, implementedMethods} = props;

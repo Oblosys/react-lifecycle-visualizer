@@ -2,9 +2,9 @@ import * as React from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 
-import * as constants from './constants';
-import * as ActionCreators from './actionCreators';
-import { Button } from './Util';
+import * as constants from '../constants';
+import * as ActionCreators from '../redux/actionCreators';
+import { Button } from '../Util';
 
 const mapStateToProps = ({logEntries, highlightedIndex, replayTimerId, replayTimerDelay}) =>
   ({logEntries, highlightedIndex, replayTimerId, replayTimerDelay});

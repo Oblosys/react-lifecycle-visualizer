@@ -2,8 +2,8 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 
 import * as constants from './constants';
-import * as ActionCreators from './actionCreators';
-import LifecyclePanel from './LifecyclePanel';
+import * as ActionCreators from './redux/actionCreators';
+import LifecyclePanel from './components/LifecyclePanel';
 import { MConstructor, MShouldUpdate, MRender, MDidMount,
          MDidUpdate, MWillUnmount, MSetState, MGetDerivedState,
          MGetSnapshot, MWillMount, MWillReceiveProps, MWillUpdate } from './constants';
