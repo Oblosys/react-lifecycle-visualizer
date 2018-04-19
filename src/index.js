@@ -1,6 +1,6 @@
 import './style.scss';
 import Log from './Log';
 import traceLifecycle, { clearInstanceIdCounters } from './traceLifecycle';
-import VisualizerProvider from './VisualizerProvider';
+import VisualizerProvider, { clearLog } from './VisualizerProvider';
 
-export { clearInstanceIdCounters, Log, traceLifecycle, VisualizerProvider };
+export { clearInstanceIdCounters, clearLog, Log, traceLifecycle, VisualizerProvider };

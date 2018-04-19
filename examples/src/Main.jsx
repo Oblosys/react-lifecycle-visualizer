@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
+import { clearLog } from '../../src';
 
 import { Button, LabeledCheckbox } from './Util';
 import SampleNew from './SampleNew';
@@ -39,7 +40,7 @@ export default class Main extends Component {
     const selectedSampleIx = +evt.currentTarget.value;
     this.setState({selectedSampleIx});
     sessionStorage.setItem(sessionSelectedSampleIxKey, selectedSampleIx);
-    // this.props.clearLog();
+    clearLog();
   }
 
   render() {
