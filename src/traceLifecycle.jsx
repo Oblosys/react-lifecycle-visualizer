@@ -78,7 +78,7 @@ export default function traceLifecycle(ComponentToTrace) {
         prevState[traceSym](MGetDerivedState);
       }
       return ComponentToTrace.getDerivedStateFromProps
-               ? ComponentToTrace.getDerivedStateFromProps(...arguments)
+               ? ComponentToTrace.getDerivedStateFromProps(nextProps, prevState)
                : null;
     }
     componentDidMount() {
@@ -93,22 +93,22 @@ export default function traceLifecycle(ComponentToTrace) {
         super.componentWillUnmount();
       }
     }
-    componentWillReceiveProps() {
+    componentWillReceiveProps(...args) {
       this.trace(MWillReceiveProps);
       if (super.componentWillReceiveProps) {
-        super.componentWillReceiveProps(...arguments);
+        super.componentWillReceiveProps(...args);
       }
     }
-    shouldComponentUpdate() {
+    shouldComponentUpdate(...args) {
       this.trace(MShouldUpdate);
       return super.shouldComponentUpdate
-             ? super.shouldComponentUpdate(...arguments)
+             ? super.shouldComponentUpdate(...args)
              : true;
     }
-    componentWillUpdate() {
+    componentWillUpdate(...args) {
       this.trace(MWillUpdate);
       if (super.componentWillUpdate) {
-        super.componentWillUpdate(...arguments);
+        super.componentWillUpdate(...args);
       }
     }
     render() {
@@ -118,16 +118,16 @@ export default function traceLifecycle(ComponentToTrace) {
       }
       return undefined; // no super.render, this will trigger a React error
     }
-    getSnapshotBeforeUpdate() {
+    getSnapshotBeforeUpdate(...args) {
       this.trace(MGetSnapshot);
       return super.getSnapshotBeforeUpdate
-             ? super.getSnapshotBeforeUpdate(...arguments)
+             ? super.getSnapshotBeforeUpdate(...args)
              : null;
     }
-    componentDidUpdate() {
+    componentDidUpdate(...args) {
       this.trace(MDidUpdate);
       if (super.componentDidUpdate) {
-        super.componentDidUpdate(...arguments);
+        super.componentDidUpdate(...args);
       }
     }
     setState(updater, callback) {
@@ -135,14 +135,14 @@ export default function traceLifecycle(ComponentToTrace) {
 
       // Unlike the lifecycle methods we only trace the update function and callback
       // when they are actually defined.
-      const tracingUpdater = typeof updater !== 'function' ? updater : () => {
+      const tracingUpdater = typeof updater !== 'function' ? updater : (...args) => {
         this.trace(MSetState + ':update fn');
-        return updater(...arguments);
+        return updater(...args);
       };
 
-      const tracingCallback = !callback ? undefined : () => {
+      const tracingCallback = !callback ? undefined : (...args) => {
         this.trace(MSetState + ':callback');
-        callback(...arguments);
+        callback(...args);
       };
       super.setState(tracingUpdater, tracingCallback);
     }

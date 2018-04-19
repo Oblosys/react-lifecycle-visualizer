@@ -20,7 +20,6 @@ module.exports = {
     'import/no-duplicates': 0,
     'import/no-extraneous-dependencies': [1, {'devDependencies': true}],
     'react/no-array-index-key': 0,
-    'prefer-rest-params': 0,
     'react/sort-comp': 0,
     'class-methods-use-this': 0,
     'default-case': 0,
