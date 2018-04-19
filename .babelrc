@@ -6,8 +6,8 @@
     "production": {
         "plugins": [
           [ "transform-rename-import", {
-              "original": "./style.scss",
-              "replacement": "./style.css"
+              "original": "./react-lifecycle-visualizer.scss",
+              "replacement": "./react-lifecycle-visualizer.css"
           }]
         ]
     }
