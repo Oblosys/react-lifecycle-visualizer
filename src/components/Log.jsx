@@ -4,10 +4,17 @@ import { connect } from 'react-redux';
 
 import * as constants from '../constants';
 import * as ActionCreators from '../redux/actionCreators';
+import LogEntries from './LogEntries';
 import SimpleButton from './SimpleButton';
 
-const mapStateToProps = ({logEntries, highlightedIndex, replayTimerId, replayTimerDelay}) =>
-  ({logEntries, highlightedIndex, replayTimerId, replayTimerDelay});
+const DelaySelector = ({value, onChange}) => (
+  <select value={value} onChange={onChange}>
+    { constants.delayValues.map((delay) =>
+       <option value={delay} key={delay}>{delay}s</option>
+      )
+    }
+  </select>
+);
 
 class Log extends Component {
   onKeyDown = (evt) => {
@@ -53,7 +60,7 @@ class Log extends Component {
           </div>
           <div>(hover to highlight, shift-up/down to navigate)</div>
         </div>
-        <Entries
+        <LogEntries
           entries={this.props.logEntries}
           highlightedIndex={this.props.highlightedIndex}
           highlight={this.props.highlight}
@@ -63,48 +70,7 @@ class Log extends Component {
   }
 }
 
-class Entries extends Component {
-  highlight = (index) => {
-    this.props.highlight(index);
-  }
-  componentDidUpdate(prevProps) {
-    if (prevProps.entries.length !== this.props.entries.length) {
-      this.messagesElt.scrollTop = this.messagesElt.scrollHeight - this.messagesElt.clientHeight;
-    }
-  }
-  render() {
-    const indexWidth = 1 + Math.log10(this.props.entries.length);
-    const componentNameWidth = 2 +
-      Math.max(...this.props.entries.map(
-       ({componentName, instanceId}) => componentName.length + ('' + instanceId).length + 1)
-      );
-    return (
-      <div className='entries' ref={(elt) => { this.messagesElt = elt; }}>
-        { this.props.entries.map(({componentName, instanceId, methodName}, i) => (
-            <div className='entry-wrapper' key={i}>
-              <div
-                className='entry'
-                data-is-highlighted={i === this.props.highlightedIndex}
-                onMouseEnter={() => this.highlight(i)}
-              >{ ('' + i).padStart(indexWidth) +  ' ' +
-                 (componentName + '-' + instanceId + ':').padEnd(componentNameWidth) +
-                 methodName }
-              </div>
-            </div>
-          ))
-        }
-      </div>
-    );
-  }
-}
-
-const DelaySelector = ({value, onChange}) => (
-  <select value={value} onChange={onChange}>
-    { constants.delayValues.map((delay) =>
-       <option value={delay} key={delay}>{delay}s</option>
-      )
-    }
-  </select>
-);
+const mapStateToProps = ({logEntries, highlightedIndex, replayTimerId, replayTimerDelay}) =>
+  ({logEntries, highlightedIndex, replayTimerId, replayTimerDelay});
 
 export default connect(mapStateToProps, ActionCreators, null, {storeKey: constants.reduxStoreKey})(Log);
