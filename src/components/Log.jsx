@@ -33,18 +33,24 @@ class Log extends Component {
     return (
       <div className='log'>
         <div className='header'>
-          <span className='title'>Log</span>{' '}
-          <SimpleButton value='clear log'    onClick={() => this.props.clearLog()}/>{' '}
-          <span className='emoji-button'     onClick={() => this.props.stepLog(-1)}>{'\u23EA'}</span>
-          { this.props.replayTimerId === null
-            ? <span className='emoji-button' onClick={() => this.props.startReplay()}>{'\u25B6\uFE0F'}</span>
-            : <span className='emoji-button' onClick={() => this.props.pauseReplay()}>{'\u23F8'}</span> }
-          <span className='emoji-button'     onClick={() => this.props.stepLog(1)}>{'\u23E9'}</span>
-          {' '}Delay:
-          <DelaySelector
-            value={this.props.replayTimerDelay}
-            onChange={(evt) => this.props.setDelay(+evt.currentTarget.value)}
-          />
+          <div className='controls'>
+            <div className='title'>Log</div>
+            <div className='buttons'>
+              <SimpleButton value='clear log'    onClick={() => this.props.clearLog()}/>{' '}
+              <span className='emoji-button'     onClick={() => this.props.stepLog(-1)}>{'\u23EA'}</span>
+              { this.props.replayTimerId === null
+                ? <span className='emoji-button' onClick={() => this.props.startReplay()}>{'\u25B6\uFE0F'}</span>
+                : <span className='emoji-button' onClick={() => this.props.pauseReplay()}>{'\u23F8'}</span> }
+              <span className='emoji-button'     onClick={() => this.props.stepLog(1)}>{'\u23E9'}</span>
+            </div>
+            <div>
+              Delay:
+              <DelaySelector
+                value={this.props.replayTimerDelay}
+                onChange={(evt) => this.props.setDelay(+evt.currentTarget.value)}
+              />
+            </div>
+          </div>
           <div>(hover to highlight, shift-up/down to navigate)</div>
         </div>
         <Entries

@@ -1,5 +1,5 @@
 .log {
-  padding: 1px 5px 5px 10px;
+  padding: 3px 8px 5px 8px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -9,17 +9,28 @@
     flex-shrink: 0;
     user-select: none;
     line-height: 24px;
-    margin-bottom: 5px;
 
-    .title {
-      font-size: 130%;
-      font-weight: bold;
-      margin-right: 20px;
-    }
-    .emoji-button {
-      font-size: 140%;
-      position: relative;
-      top: 4px;
+    .controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .title {
+        font-size: 130%;
+        font-weight: bold;
+        // margin-right: 20px;
+      }
+
+      .buttons {
+      display: flex;
+      align-items: center;
+
+        .emoji-button {
+          font-size: 140%;
+          position: relative;
+          top: 3px;
+        }
+      }
     }
   }
 
@@ -46,14 +57,14 @@
   }
 
   .simple-button {
-    padding: 1px 3px 0 3px;
-    font-size: 90%;
+    display: inline-block;
+    padding: 2px 3px 0 3px;
+    margin-bottom: 2px;
+    line-height: 15px;
+    font-size: 12px;
     border: solid #aaa 1px;
     border-radius: 4px;
     user-select: none;
-  }
-  .simple-button:not(:last-child) {
-    margin-right: 5px;
   }
   .simple-button:hover {
     background-color: #ddd;

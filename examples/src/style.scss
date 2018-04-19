@@ -39,11 +39,13 @@ body {
 }
 
 .simple-button {
-  padding: 1px 3px 0 3px;
-  font-size: 90%;
-  border: solid #aaa 1px;
-  border-radius: 4px;
-  user-select: none;
+    display: inline-block;
+    padding: 2px 3px 0 3px;
+    line-height: 13px;
+    font-size: 12px;
+    border: solid #aaa 1px;
+    border-radius: 4px;
+    user-select: none;
 }
 .simple-button:not(:last-child) {
   margin-right: 5px;
