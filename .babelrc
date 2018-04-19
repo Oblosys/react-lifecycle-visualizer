@@ -1,4 +1,15 @@
 {
-  "plugins": [],
-  "presets": ["env", "stage-2", "react"]
+  "presets": ["env", "stage-2", "react"],
+  "plugins": [
+  ],
+  "env": {
+    "production": {
+        "plugins": [
+          [ "transform-rename-import", {
+              "original": "./style.scss",
+              "replacement": "./style.css"
+          }]
+        ]
+    }
+  }
 }
