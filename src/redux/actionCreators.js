@@ -1,6 +1,6 @@
 /* eslint no-unused-vars: [1, { "args": "none" }] */
 import * as constants from '../constants';
-import * as util from '../Util';
+import * as util from '../util';
 
 // Primitive actions:
 
