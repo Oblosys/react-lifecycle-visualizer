@@ -1,6 +1,5 @@
 /* eslint arrow-body-style: 0, react/no-multi-comp: 0, no-unused-vars: [1, { "args": "none" }] */
-import * as React from 'react';
-import { Component } from 'react';
+import React, { Component } from 'react';
 import { traceLifecycle } from '../../src';
 
 import { Button, LabeledCheckbox, Tagged } from './Util';

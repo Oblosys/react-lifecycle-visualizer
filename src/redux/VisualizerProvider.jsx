@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { createProvider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
