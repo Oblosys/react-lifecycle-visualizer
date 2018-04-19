@@ -12,14 +12,17 @@ module.exports = {
   module: {
     rules: [{
       test: /\.(js|jsx)$/,
-      use: [
-        'babel-loader', {
-          loader: 'eslint-loader',
-          options: {
-            emitWarning: true
-          }
+      use: [{
+        loader: 'babel-loader',
+        options: {
+          plugins: ['react-hot-loader/babel', 'transform-react-jsx-source', 'transform-decorators-legacy']
         }
-      ],
+      }, {
+        loader: 'eslint-loader',
+        options: {
+          emitWarning: true
+        }
+      }],
       exclude: /node_modules/
     }, {
       test: /\.(css|scss)$/,
