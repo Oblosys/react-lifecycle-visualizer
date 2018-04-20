@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { createProvider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
@@ -20,5 +21,9 @@ export const clearLog = () => store.dispatch(actionCreators.clearLog());
 const VisualizerProvider = ({children}) => (
   <Provider store={store}>{children}</Provider>
 );
+
+VisualizerProvider.propTypes = {
+  children: PropTypes.element.isRequired,
+};
 
 export default VisualizerProvider;
