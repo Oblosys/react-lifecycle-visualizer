@@ -23,6 +23,7 @@ module.exports = {
     'react/sort-comp': 0,
     'class-methods-use-this': 0,
     'default-case': 0,
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
 
     // Maybe enable later:
     'jsx-a11y/click-events-have-key-events': 0,
