@@ -1,6 +1,6 @@
 import React from 'react';
 import { hot } from 'react-hot-loader';
-import { clearInstanceIdCounters, Log } from '../../src';
+import { clearInstanceIdCounters, Log } from 'react-lifecycle-visualizer';
 
 import './style.scss';
 import Main from './Main';

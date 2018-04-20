@@ -34,5 +34,9 @@ module.exports = {
     'object-curly-newline': 0,
     'react/jsx-indent': 0,
     'react/prop-types': 0,
+
+    // For importing react-lifecycle-visualizer from /src instead of /node_modules:
+    'import/no-unresolved': [2, { ignore: ['^react-lifecycle-visualizer$'] }],
+    'import/extensions': [2, 'ignorePackages'],
   }
 };

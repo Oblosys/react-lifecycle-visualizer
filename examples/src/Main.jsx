@@ -1,6 +1,6 @@
 /* global sessionStorage:false */
 import React, { Component } from 'react';
-import { clearLog } from '../../src';
+import { clearLog } from 'react-lifecycle-visualizer';
 
 import { Button, LabeledCheckbox } from './Util';
 import SampleNew from './SampleNew';

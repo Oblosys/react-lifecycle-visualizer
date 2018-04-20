@@ -30,7 +30,10 @@ module.exports = {
     }]
   },
   resolve: {
-      extensions: ['.js', '.jsx']
+    alias: {
+      'react-lifecycle-visualizer': path.join(__dirname, 'src'),
+    },
+    extensions: ['.js', '.jsx']
   },
   devServer: {
     port: devServerPort,
