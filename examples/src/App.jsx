@@ -14,4 +14,5 @@ const App = () => (
   </div>
 );
 
-export default hot(module)(App);
+// Don't set up hot reloading on StackBlitz (where `module` is not defined.)
+export default typeof module === 'undefined' ? App : hot(module)(App);
