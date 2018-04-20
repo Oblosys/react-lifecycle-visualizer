@@ -1,0 +1,24 @@
+{
+  "name": "react-lifecycle-visualizer-demo",
+  "version": "0.1",
+  "description": "Dummy configuration for StackBlitz deployment. Don't use this to build the demo; use the top-level package.json instead",
+  "main": "src/index.jsx",
+  "homepage": "https://stackblitz.com/github/Oblosys/react-lifecycle-visualizer/tree/master/examples",
+  "scripts": {
+  "start": "echo \"Error: This dummy package.json is only for StackBlitz deployment. Use top-level package.json instead.\" && exit 1"
+  },
+  "devDependencies": {
+    "react-scripts": "^1.1.4"
+  },
+  "dependencies": {
+    "prop-types": "^15.6.1",
+    "react": "16.3.1",
+    "react-dom": "16.3.1",
+    "react-hot-loader": "^4.1.0",
+    "react-lifecycle-visualizer": "^0.1.4",
+    "react-redux": "^5.0.7",
+    "react-scripts": "^1.0.10",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0"
+  }
+}
