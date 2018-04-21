@@ -3,7 +3,7 @@
   "version": "0.1",
   "description": "Dummy configuration for StackBlitz deployment. Don't use this to build the demo; use the top-level package.json instead",
   "main": "src/index.jsx",
-  "homepage": "https://stackblitz.com/github/Oblosys/react-lifecycle-visualizer/tree/master/examples",
+  "homepage": "https://stackblitz.com/github/Oblosys/react-lifecycle-visualizer/tree/master/examples/parent-child-demo",
   "scripts": {
   "start": "echo \"Error: This dummy package.json is only for StackBlitz deployment. Use top-level package.json instead.\" && exit 1"
   },
