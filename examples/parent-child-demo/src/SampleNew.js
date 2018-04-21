@@ -58,7 +58,9 @@ class Child extends Component {
     });
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
+  static getDerivedStateFromProps(nextProps, prevState, trace) {
+    // Since there is no this.trace on a static method, trace is passed as a third parameter here.
+    trace('nextProps: ' + JSON.stringify(nextProps));
     return {squaredX: nextProps.x ** 2};
   }
 

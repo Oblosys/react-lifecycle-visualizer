@@ -73,32 +73,39 @@ export default function traceLifecycle(ComponentToTrace) {
         super.componentWillMount();
       }
     }
+
     static getDerivedStateFromProps(nextProps, prevState) {
+      const trace = prevState[traceSym];
       if (prevState && prevState[traceSym]) {
-        prevState[traceSym](MGetDerivedState);
+        trace(MGetDerivedState);
       }
       return ComponentToTrace.getDerivedStateFromProps
-               ? ComponentToTrace.getDerivedStateFromProps(nextProps, prevState)
+               ? ComponentToTrace.getDerivedStateFromProps(nextProps, prevState, trace)
+               // Pass trace as third argument, since this.trace is unavailable in static method.
                : null;
     }
+
     componentDidMount() {
       this.trace(MDidMount);
       if (super.componentDidMount) {
         super.componentDidMount();
       }
     }
+
     componentWillUnmount() {
       this.trace(MWillUnmount);
       if (super.componentWillUnmount) {
         super.componentWillUnmount();
       }
     }
+
     componentWillReceiveProps(...args) {
       this.trace(MWillReceiveProps);
       if (super.componentWillReceiveProps) {
         super.componentWillReceiveProps(...args);
       }
     }
+
     shouldComponentUpdate(...args) {
       this.trace(MShouldUpdate);
       return super.shouldComponentUpdate
@@ -111,6 +118,7 @@ export default function traceLifecycle(ComponentToTrace) {
         super.componentWillUpdate(...args);
       }
     }
+
     render() {
       if (super.render) {
         this.trace(MRender);
@@ -118,18 +126,21 @@ export default function traceLifecycle(ComponentToTrace) {
       }
       return undefined; // no super.render, this will trigger a React error
     }
+
     getSnapshotBeforeUpdate(...args) {
       this.trace(MGetSnapshot);
       return super.getSnapshotBeforeUpdate
              ? super.getSnapshotBeforeUpdate(...args)
              : null;
     }
+
     componentDidUpdate(...args) {
       this.trace(MDidUpdate);
       if (super.componentDidUpdate) {
         super.componentDidUpdate(...args);
       }
     }
+
     setState(updater, callback) {
       this.trace(MSetState);
 
@@ -147,6 +158,7 @@ export default function traceLifecycle(ComponentToTrace) {
       super.setState(tracingUpdater, tracingCallback);
     }
   }
+
   TracingComponent.displayName =
     `traceLifecycle(${ComponentToTrace.displayName || ComponentToTrace.name || 'Component'})`;
 
