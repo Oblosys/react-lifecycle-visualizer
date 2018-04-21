@@ -7,9 +7,13 @@ import SampleNew from './SampleNew';
 import SampleLegacy from './SampleLegacy';
 
 const sampleElements = [
-  { label: 'New lifecycle methods',    element: <SampleNew/>,   filename: 'SampleNew.js' },
+  { label: 'New lifecycle methods',    element: <SampleNew/>,    filename: 'SampleNew.js' },
   { label: 'Legacy lifecycle methods', element: <SampleLegacy/>, filename: 'SampleLegacy.js' }
 ];
+
+const getStackBlitzUrl = (filename) =>
+  'https://stackblitz.com/github/Oblosys/react-lifecycle-visualizer/tree/master/examples/parent-child-demo?file=src/' +
+  filename;
 
 const sessionStorageKey = '@@react-lifecycle-visualizer-demo--persistent-state:';
 export const sessionSelectedSampleIxKey = sessionStorageKey + 'selectedSampleIx';
@@ -56,12 +60,8 @@ export default class Main extends Component {
                 onChange={this.onSelectSample}
               />
             </span>
-            <a
-              href={`https://stackblitz.com/edit/react-lifecycle-visualizer?file=${selectedSample.filename}`}
-              target='_blanc'
-            >edit source
-            </a>
-          </div>{' '}
+            <a href={getStackBlitzUrl(selectedSample.filename)} target='_blanc'>edit source</a>
+          </div>
           <div>
             <Button value='forceUpdate' onClick={() => this.forceUpdate()}/>
             <LabeledCheckbox
