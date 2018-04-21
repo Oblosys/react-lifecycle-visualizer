@@ -48,24 +48,28 @@ export default class Main extends Component {
     return (
       <div className='main'>
         <div className='header'>
-          <Button value='forceUpdate' onClick={() => this.forceUpdate()}/>
-          <LabeledCheckbox
-            label='Show element'
-            checked={this.state.isShowingParent}
-            onChange={this.onCheckboxChange}
-          />
-          <span>
-            {'Sample: '}
-            <SampleSelector
-              value={this.state.selectedSampleIx}
-              onChange={this.onSelectSample}
+          <div>
+            <span>
+              {'Sample: '}
+              <SampleSelector
+                value={this.state.selectedSampleIx}
+                onChange={this.onSelectSample}
+              />
+            </span>
+            <a
+              href={`https://stackblitz.com/edit/react-lifecycle-visualizer?file=${selectedSample.filename}`}
+              target='_blanc'
+            >edit source
+            </a>
+          </div>{' '}
+          <div>
+            <Button value='forceUpdate' onClick={() => this.forceUpdate()}/>
+            <LabeledCheckbox
+              label='Show element'
+              checked={this.state.isShowingParent}
+              onChange={this.onCheckboxChange}
             />
-          </span>
-          <a
-            href={`https://stackblitz.com/edit/react-lifecycle-visualizer?file=${selectedSample.filename}`}
-            target='_blanc'
-          >edit source
-          </a>
+          </div>
         </div>
         <div className='traced-component'>
           { this.state.isShowingParent &&

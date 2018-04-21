@@ -37,7 +37,7 @@
   .entries {
     flex-grow: 1;
     overflow-y: scroll;
-    background-color: #eee;
+    background-color: #f0f0f0;
     border: solid #aaa 1px;
 
     .entry-wrapper {
@@ -65,6 +65,7 @@
     border: solid #aaa 1px;
     border-radius: 4px;
     user-select: none;
+    background-color: white;
   }
   .simple-button:hover {
     background-color: #ddd;
