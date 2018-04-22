@@ -41,7 +41,7 @@ export default class OldParent extends Component {
             onChange={this.onCheckboxChange}
           />
         </div>
-        { this.lifecyclePanel }
+        <this.LifecyclePanel/>
         <OldChild incX={this.incX} x={this.state.x}/>
         { this.state.showLastChild &&
             <OldChild incX={this.incX} x={this.state.x}/> }
@@ -77,7 +77,7 @@ class OldChild extends Component {
           <Button value='inc y'       onClick={() => this.incY()}/>
           <Button value='inc x & y'   onClick={() => { this.incY(); this.props.incX(); }}/>
         </div>
-        { this.lifecyclePanel }
+        <this.LifecyclePanel/>
       </Tagged>
     );
   }

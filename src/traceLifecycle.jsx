@@ -36,7 +36,7 @@ export default function traceLifecycle(ComponentToTrace) {
 
       const instanceId = mkInstanceId(ComponentToTrace.name);
 
-      this.lifecyclePanel = (
+      this.LifecyclePanel = () => (
         <LifecyclePanel
           componentName={ComponentToTrace.name}
           isLegacy={isLegacy}
