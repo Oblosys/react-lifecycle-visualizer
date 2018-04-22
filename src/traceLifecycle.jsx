@@ -62,8 +62,9 @@ export default function traceLifecycle(ComponentToTrace) {
       this.trace(MConstructor);
     }
 
-    // Get store from context, to prevent update blocking by `connect`.
+    // Get store directly from context, to prevent introducing extra `Connect` component.
     static contextTypes = {
+      ...ComponentToTrace.contextTypes, // preserve contextTypes from ComponentToTrace
       [constants.reduxStoreKey]: PropTypes.object
     }
 
