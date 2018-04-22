@@ -24,11 +24,15 @@ const mkInstanceId = (componentName) => {
 };
 
 export default function traceLifecycle(ComponentToTrace) {
-  const superMembers = Object.getOwnPropertyNames(ComponentToTrace.prototype);
+  const superMethods = Object.getOwnPropertyNames(ComponentToTrace.prototype).concat(
+    ComponentToTrace.getDerivedStateFromProps ? [MGetDerivedState] : []
+  );
 
   const isLegacy = // component is legacy if it includes one of the legacy methods and no new methods.
-    superMembers.some((member) => constants.lifecycleMethodNamesLegacyOnly.includes(member)) &&
-    superMembers.every((member) => !constants.lifecycleMethodNamesNewOnly.includes(member));
+    superMethods.some((member) => constants.lifecycleMethodNamesLegacyOnly.includes(member)) &&
+    superMethods.every((member) => !constants.lifecycleMethodNamesNewOnly.includes(member));
+
+  const implementedMethods = [...superMethods, MSetState];
 
   class TracingComponent extends ComponentToTrace {
     constructor(props, context) {
@@ -41,11 +45,7 @@ export default function traceLifecycle(ComponentToTrace) {
           componentName={ComponentToTrace.name}
           isLegacy={isLegacy}
           instanceId={instanceId}
-          implementedMethods={[
-            ...superMembers,
-            ...(ComponentToTrace.getDerivedStateFromProps ? [MGetDerivedState] : []),
-            MSetState
-          ]}
+          implementedMethods={implementedMethods}
         />
       );
 
