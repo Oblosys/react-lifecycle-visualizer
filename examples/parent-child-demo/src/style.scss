@@ -19,11 +19,11 @@ body {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  border-right: solid #aaa 1px;
+  border-right: solid #ddd 1px;
 
   .header {
     padding: 4px 5px 1px 10px;
-    border-bottom: solid #aaa 1px;
+    border-bottom: solid #ccc 1px;
     flex-shrink: 0;
     display: flex;
     flex-wrap: wrap;
@@ -63,9 +63,6 @@ body {
 }
 .tagged {
   margin-top: 6px;
-  // background-color: #eee;
-  // border: dotted 1px #999;
-  // border-radius: 4px;
 }
 .indented {
   padding-left: 1.5em;
