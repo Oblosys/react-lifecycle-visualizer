@@ -10,7 +10,7 @@ export default class LogEntries extends Component {
     }
   }
   render() {
-    const indexWidth = 1 + Math.log10(this.props.entries.length);
+    const indexWidth = Math.max(2, 1 + Math.log10(this.props.entries.length));
     const componentNameWidth = 2 +
       Math.max(...this.props.entries.map(
        ({componentName, instanceId}) => componentName.length + ('' + instanceId).length + 1)
