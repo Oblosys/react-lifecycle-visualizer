@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { traceLifecycle } from 'react-lifecycle-visualizer';
 
-import { Button, LabeledCheckbox, Tagged } from './Util';
+import { Button, LabeledCheckbox, Tagged } from '../Util';
 
 @traceLifecycle
 export default class Parent extends Component {

@@ -3,17 +3,17 @@ import React, { Component } from 'react';
 import { clearLog } from 'react-lifecycle-visualizer';
 
 import { Button, LabeledCheckbox } from './Util';
-import SampleNew from './SampleNew';
-import SampleLegacy from './SampleLegacy';
+import SampleNew from './samples/New';
+import SampleLegacy from './samples/Legacy';
 
 const sampleElements = [
-  { label: 'New lifecycle methods',    element: <SampleNew/>,    filename: 'SampleNew.js' },
-  { label: 'Legacy lifecycle methods', element: <SampleLegacy/>, filename: 'SampleLegacy.js' }
+  { label: 'New lifecycle methods',    element: <SampleNew/>,    filename: 'New.js' },
+  { label: 'Legacy lifecycle methods', element: <SampleLegacy/>, filename: 'Legacy.js' }
 ];
 
 const getStackBlitzUrl = (filename) =>
-  'https://stackblitz.com/github/Oblosys/react-lifecycle-visualizer/tree/master/examples/parent-child-demo?file=src/' +
-  filename;
+  'https://stackblitz.com/github/Oblosys/react-lifecycle-visualizer/tree/master/' +
+  'examples/parent-child-demo?file=src/samples/' + filename;
 
 const sessionStorageKey = '@@react-lifecycle-visualizer-demo--persistent-state:';
 export const sessionSelectedSampleIxKey = sessionStorageKey + 'selectedSampleIx';
