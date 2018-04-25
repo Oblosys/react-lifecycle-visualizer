@@ -56,7 +56,10 @@ export default function traceLifecycle(ComponentToTrace) {
       };
 
       // HACK: need trace in state since static getDerivedStateFromProps can't access instance or context :-(
-      if (this.state) {
+      if (!Object.prototype.hasOwnProperty.call(this, 'state')) {
+        this.state = {};
+      }
+      if (typeof this.state === 'object') { // check the rare case of a non-object state (which yields a React warning)
         this.state[traceSym] = this.trace.bind(this);
       }
       this.trace(MConstructor);
@@ -76,10 +79,9 @@ export default function traceLifecycle(ComponentToTrace) {
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-      const trace = prevState[traceSym];
-      if (prevState && prevState[traceSym]) {
-        trace(MGetDerivedState);
-      }
+      const trace = prevState[traceSym] ? prevState[traceSym] : () => {};
+      trace(MGetDerivedState);
+
       return ComponentToTrace.getDerivedStateFromProps
                ? ComponentToTrace.getDerivedStateFromProps(nextProps, prevState, trace)
                // Pass trace as third argument, since this.trace is unavailable in static method.
