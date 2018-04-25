@@ -2,7 +2,8 @@
 import React, { Component } from 'react';
 import { clearLog } from 'react-lifecycle-visualizer';
 
-import { Button, LabeledCheckbox } from './Util';
+import SimpleButton from './components/SimpleButton';
+import LabeledCheckbox from './components/LabeledCheckbox';
 import SampleNew from './samples/New';
 import SampleLegacy from './samples/Legacy';
 
@@ -63,7 +64,7 @@ export default class Main extends Component {
             <a href={getStackBlitzUrl(selectedSample.filename)} target='_blanc'>edit source</a>
           </div>
           <div>
-            <Button value='forceUpdate' onClick={() => this.forceUpdate()}/>
+            <SimpleButton value='forceUpdate' onClick={() => this.forceUpdate()}/>
             <LabeledCheckbox
               label='Show element'
               checked={this.state.isShowingParent}

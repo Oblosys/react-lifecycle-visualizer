@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 
-export const Tagged = ({name, showProps, children}) => {
+const Tagged = ({name, showProps, children}) => {
   const shownProps = !showProps ? '' : ' ' +
     Object.entries(showProps).map(([key, val]) =>
       key + '={' + JSON.stringify(val) + '}'
@@ -20,13 +20,4 @@ export const Tagged = ({name, showProps, children}) => {
   );
 };
 
-export const LabeledCheckbox = ({label, checked, onChange}) => (
-  <label>
-    <input type='checkbox' checked={checked} onChange={onChange}/>
-    {label}
-  </label>
-);
-
-export const Button = ({value, onClick}) => (
-  <span className='simple-button' onClick={onClick}>{value}</span>
-);
+export default Tagged;

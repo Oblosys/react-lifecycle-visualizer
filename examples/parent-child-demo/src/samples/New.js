@@ -2,7 +2,9 @@
 import React, { Component } from 'react';
 import { traceLifecycle } from 'react-lifecycle-visualizer';
 
-import { Button, LabeledCheckbox, Tagged } from '../Util';
+import SimpleButton from '../components/SimpleButton';
+import LabeledCheckbox from '../components/LabeledCheckbox';
+import Tagged from '../components/Tagged';
 
 @traceLifecycle
 export default class Parent extends Component {
@@ -29,8 +31,8 @@ export default class Parent extends Component {
       <Tagged name='Parent'>
         <div>state = {JSON.stringify(this.state)}</div>
         <div>
-          <Button value='forceUpdate' onClick={() => this.forceUpdate()}/>
-          <Button value='inc x'       onClick={this.incX}/>
+          <SimpleButton value='forceUpdate' onClick={() => this.forceUpdate()}/>
+          <SimpleButton value='inc x'       onClick={this.incX}/>
           <LabeledCheckbox
             label='showLastChild'
             checked={this.state.showLastChild}
@@ -76,10 +78,10 @@ class Child extends Component {
       <Tagged name='Child' showProps={{x: this.props.x}}>
         <div>state = {JSON.stringify(this.state)}</div>
         <div>
-          <Button value='forceUpdate' onClick={() => this.forceUpdate()}/>
-          <Button value='inc x'       onClick={() => this.props.incX()}/>
-          <Button value='inc y'       onClick={() => this.incY()}/>
-          <Button value='inc x & y'   onClick={() => { this.incY(); this.props.incX(); }}/>
+          <SimpleButton value='forceUpdate' onClick={() => this.forceUpdate()}/>
+          <SimpleButton value='inc x'       onClick={() => this.props.incX()}/>
+          <SimpleButton value='inc y'       onClick={() => this.incY()}/>
+          <SimpleButton value='inc x & y'   onClick={() => { this.incY(); this.props.incX(); }}/>
         </div>
         <this.LifecyclePanel/>
       </Tagged>
