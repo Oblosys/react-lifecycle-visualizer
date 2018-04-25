@@ -50,6 +50,7 @@
     }
     .entry {
       white-space: pre;
+      cursor: default;
     }
     .entry[data-is-highlighted='true'] {
       background-color: yellow;
