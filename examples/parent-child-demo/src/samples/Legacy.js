@@ -7,7 +7,7 @@ import LabeledCheckbox from '../components/LabeledCheckbox';
 import Tagged from '../components/Tagged';
 
 @traceLifecycle
-export default class OldParent extends Component {
+export default class Parent extends Component {
   state = {
     showLastChild: true,
     x: 42
@@ -32,7 +32,7 @@ export default class OldParent extends Component {
 
   render() {
     return (
-      <Tagged name='OldParent'>
+      <Tagged name='Parent'>
         <div>state = {JSON.stringify(this.state)}</div>
         <div>
           <SimpleButton value='forceUpdate' onClick={() => this.forceUpdate()}/>
@@ -44,16 +44,16 @@ export default class OldParent extends Component {
           />
         </div>
         <this.LifecyclePanel/>
-        <OldChild incX={this.incX} x={this.state.x}/>
+        <Child incX={this.incX} x={this.state.x}/>
         { this.state.showLastChild &&
-            <OldChild incX={this.incX} x={this.state.x}/> }
+            <Child incX={this.incX} x={this.state.x}/> }
       </Tagged>
     );
   }
 }
 
 @traceLifecycle
-class OldChild extends Component {
+class Child extends Component {
   state = {
     y: 1,
     squaredX: this.props.x ** 2
@@ -71,7 +71,7 @@ class OldChild extends Component {
 
   render() {
     return (
-      <Tagged name='OldChild' showProps={{x: this.props.x}}>
+      <Tagged name='Child' showProps={{x: this.props.x}}>
         <div>state = {JSON.stringify(this.state)}</div>
         <div>
           <SimpleButton value='forceUpdate' onClick={() => this.forceUpdate()}/>
