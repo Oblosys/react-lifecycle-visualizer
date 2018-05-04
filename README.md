@@ -6,8 +6,11 @@ To trace a component, apply the higher-order component `traceLifecycle` to it, a
 
 <p align="center">
   <a href="https://stackblitz.com/github/Oblosys/react-lifecycle-visualizer/tree/master/examples/parent-child-demo">
-    <!-- <img alt="react-lifecycle-visualizer" src="https://raw.githubusercontent.com/Oblosys/react-lifecycle-visualizer/master/images/parent-child-demo.gif" width="706"> -->
-    <img alt="parent-child-demo" src="images/parent-child-demo.gif" width="692">
+    <img
+      alt="Parent-child demo"
+      src="https://raw.githubusercontent.com/Oblosys/react-lifecycle-visualizer/master/images/parent-child-demo.gif"
+      width="692"
+    />
   </a>
 </p>
 
