@@ -15,7 +15,7 @@
     "react": "16.3.1",
     "react-dom": "16.3.1",
     "react-hot-loader": "^4.1.0",
-    "react-lifecycle-visualizer": "^1.0.1",
+    "react-lifecycle-visualizer": "^1.0.2",
     "react-redux": "^5.0.7",
     "react-scripts": "^1.0.10",
     "redux": "^3.7.2",
