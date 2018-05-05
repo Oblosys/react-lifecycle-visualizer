@@ -7,9 +7,9 @@ import LabeledCheckbox from './components/LabeledCheckbox';
 import SampleNew from './samples/New';
 import SampleLegacy from './samples/Legacy';
 
-const sampleElements = [
-  { label: 'New lifecycle methods',    element: <SampleNew/>,    filename: 'New.js' },
-  { label: 'Legacy lifecycle methods', element: <SampleLegacy/>, filename: 'Legacy.js' }
+const sampleComponents = [
+  { label: 'New lifecycle methods',    component: SampleNew,    filename: 'New.js' },
+  { label: 'Legacy lifecycle methods', component: SampleLegacy, filename: 'Legacy.js' }
 ];
 
 const getStackBlitzUrl = (filename) =>
@@ -22,7 +22,7 @@ const sessionSelectedSampleIx = sessionStorage.getItem(sessionSelectedSampleIxKe
 
 const SampleSelector = ({value, onChange}) => (
   <select value={value} onChange={onChange}>
-    { sampleElements.map(({label}, ix) =>
+    { sampleComponents.map(({label}, ix) =>
         <option value={ix} key={ix}>{label}</option>
       )
     }
@@ -49,7 +49,8 @@ export default class Main extends Component {
   }
 
   render() {
-    const selectedSample = sampleElements[this.state.selectedSampleIx];
+    const selectedSample = sampleComponents[this.state.selectedSampleIx];
+    const SelectedSample = selectedSample.component;
     return (
       <div className='main'>
         <div className='header'>
@@ -73,9 +74,7 @@ export default class Main extends Component {
           </div>
         </div>
         <div className='traced-component'>
-          { this.state.isShowingParent &&
-            selectedSample.element
-          }
+          { this.state.isShowingParent && <SelectedSample/> }
         </div>
       </div>
     );
