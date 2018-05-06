@@ -1,6 +1,6 @@
 module.exports = {
   'parser': 'babel-eslint',
-  'extends': 'airbnb',
+  'extends': ['airbnb', 'plugin:jest/recommended'],
   'rules': {
     'indent': [2, 4],
     'linebreak-style': [2, 'unix'],
