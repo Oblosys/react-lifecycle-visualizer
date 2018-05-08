@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+  - "stable"
+cache:
+  directories:
+  - "$HOME/.npm"
+install:
+  - npm i -g npm@6.0.0
+  - npm ci
+script:
+  - npm test
+  - npm run build-lib
+  - npm run build-demo
