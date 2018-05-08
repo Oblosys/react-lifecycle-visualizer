@@ -30,7 +30,7 @@ Though technically not lifecycle methods, `setState` & `render` are also traced.
 To save space, the lifecycle panel only contains `setState`, which gets highlighted for any of the three events above.
 
 
-## Run the demo localy
+## Run the demo locally
 
 To run a local copy of the StackBlitz demo, simply clone the repo, and run `npm install` & `npm start`:
 
@@ -50,7 +50,7 @@ The demo runs on http://localhost:8001/.
 $ npm i react-lifecycle-visualizer
 ```
 
-##### Setup
+#### Setup
 
 The set up tracing, wrap the root or some other ancestor component in a `<VisualizerProvider>` and include the `<Log/>` component somewhere. For example:
 
