@@ -29,6 +29,12 @@
     "url": "https://github.com/Oblosys/react-lifecycle-visualizer/issues"
   },
   "homepage": "https://github.com/Oblosys/react-lifecycle-visualizer#readme",
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint",
+      "pre-push": "npm test"
+    }
+  },
   "jest": {
     "setupTestFrameworkScriptFile": "mock-local-storage",
     "moduleNameMapper": {
@@ -56,6 +62,7 @@
     "eslint-plugin-jest": "^21.15.1",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
+    "husky": "^1.0.0-rc.3",
     "jest": "^22.4.3",
     "jest-css-modules": "^1.1.0",
     "mock-local-storage": "^1.0.5",
