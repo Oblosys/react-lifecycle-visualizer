@@ -13,11 +13,7 @@ class Child extends Component {
 
   render() {
     this.trace('custom:render');
-    return (
-      <div>
-        <input type='button' id='update-button' onClick={() => this.forceUpdate()}/>
-      </div>
-    );
+    return <div>TracedChild</div>;
   }
 }
 

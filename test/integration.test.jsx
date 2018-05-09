@@ -8,35 +8,29 @@ import TracedChild from './TracedChild';
 jest.useFakeTimers();
 Enzyme.configure({ adapter: new Adapter() });
 
-class Parent extends Component {
+class Wrapper extends Component {
   state = { isShowingChild: false }
   render() {
     return (
-      <div>
-        <input type='button' id='mount-child-button' onClick={() => this.setState({isShowingChild: true})}/>
-        <input type='button' id='unmount-child-button' onClick={() => this.setState({isShowingChild: false})}/>
-        { this.state.isShowingChild && <TracedChild/> }
-      </div>
+      <VisualizerProvider>
+        <div>
+          { this.state.isShowingChild && <TracedChild/> }
+          <Log/>
+        </div>
+      </VisualizerProvider>
     );
   }
 }
 
 describe('Log', () => {
-    const app = mount(
-      <VisualizerProvider>
-        <div>
-          <Parent/>
-          <Log/>
-        </div>
-      </VisualizerProvider>
-    );
+    const wrapper = mount(<Wrapper/>);
 
     it('logs lifecycle methods', () => {
-      app.find('#mount-child-button').simulate('click');
-      app.find('#update-button').simulate('click');
-      app.find('#unmount-child-button').simulate('click');
+      wrapper.setState({isShowingChild: true});
+      wrapper.find(TracedChild).instance().forceUpdate();
+      wrapper.setState({isShowingChild: false});
       jest.runAllTimers();
-      app.update();
+      wrapper.update();
 
       const expectedLogEntries = [
         'constructor',
@@ -56,17 +50,17 @@ describe('Log', () => {
         ('' + i).padStart(2) + ' Child-1: ' + e // NOTE: padding assumes <=100 entries
       );
 
-      expect(app.find('.entry').map((node) => node.text())).toEqual(formattedLogEntries);
+      expect(wrapper.find('.entry').map((node) => node.text())).toEqual(formattedLogEntries);
     });
 
     it('highlights the last entry', () => {
-      expect(app.find('.entry').last().prop('data-is-highlighted')).toEqual(true);
+      expect(wrapper.find('.entry').last().prop('data-is-highlighted')).toEqual(true);
     });
 
     it('is cleared by clearLog()', () => {
       clearLog();
-      app.update();
+      wrapper.update();
 
-      expect(app.find('.entry')).toHaveLength(0);
+      expect(wrapper.find('.entry')).toHaveLength(0);
     });
 });
