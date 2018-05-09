@@ -21,6 +21,9 @@ module.exports = {
     'comma-spacing': 1,
     'semi-spacing': 1,
     'padded-blocks': 1,
+    'key-spacing': 1,
+    'no-plusplus': [1, {'allowForLoopAfterthoughts': true}],
+    'eol-last': 1,
 
     'no-underscore-dangle': 0,
     'jsx-filename-extension': 0,

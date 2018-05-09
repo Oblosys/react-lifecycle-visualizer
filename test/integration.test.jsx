@@ -25,12 +25,28 @@ class Wrapper extends Component {
 describe('Log', () => {
     const wrapper = mount(<Wrapper/>);
 
-    it('logs lifecycle methods', () => {
-      wrapper.setState({isShowingChild: true});
-      wrapper.find(TracedChild).instance().forceUpdate();
-      wrapper.setState({isShowingChild: false});
-      jest.runAllTimers();
+    it('sequentially highlights log entries', () => {
+      wrapper.setState({isShowingChild: true}); // Mount TracedChild
+
+      jest.runOnlyPendingTimers();
       wrapper.update();
+
+      const nLogEntries = wrapper.find('.entry').length;
+      for (let i = 0; i < nLogEntries; i++) {
+        expect(wrapper.find('.entry').map((node) => node.prop('data-is-highlighted'))).toEqual(
+          Array.from({length: nLogEntries}, (_undefined, ix) => ix === i)
+        );
+        jest.runOnlyPendingTimers();
+        wrapper.update();
+      }
+    });
+
+    it('logs all lifecycle methods', () => {
+    wrapper.find(TracedChild).instance().forceUpdate(); // Update TracedChild
+    wrapper.setState({isShowingChild: false}); // Unmount TracedChild
+
+    jest.runAllTimers();
+    wrapper.update();
 
       const expectedLogEntries = [
         'constructor',
@@ -51,10 +67,6 @@ describe('Log', () => {
       );
 
       expect(wrapper.find('.entry').map((node) => node.text())).toEqual(formattedLogEntries);
-    });
-
-    it('highlights the last entry', () => {
-      expect(wrapper.find('.entry').last().prop('data-is-highlighted')).toEqual(true);
     });
 
     it('is cleared by clearLog()', () => {
