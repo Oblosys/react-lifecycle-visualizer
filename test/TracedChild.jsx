@@ -13,7 +13,7 @@ class Child extends Component {
 
   render() {
     this.trace('custom:render');
-    return <div>TracedChild</div>;
+    return <this.LifecyclePanel/>;
   }
 }
 

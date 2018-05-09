@@ -8,6 +8,9 @@ import TracedChild from './TracedChild';
 jest.useFakeTimers();
 Enzyme.configure({ adapter: new Adapter() });
 
+// Return boolean array of length `n` which is true only at index `i`.
+const booleanListOnlyTrueAt = (n, i) => Array.from({length: n}, (_undefined, ix) => ix === i);
+
 class Wrapper extends Component {
   state = { isShowingChild: false }
   render() {
@@ -34,21 +37,33 @@ describe('Log', () => {
       const nLogEntries = wrapper.find('.entry').length;
       for (let i = 0; i < nLogEntries; i++) {
         expect(wrapper.find('.entry').map((node) => node.prop('data-is-highlighted'))).toEqual(
-          Array.from({length: nLogEntries}, (_undefined, ix) => ix === i)
+          booleanListOnlyTrueAt(nLogEntries, i)
         );
         jest.runOnlyPendingTimers();
         wrapper.update();
       }
     });
 
-    it('logs all lifecycle methods', () => {
-    wrapper.find(TracedChild).instance().forceUpdate(); // Update TracedChild
-    wrapper.setState({isShowingChild: false}); // Unmount TracedChild
+    it('highlights the corresponding panel method', () => {
+      wrapper.find('.entry').at(0).simulate('mouseEnter'); // 'constructor'
+      expect(wrapper.find('.lifecycle-method').map((node) => node.prop('data-is-highlighted'))).toEqual(
+        booleanListOnlyTrueAt(9, 0) // 9 new lifecycle methods, 0 is 'constructor'
+      );
+      wrapper.find('.entry').at(3).simulate('mouseEnter'); // 'render'
+      expect(wrapper.find('.lifecycle-method').map((node) => node.prop('data-is-highlighted'))).toEqual(
+        booleanListOnlyTrueAt(9, 3) // 9 new lifecycle methods, 3 is 'render'
+      );
+    });
 
-    jest.runAllTimers();
-    wrapper.update();
+    it('logs all lifecycle methods', () => {
+      wrapper.find(TracedChild).instance().forceUpdate(); // Update TracedChild
+      wrapper.setState({isShowingChild: false}); // Unmount TracedChild
+
+      jest.runAllTimers();
+      wrapper.update();
 
       const expectedLogEntries = [
+        // Mount TracedChild
         'constructor',
         'static getDerivedStateFromProps',
         'custom:getDerivedStateFromProps',
@@ -56,10 +71,14 @@ describe('Log', () => {
         'custom:render',
         'componentDidMount',
         'custom:componentDidMount',
+
+        // Update TracedChild
         'render',
         'custom:render',
         'getSnapshotBeforeUpdate',
         'componentDidUpdate',
+
+        // Unmount TracedChild
         'componentWillUnmount'
       ];
       const formattedLogEntries = expectedLogEntries.map((e, i) =>
