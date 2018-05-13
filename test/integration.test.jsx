@@ -9,20 +9,25 @@ import TracedLegacyChild from './TracedLegacyChild';
 jest.useFakeTimers();
 Enzyme.configure({ adapter: new Adapter() });
 
-// Return boolean array of length `n` which is true only at index `i`.
-const booleanListOnlyTrueAt = (n, i) => Array.from({length: n}, (_undefined, ix) => ix === i);
-
 const nNewLifecyclePanelMethods = 9;  // Non-legacy panel has 9 lifecycle methods
 const nLegacyLifecyclePanelMethods = 10;  // Legacy panel has 10 lifecycle methods
 
+// Return boolean array of length `n` which is true only at index `i`.
+const booleanListOnlyTrueAt = (n, i) => Array.from({length: n}, (_undefined, ix) => ix === i);
+
 class Wrapper extends Component {
-  state = { isShowingChild: false, isShowingLegacyChild: false }
+  state = {
+    isShowingChild: false,       // For mounting/unmounting TracedChild
+    isShowingLegacyChild: false, // For mounting/unmounting TracedLegacyChild
+    legacyProp: 0                // For updating props on TracedLegacyChild
+  }
+
   render() {
     return (
       <VisualizerProvider>
         <div>
           { this.state.isShowingChild && <TracedChild/> }
-          { this.state.isShowingLegacyChild && <TracedLegacyChild/> }
+          { this.state.isShowingLegacyChild && <TracedLegacyChild prop={this.state.legacyProp}/> }
           <Log/>
         </div>
       </VisualizerProvider>
@@ -30,29 +35,29 @@ class Wrapper extends Component {
   }
 }
 
-const cleanupAndReset = () => {
+const formatLogEntries = (instanceName, logMethods) => logMethods.map((e, i) =>
+  ('' + i).padStart(2) + ` ${instanceName}: ` + e // NOTE: padding assumes <=100 entries
+);
+
+let wrapper;
+
+beforeEach(() => {
+  wrapper = mount(<Wrapper/>);
+});
+
+afterEach(() => {
+  wrapper.unmount();
   jest.runAllTimers();
   clearInstanceIdCounters();
   clearLog();
-};
+});
 
 describe('LifecyclePanel', () => {
-  const wrapper = mount(<Wrapper/>);
-  afterAll(cleanupAndReset);
-
   it('shows which methods are implemented', () => {
     wrapper.setState({isShowingChild: true}); // Mount TracedChild
-    expect(wrapper.find('.lifecycle-method').map((node) => node.prop('data-is-implemented'))).toEqual([
-      true,  // 'constructor' (implemented by TracedChild)
-      true,  // 'static getDerivedStateFromProps' (implemented by TracedChild)
-      false, // 'shouldComponentUpdate'
-      true,  // 'render' (implemented by TracedChild)
-      true,  // 'componentDidMount' (implemented by TracedChild)
-      false, // 'getSnapshotBeforeUpdate'
-      false, // 'componentDidUpdate'
-      false, // 'componentWillUnmount'
-      true   // 'render' (implemented by TracedChild)
-    ]);
+    wrapper.find('.lifecycle-method').forEach((node) => {
+      expect(node.prop('data-is-implemented')).toEqual(true);
+    });
     wrapper.setState({isShowingChild: false}); // Unmount TracedChild
   });
 
@@ -70,12 +75,8 @@ describe('LifecyclePanel', () => {
 });
 
 describe('Log', () => {
-  const wrapper = mount(<Wrapper/>);
-  afterAll(cleanupAndReset);
-
   it('sequentially highlights log entries', () => {
     wrapper.setState({isShowingChild: true}); // Mount TracedChild
-
     jest.runOnlyPendingTimers(); // log entries are generated asynchronously, so run timers once
     wrapper.update();
 
@@ -90,6 +91,9 @@ describe('Log', () => {
   });
 
   it('highlights the corresponding panel method', () => {
+    wrapper.setState({isShowingChild: true}); // Mount TracedChild
+    jest.runOnlyPendingTimers(); // log entries are generated asynchronously, so run timers once
+    wrapper.update();
     wrapper.find('.entry').at(0).simulate('mouseEnter'); // Hover over 'constructor' log entry
     expect(wrapper.find('.lifecycle-method').map((node) => node.prop('data-is-highlighted'))).toEqual(
       booleanListOnlyTrueAt(9, 0) // panel method 0 is 'constructor'
@@ -100,10 +104,10 @@ describe('Log', () => {
     );
   });
 
-  it('logs all lifecycle methods', () => {
-    wrapper.find(TracedChild).instance().forceUpdate(); // Update TracedChild
-    wrapper.setState({isShowingChild: false}); // Unmount TracedChild
-
+  it('logs all new lifecycle methods', () => {
+    wrapper.setState({isShowingChild: true});           // Mount TracedChild
+    wrapper.find(TracedChild).instance().updateState(); // Update TracedChild state
+    wrapper.setState({isShowingChild: false});          // Unmount TracedChild
     jest.runAllTimers();
     wrapper.update();
 
@@ -117,35 +121,100 @@ describe('Log', () => {
       'componentDidMount',
       'custom:componentDidMount',
 
-      // Update TracedChild
+      // Update TracedChild state
+      'setState',
+      'setState:update fn',
+      'custom:setState update fn',
+      'shouldComponentUpdate',
+      'custom:shouldComponentUpdate',
       'render',
       'custom:render',
       'getSnapshotBeforeUpdate',
+      'custom:getSnapshotBeforeUpdate',
       'componentDidUpdate',
+      'custom:componentDidUpdate',
+      'setState:callback',
+      'custom:setState callback',
 
       // Unmount TracedChild
-      'componentWillUnmount'
+      'componentWillUnmount',
+      'custom:componentWillUnmount',
     ];
-    const formattedLogEntries = expectedLogEntries.map((e, i) =>
-      ('' + i).padStart(2) + ' Child-1: ' + e // NOTE: padding assumes <=100 entries
-    );
 
-    expect(wrapper.find('.entry').map((node) => node.text())).toEqual(formattedLogEntries);
+    expect(wrapper.find('.entry').map((node) => node.text()))
+      .toEqual(formatLogEntries('Child-1', expectedLogEntries)
+    );
+  });
+
+  it('logs all legacy lifecycle methods', () => {
+    wrapper.setState({isShowingLegacyChild: true});           // Mount TracedLegacyChild
+    wrapper.setState({legacyProp: 42});                       // Update TracedLegacyChild props
+    wrapper.find(TracedLegacyChild).instance().updateState(); // Update TracedLegacyChild state
+    wrapper.setState({isShowingLegacyChild: false});          // Unmount TracedLegacyChild
+
+    jest.runAllTimers();
+    wrapper.update();
+
+    const expectedLogEntries = [
+      // Mount TracedLegacyChild
+      'constructor',
+      'componentWillMount',
+      'custom:componentWillMount',
+      'render',
+      'custom:render',
+      'componentDidMount',
+      'custom:componentDidMount',
+
+      // Update TracedLegacyChild props
+      'componentWillReceiveProps',
+      'custom:componentWillReceiveProps',
+      'shouldComponentUpdate',
+      'custom:shouldComponentUpdate',
+      'componentWillUpdate',
+      'custom:componentWillUpdate',
+      'render',
+      'custom:render',
+      'componentDidUpdate',
+      'custom:componentDidUpdate',
+
+      // Update TracedLegacyChild state
+      'setState',
+      'setState:update fn',
+      'custom:setState update fn',
+      'shouldComponentUpdate',
+      'custom:shouldComponentUpdate',
+      'componentWillUpdate',
+      'custom:componentWillUpdate',
+      'render',
+      'custom:render',
+      'componentDidUpdate',
+      'custom:componentDidUpdate',
+      'setState:callback',
+      'custom:setState callback',
+
+      // Unmount TracedLegacyChild
+      'componentWillUnmount',
+      'custom:componentWillUnmount',
+    ];
+
+    expect(wrapper.find('.entry').map((node) => node.text()))
+      .toEqual(formatLogEntries('LegacyChild-1', expectedLogEntries)
+    );
   });
 
   it('is cleared by clearLog()', () => {
+    wrapper.setState({isShowingChild: true}); // Mount TracedChild
+    jest.runAllTimers();
+    wrapper.update();
+    expect(wrapper.find('.entry')).not.toHaveLength(0);
     clearLog();
     wrapper.update();
-
     expect(wrapper.find('.entry')).toHaveLength(0);
   });
 });
 
-describe('instanceId counters', () => {
-  const wrapper = mount(<Wrapper/>);
-  afterAll(cleanupAndReset);
-
-  it('start at 1', () => {
+describe('instanceId counter', () => {
+  it('starts at 1', () => {
     wrapper.setState({isShowingChild: true}); // Mount TracedChild
     jest.runAllTimers();
     wrapper.update();
@@ -153,7 +222,8 @@ describe('instanceId counters', () => {
     expect(wrapper.find('.entry').first().text()).toMatch(/^ ?\d+ Child-1/);
   });
 
-  it('increment', () => {
+  it('increments on remount', () => {
+    wrapper.setState({isShowingChild: true}); // Mount TracedChild
     wrapper.setState({isShowingChild: false}); // Unmount TracedChild
     jest.runAllTimers();
     clearLog();
@@ -163,7 +233,7 @@ describe('instanceId counters', () => {
     expect(wrapper.find('.entry').first().text()).toMatch(/^ ?\d+ Child-2/);
   });
 
-  it('are reset by clearInstanceIdCounters', () => {
+  it('is reset by clearInstanceIdCounters', () => {
     wrapper.setState({isShowingChild: false}); // Unmount TracedChild
     jest.runAllTimers();
     clearLog();
