@@ -10,9 +10,11 @@ import { MConstructor, MShouldUpdate, MRender, MDidMount,
 
 const instanceIdCounters = {};
 
-export const clearInstanceIdCounters = () => {
+export const resetInstanceIdCounters = () => {
   Object.keys(instanceIdCounters).forEach((k) => delete instanceIdCounters[k]);
 };
+
+export const clearInstanceIdCounters = resetInstanceIdCounters;
 
 const mkInstanceId = (componentName) => {
   if (!Object.prototype.hasOwnProperty.call(instanceIdCounters, componentName)) {
