@@ -43,7 +43,7 @@ export default class Parent extends Component {
             onChange={this.onCheckboxChange}
           />
         </div>
-        <this.LifecyclePanel/>
+        <this.props.LifecyclePanel/>
         <Child incX={this.incX} x={this.state.x}/>
         { this.state.showLastChild &&
             <Child incX={this.incX} x={this.state.x}/> }
@@ -79,7 +79,7 @@ class Child extends Component {
           <SimpleButton value='inc y'       onClick={() => this.incY()}/>
           <SimpleButton value='inc x & y'   onClick={() => { this.incY(); this.props.incX(); }}/>
         </div>
-        <this.LifecyclePanel/>
+        <this.props.LifecyclePanel/>
       </Tagged>
     );
   }

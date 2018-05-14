@@ -2,7 +2,7 @@
 
 An npm package ([`react-lifecycle-visualizer`](https://www.npmjs.com/package/react-lifecycle-visualizer)) for tracing & visualizing lifecycle methods of arbitrary React components.
 
-To trace a component, apply the higher-order component `traceLifecycle` to it, and all its lifecycle-method calls will show up in a replayable log component. Additionally, traced components may include a `<this.LifecyclePanel/>` element in their rendering to show a panel with lifecycle methods that are highlighted when the corresponding log entry is selected.
+To trace a component, apply the higher-order component `traceLifecycle` to it, and all its lifecycle-method calls will show up in a replayable log component. Additionally, traced components may include a `<this.props.LifecyclePanel/>` element in their rendering to show a panel with lifecycle methods that are highlighted when the corresponding log entry is selected.
 
 <p align="center">
   <a href="https://stackblitz.com/github/Oblosys/react-lifecycle-visualizer/tree/master/examples/parent-child-demo">
@@ -92,7 +92,7 @@ class ComponentToTrace extends React.Component {
   render() {
     return (
       ..
-      <this.LifecyclePanel/>
+      <this.props.LifecyclePanel/>
       ..
     );
   }

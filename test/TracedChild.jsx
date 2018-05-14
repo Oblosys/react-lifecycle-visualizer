@@ -21,7 +21,7 @@ class Child extends Component {
 
   render() {
     this.trace('custom:render');
-    return <this.LifecyclePanel/>;
+    return <this.props.LifecyclePanel/>;
   }
 
   componentDidMount() {
