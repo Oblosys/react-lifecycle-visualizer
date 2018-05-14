@@ -112,11 +112,11 @@ class ComponentToTraceOrg extends React.Component {...}
 const ComponentToTrace = traceLifeCycle(ComponentToTraceOrg);
 ```
 
-A `this.trace` method gets added to component and can be used to log specific information:
+A `this.props.trace` method gets added to component and can be used to log specific information:
 
 ```jsx
 componentDidUpdate(prevProps, prevState) {
-  this.trace('prevProps: ' + JSON.stringify(prevProps));
+  this.props.trace('prevProps: ' + JSON.stringify(prevProps));
 }
 ```
 

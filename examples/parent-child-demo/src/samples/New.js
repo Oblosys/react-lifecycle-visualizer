@@ -20,7 +20,7 @@ export default class Parent extends Component {
   }
 
   incX = () => {
-    this.trace('Custom message, calling incX');
+    this.props.trace('Custom message, calling incX');
     this.setState(({x}) => {
       return {x: x + 1};
     });
@@ -60,9 +60,8 @@ class Child extends Component {
     });
   }
 
-  static getDerivedStateFromProps(nextProps, prevState, trace) {
-    // Since there is no this.trace on a static method, trace is passed as a third parameter here.
-    trace('nextProps: ' + JSON.stringify(nextProps));
+  static getDerivedStateFromProps(nextProps, prevState) {
+    nextProps.trace('nextProps: ' + JSON.stringify(nextProps));
     return {squaredX: nextProps.x ** 2};
   }
 

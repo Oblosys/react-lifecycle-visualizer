@@ -9,44 +9,45 @@ class Child extends Component {
     trace('custom:constructor');
   }
 
-  static getDerivedStateFromProps(nextProps, prevState, trace) {
-    trace('custom:getDerivedStateFromProps');
+  // eslint-disable-next-line no-unused-vars
+  static getDerivedStateFromProps(nextProps, prevState) {
+    nextProps.trace('custom:getDerivedStateFromProps');
     return null;
   }
 
   shouldComponentUpdate() {
-    this.trace('custom:shouldComponentUpdate');
+    this.props.trace('custom:shouldComponentUpdate');
     return true;
   }
 
   render() {
-    this.trace('custom:render');
+    this.props.trace('custom:render');
     return <this.props.LifecyclePanel/>;
   }
 
   componentDidMount() {
-    this.trace('custom:componentDidMount');
+    this.props.trace('custom:componentDidMount');
   }
 
   getSnapshotBeforeUpdate() {
-    this.trace('custom:getSnapshotBeforeUpdate');
+    this.props.trace('custom:getSnapshotBeforeUpdate');
     return null;
   }
 
   componentDidUpdate() {
-    this.trace('custom:componentDidUpdate');
+    this.props.trace('custom:componentDidUpdate');
   }
 
   componentWillUnmount() {
-    this.trace('custom:componentWillUnmount');
+    this.props.trace('custom:componentWillUnmount');
   }
 
   updateState = () => {
     this.setState(() => {
-      this.trace('custom:setState update fn');
+      this.props.trace('custom:setState update fn');
       return {};
     }, () => {
-      this.trace('custom:setState callback');
+      this.props.trace('custom:setState callback');
     });
   }
 }

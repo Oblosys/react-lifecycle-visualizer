@@ -20,14 +20,14 @@ export default class Parent extends Component {
   }
 
   incX = () => {
-    this.trace('Custom message, calling incX');
+    this.props.trace('Custom message, calling incX');
     this.setState(({x}) => {
       return {x: x + 1};
     });
   }
 
   componentWillMount() {
-    this.trace('Don\'t use componentWillMount!');
+    this.props.trace('Don\'t use componentWillMount!');
   }
 
   render() {

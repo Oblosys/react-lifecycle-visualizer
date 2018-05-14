@@ -10,45 +10,45 @@ class LegacyChild extends Component {
   }
 
   componentWillMount() {
-    this.trace('custom:componentWillMount');
+    this.props.trace('custom:componentWillMount');
   }
 
   componentWillReceiveProps() {
-    this.trace('custom:componentWillReceiveProps');
+    this.props.trace('custom:componentWillReceiveProps');
   }
 
   shouldComponentUpdate() {
-    this.trace('custom:shouldComponentUpdate');
+    this.props.trace('custom:shouldComponentUpdate');
     return true;
   }
 
   componentWillUpdate() {
-    this.trace('custom:componentWillUpdate');
+    this.props.trace('custom:componentWillUpdate');
   }
 
   render() {
-    this.trace('custom:render');
+    this.props.trace('custom:render');
     return <this.props.LifecyclePanel/>;
   }
 
   componentDidMount() {
-    this.trace('custom:componentDidMount');
+    this.props.trace('custom:componentDidMount');
   }
 
   componentDidUpdate() {
-    this.trace('custom:componentDidUpdate');
+    this.props.trace('custom:componentDidUpdate');
   }
 
   componentWillUnmount() {
-    this.trace('custom:componentWillUnmount');
+    this.props.trace('custom:componentWillUnmount');
   }
 
   updateState = () => {
     this.setState(() => {
-      this.trace('custom:setState update fn');
+      this.props.trace('custom:setState update fn');
       return {};
     }, () => {
-      this.trace('custom:setState callback');
+      this.props.trace('custom:setState callback');
     });
   }
 }
