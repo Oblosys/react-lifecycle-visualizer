@@ -4,9 +4,9 @@ import { traceLifecycle } from '../src';
 class LegacyChild extends Component {
   state = {}
 
-  // eslint-disable-next-line no-useless-constructor
-  constructor(props, context) {
-    super(props, context);
+  constructor(props, context, trace) {
+    super(props, context, trace);
+    trace('custom:constructor');
   }
 
   componentWillMount() {

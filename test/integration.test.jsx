@@ -58,19 +58,16 @@ describe('LifecyclePanel', () => {
     wrapper.find('.lifecycle-method').forEach((node) => {
       expect(node.prop('data-is-implemented')).toEqual(true);
     });
-    wrapper.setState({isShowingChild: false}); // Unmount TracedChild
   });
 
   it('shows new methods for non-legacy component', () => {
     wrapper.setState({isShowingChild: true}); // Mount TracedChild
     expect(wrapper.find('.lifecycle-method')).toHaveLength(nNewLifecyclePanelMethods);
-    wrapper.setState({isShowingChild: false}); // Unmount TracedChild
   });
 
   it('shows legacy methods for legacy component', () => {
     wrapper.setState({isShowingLegacyChild: true}); // Mount TracedLegacyChild
     expect(wrapper.find('.lifecycle-method')).toHaveLength(nLegacyLifecyclePanelMethods);
-    wrapper.setState({isShowingLegacyChild: false}); // Unmount TracedLegacyChild
   });
 });
 
@@ -81,6 +78,8 @@ describe('Log', () => {
     wrapper.update();
 
     const nLogEntries = wrapper.find('.entry').length;
+    expect(nLogEntries).toBeGreaterThan(0);
+
     for (let i = 0; i < nLogEntries; i++) {
       expect(wrapper.find('.entry').map((node) => node.prop('data-is-highlighted'))).toEqual(
         booleanListOnlyTrueAt(nLogEntries, i)
@@ -98,7 +97,7 @@ describe('Log', () => {
     expect(wrapper.find('.lifecycle-method').map((node) => node.prop('data-is-highlighted'))).toEqual(
       booleanListOnlyTrueAt(9, 0) // panel method 0 is 'constructor'
     );
-    wrapper.find('.entry').at(3).simulate('mouseEnter'); //  Hover over 'render' log entry
+    wrapper.find('.entry').at(4).simulate('mouseEnter'); //  Hover over 'render' log entry
     expect(wrapper.find('.lifecycle-method').map((node) => node.prop('data-is-highlighted'))).toEqual(
       booleanListOnlyTrueAt(nNewLifecyclePanelMethods, 3) // panel method 3 is 'render'
     );
@@ -106,7 +105,7 @@ describe('Log', () => {
 
   it('logs all new lifecycle methods', () => {
     wrapper.setState({isShowingChild: true});           // Mount TracedChild
-    wrapper.find(TracedChild).instance().updateState(); // Update TracedChild state
+    wrapper.find(TracedChild).childAt(0).instance().updateState(); // Update TracedChild state
     wrapper.setState({isShowingChild: false});          // Unmount TracedChild
     jest.runAllTimers();
     wrapper.update();
@@ -114,6 +113,7 @@ describe('Log', () => {
     const expectedLogEntries = [
       // Mount TracedChild
       'constructor',
+      'custom:constructor',
       'static getDerivedStateFromProps',
       'custom:getDerivedStateFromProps',
       'render',
@@ -147,10 +147,10 @@ describe('Log', () => {
   });
 
   it('logs all legacy lifecycle methods', () => {
-    wrapper.setState({isShowingLegacyChild: true});           // Mount TracedLegacyChild
-    wrapper.setState({legacyProp: 42});                       // Update TracedLegacyChild props
-    wrapper.find(TracedLegacyChild).instance().updateState(); // Update TracedLegacyChild state
-    wrapper.setState({isShowingLegacyChild: false});          // Unmount TracedLegacyChild
+    wrapper.setState({isShowingLegacyChild: true});                      // Mount TracedLegacyChild
+    wrapper.setState({legacyProp: 42});                                  // Update TracedLegacyChild props
+    wrapper.find(TracedLegacyChild).childAt(0).instance().updateState(); // Update TracedLegacyChild state
+    wrapper.setState({isShowingLegacyChild: false});                     // Unmount TracedLegacyChild
 
     jest.runAllTimers();
     wrapper.update();
@@ -158,6 +158,7 @@ describe('Log', () => {
     const expectedLogEntries = [
       // Mount TracedLegacyChild
       'constructor',
+      'custom:constructor',
       'componentWillMount',
       'custom:componentWillMount',
       'render',
@@ -206,9 +207,12 @@ describe('Log', () => {
     wrapper.setState({isShowingChild: true}); // Mount TracedChild
     jest.runAllTimers();
     wrapper.update();
+
     expect(wrapper.find('.entry')).not.toHaveLength(0);
+
     clearLog();
     wrapper.update();
+
     expect(wrapper.find('.entry')).toHaveLength(0);
   });
 });
@@ -230,6 +234,7 @@ describe('instanceId counter', () => {
     wrapper.setState({isShowingChild: true}); // Mount TracedChild
     jest.runAllTimers();
     wrapper.update();
+
     expect(wrapper.find('.entry').first().text()).toMatch(/^ ?\d+ Child-2/);
   });
 
@@ -241,6 +246,7 @@ describe('instanceId counter', () => {
     wrapper.setState({isShowingChild: true}); // Mount TracedChild
     jest.runAllTimers();
     wrapper.update();
+
     expect(wrapper.find('.entry').first().text()).toMatch(/^ ?\d+ Child-1/);
   });
 });

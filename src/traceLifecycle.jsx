@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import * as constants from './constants';
@@ -9,7 +9,6 @@ import { MConstructor, MShouldUpdate, MRender, MDidMount,
          MGetSnapshot, MWillMount, MWillReceiveProps, MWillUpdate } from './constants';
 
 const instanceIdCounters = {};
-const traceSym = Symbol('trace'); // for sneaking trace function into the state
 
 export const clearInstanceIdCounters = () => {
   Object.keys(instanceIdCounters).forEach((k) => delete instanceIdCounters[k]);
@@ -24,6 +23,8 @@ const mkInstanceId = (componentName) => {
 };
 
 export default function traceLifecycle(ComponentToTrace) {
+  const componentToTraceName = ComponentToTrace.displayName || ComponentToTrace.name || 'Component';
+
   const superMethods = Object.getOwnPropertyNames(ComponentToTrace.prototype).concat(
     ComponentToTrace.getDerivedStateFromProps ? [MGetDerivedState] : []
   );
@@ -34,35 +35,130 @@ export default function traceLifecycle(ComponentToTrace) {
 
   const implementedMethods = [...superMethods, MSetState];
 
-  class TracingComponent extends ComponentToTrace {
+  class TracedComponent extends ComponentToTrace {
+    constructor(props, context) {
+      props.trace(MConstructor);
+      super(props, context, props.trace);
+      this.LifecyclePanel = props.LifecyclePanel; // TODO: For compatibility
+      this.trace = props.trace; // TODO: For compatibility
+    }
+
+    componentWillMount() {
+      this.props.trace(MWillMount);
+      if (super.componentWillMount) {
+        super.componentWillMount();
+      }
+    }
+
+    static getDerivedStateFromProps(nextProps, prevState) {
+      nextProps.trace(MGetDerivedState);
+      return ComponentToTrace.getDerivedStateFromProps
+               ? ComponentToTrace.getDerivedStateFromProps(nextProps, prevState, nextProps.trace)
+               : null;
+    }
+
+    componentDidMount() {
+      this.props.trace(MDidMount);
+      if (super.componentDidMount) {
+        super.componentDidMount();
+      }
+    }
+
+    componentWillUnmount() {
+      this.props.trace(MWillUnmount);
+      if (super.componentWillUnmount) {
+        super.componentWillUnmount();
+      }
+    }
+
+    componentWillReceiveProps(...args) {
+      this.props.trace(MWillReceiveProps);
+      if (super.componentWillReceiveProps) {
+        super.componentWillReceiveProps(...args);
+      }
+    }
+
+    shouldComponentUpdate(...args) {
+      this.props.trace(MShouldUpdate);
+      return super.shouldComponentUpdate
+             ? super.shouldComponentUpdate(...args)
+             : true;
+    }
+
+    componentWillUpdate(...args) {
+      this.props.trace(MWillUpdate);
+      if (super.componentWillUpdate) {
+        super.componentWillUpdate(...args);
+      }
+    }
+
+    render() {
+      if (super.render) {
+        this.props.trace(MRender);
+        return super.render();
+      }
+      return undefined; // no super.render, this will trigger a React error
+    }
+
+    getSnapshotBeforeUpdate(...args) {
+      this.props.trace(MGetSnapshot);
+      return super.getSnapshotBeforeUpdate
+             ? super.getSnapshotBeforeUpdate(...args)
+             : null;
+    }
+
+    componentDidUpdate(...args) {
+      this.props.trace(MDidUpdate);
+      if (super.componentDidUpdate) {
+        super.componentDidUpdate(...args);
+      }
+    }
+
+    setState(updater, callback) {
+      this.props.trace(MSetState);
+
+      // Unlike the lifecycle methods we only trace the update function and callback
+      // when they are actually defined.
+      const tracingUpdater = typeof updater !== 'function' ? updater : (...args) => {
+        this.props.trace(MSetState + ':update fn');
+        return updater(...args);
+      };
+
+      const tracingCallback = !callback ? undefined : (...args) => {
+        this.props.trace(MSetState + ':callback');
+        callback(...args);
+      };
+      super.setState(tracingUpdater, tracingCallback);
+    }
+
+    static displayName = componentToTraceName;
+  }
+
+  class TracingComponent extends Component {
     constructor(props, context) {
       super(props, context);
 
       const instanceId = mkInstanceId(ComponentToTrace.name);
 
-      this.LifecyclePanel = () => (
-        <LifecyclePanel
-          componentName={ComponentToTrace.name}
-          isLegacy={isLegacy}
-          instanceId={instanceId}
-          implementedMethods={implementedMethods}
-        />
+      const WrappedLifecyclePanel = () => (
+          <LifecyclePanel
+            componentName={componentToTraceName}
+            isLegacy={isLegacy}
+            instanceId={instanceId}
+            implementedMethods={implementedMethods}
+          />
       );
+      this.LifecyclePanel = WrappedLifecyclePanel;
 
       this.trace = (methodName) => {
-        this.context[constants.reduxStoreKey].dispatch(
-          ActionCreators.trace(ComponentToTrace.name, instanceId, methodName)
-        );
-      };
+          this.context[constants.reduxStoreKey].dispatch(
+            ActionCreators.trace(componentToTraceName, instanceId, methodName)
+          );
+        };
+    }
 
-      // HACK: need trace in state since static getDerivedStateFromProps can't access instance or context :-(
-      if (!Object.prototype.hasOwnProperty.call(this, 'state')) {
-        this.state = {};
-      }
-      if (typeof this.state === 'object') { // check the rare case of a non-object state (which yields a React warning)
-        this.state[traceSym] = this.trace.bind(this);
-      }
-      this.trace(MConstructor);
+    render() {
+      return <TracedComponent LifecyclePanel={this.LifecyclePanel} trace={this.trace} {...this.props}/>;
     }
 
     // Get store directly from context, to prevent introducing extra `Connect` component.
@@ -71,108 +167,18 @@ export default function traceLifecycle(ComponentToTrace) {
       [constants.reduxStoreKey]: PropTypes.object
     }
 
-    componentWillMount() {
-      this.trace(MWillMount);
-      if (super.componentWillMount) {
-        super.componentWillMount();
-      }
-    }
-
-    static getDerivedStateFromProps(nextProps, prevState) {
-      const trace = prevState[traceSym] ? prevState[traceSym] : () => {};
-      trace(MGetDerivedState);
-
-      return ComponentToTrace.getDerivedStateFromProps
-               ? ComponentToTrace.getDerivedStateFromProps(nextProps, prevState, trace)
-               // Pass trace as third argument, since this.trace is unavailable in static method.
-               : null;
-    }
-
-    componentDidMount() {
-      this.trace(MDidMount);
-      if (super.componentDidMount) {
-        super.componentDidMount();
-      }
-    }
-
-    componentWillUnmount() {
-      this.trace(MWillUnmount);
-      if (super.componentWillUnmount) {
-        super.componentWillUnmount();
-      }
-    }
-
-    componentWillReceiveProps(...args) {
-      this.trace(MWillReceiveProps);
-      if (super.componentWillReceiveProps) {
-        super.componentWillReceiveProps(...args);
-      }
-    }
-
-    shouldComponentUpdate(...args) {
-      this.trace(MShouldUpdate);
-      return super.shouldComponentUpdate
-             ? super.shouldComponentUpdate(...args)
-             : true;
-    }
-    componentWillUpdate(...args) {
-      this.trace(MWillUpdate);
-      if (super.componentWillUpdate) {
-        super.componentWillUpdate(...args);
-      }
-    }
-
-    render() {
-      if (super.render) {
-        this.trace(MRender);
-        return super.render();
-      }
-      return undefined; // no super.render, this will trigger a React error
-    }
-
-    getSnapshotBeforeUpdate(...args) {
-      this.trace(MGetSnapshot);
-      return super.getSnapshotBeforeUpdate
-             ? super.getSnapshotBeforeUpdate(...args)
-             : null;
-    }
-
-    componentDidUpdate(...args) {
-      this.trace(MDidUpdate);
-      if (super.componentDidUpdate) {
-        super.componentDidUpdate(...args);
-      }
-    }
-
-    setState(updater, callback) {
-      this.trace(MSetState);
-
-      // Unlike the lifecycle methods we only trace the update function and callback
-      // when they are actually defined.
-      const tracingUpdater = typeof updater !== 'function' ? updater : (...args) => {
-        this.trace(MSetState + ':update fn');
-        return updater(...args);
-      };
-
-      const tracingCallback = !callback ? undefined : (...args) => {
-        this.trace(MSetState + ':callback');
-        callback(...args);
-      };
-      super.setState(tracingUpdater, tracingCallback);
-    }
+    static displayName =
+      `traceLifecycle(${componentToTraceName})`;
   }
-
-  TracingComponent.displayName =
-    `traceLifecycle(${ComponentToTrace.displayName || ComponentToTrace.name || 'Component'})`;
 
   // Removing the inappropriate methods is simpler than adding appropriate methods to prototype
   if (isLegacy) {
-    delete TracingComponent.getDerivedStateFromProps;
-    delete TracingComponent.prototype.getSnapshotBeforeUpdate;
+    delete TracedComponent.getDerivedStateFromProps;
+    delete TracedComponent.prototype.getSnapshotBeforeUpdate;
   } else {
-    delete TracingComponent.prototype.componentWillMount;
-    delete TracingComponent.prototype.componentWillReceiveProps;
-    delete TracingComponent.prototype.componentWillUpdate;
+    delete TracedComponent.prototype.componentWillMount;
+    delete TracedComponent.prototype.componentWillReceiveProps;
+    delete TracedComponent.prototype.componentWillUpdate;
   }
 
   return TracingComponent;
