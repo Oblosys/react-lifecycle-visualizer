@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import * as constants from './constants';
 import * as ActionCreators from './redux/actionCreators';
+import { withDeprecationWarning } from './util';
 import LifecyclePanel from './components/LifecyclePanel';
 import { MConstructor, MShouldUpdate, MRender, MDidMount,
          MDidUpdate, MWillUnmount, MSetState, MGetDerivedState,
@@ -14,7 +15,10 @@ export const resetInstanceIdCounters = () => {
   Object.keys(instanceIdCounters).forEach((k) => delete instanceIdCounters[k]);
 };
 
-export const clearInstanceIdCounters = resetInstanceIdCounters;
+export const clearInstanceIdCounters = withDeprecationWarning(
+  constants.DEPRECATED_CLEAR_COUNTERS,
+  resetInstanceIdCounters
+);
 
 const mkInstanceId = (componentName) => {
   if (!Object.prototype.hasOwnProperty.call(instanceIdCounters, componentName)) {
@@ -41,8 +45,14 @@ export default function traceLifecycle(ComponentToTrace) {
     constructor(props, context) {
       props.trace(MConstructor);
       super(props, context, props.trace);
-      this.LifecyclePanel = props.LifecyclePanel; // TODO: For compatibility
-      this.trace = props.trace; // TODO: For compatibility
+      this.LifecyclePanel = withDeprecationWarning(
+        constants.DEPRECATED_THIS_LIFECYCLE_PANEL,
+        props.LifecyclePanel
+      );
+      this.trace = withDeprecationWarning(
+        constants.DEPRECATED_THIS_TRACE,
+        props.trace
+      );
     }
 
     componentWillMount() {

@@ -48,3 +48,7 @@ export const reduxStoreKey = 'lifecycleVisualizerStore';
 
 const sessionStorageKey = '@@react-lifecycle-visualizer--persistent-state:';
 export const sessionReplayTimerDelayKey = sessionStorageKey + 'replayTimerDelay';
+
+export const DEPRECATED_THIS_LIFECYCLE_PANEL = 'DEPRECATED_THIS_LIFECYCLE_PANEL';
+export const DEPRECATED_THIS_TRACE = 'DEPRECATED_THIS_TRACE';
+export const DEPRECATED_CLEAR_COUNTERS = 'DEPRECATED_CLEAR_COUNTERS';
