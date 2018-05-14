@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
-import { clearInstanceIdCounters, clearLog, Log, VisualizerProvider } from '../src';
+import { resetInstanceIdCounters, clearLog, Log, VisualizerProvider } from '../src';
 import TracedChild from './TracedChild';
 import TracedLegacyChild from './TracedLegacyChild';
 
@@ -48,7 +48,7 @@ beforeEach(() => {
 afterEach(() => {
   wrapper.unmount();
   jest.runAllTimers();
-  clearInstanceIdCounters();
+  resetInstanceIdCounters();
   clearLog();
 });
 
@@ -238,11 +238,11 @@ describe('instanceId counter', () => {
     expect(wrapper.find('.entry').first().text()).toMatch(/^ ?\d+ Child-2/);
   });
 
-  it('is reset by clearInstanceIdCounters', () => {
+  it('is reset by resetInstanceIdCounters', () => {
     wrapper.setState({isShowingChild: false}); // Unmount TracedChild
     jest.runAllTimers();
     clearLog();
-    clearInstanceIdCounters();
+    resetInstanceIdCounters();
     wrapper.setState({isShowingChild: true}); // Mount TracedChild
     jest.runAllTimers();
     wrapper.update();

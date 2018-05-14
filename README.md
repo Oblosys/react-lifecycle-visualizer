@@ -68,12 +68,12 @@ ReactDom.render(
 );
 ```
 
-If you're using a WebPack dev-server with hot reloading, you can include a call to `clearInstanceIdCounters` in the module where you set up hot reloading:
+If you're using a WebPack dev-server with hot reloading, you can include a call to `resetInstanceIdCounters` in the module where you set up hot reloading:
 
 ```jsx
-import { clearInstanceIdCounters } from 'react-lifecycle-visualizer';
+import { resetInstanceIdCounters } from 'react-lifecycle-visualizer';
 ..
-clearInstanceIdCounters(); // clear instance counters on hot reload
+resetInstanceIdCounters(); // clear instance counters on hot reload
 ..
 ```
 
@@ -145,6 +145,6 @@ Wrap component tree in this. similar to redux
 
 ### `clearLog`
 
-### `clearInstanceIdCounters`
+### `resetInstanceIdCounters`
 
  -->
