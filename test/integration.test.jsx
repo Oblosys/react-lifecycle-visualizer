@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { mount } from 'enzyme';
 
-import { resetInstanceIdCounters, clearLog, Log, VisualizerProvider } from '../src';
+import { clearLog, Log, resetInstanceIdCounters, VisualizerProvider } from '../src';
+
 import TracedChild from './TracedChild';
 import TracedLegacyChild from './TracedLegacyChild';
-
-jest.useFakeTimers();
-Enzyme.configure({ adapter: new Adapter() });
 
 const nNewLifecyclePanelMethods = 9;  // Non-legacy panel has 9 lifecycle methods
 const nLegacyLifecyclePanelMethods = 10;  // Legacy panel has 10 lifecycle methods
