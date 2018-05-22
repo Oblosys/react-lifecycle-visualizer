@@ -5,9 +5,9 @@ const devServerPort = 8001;
 module.exports = {
   entry: path.join(__dirname, 'examples/parent-child-demo/src/index.js'),
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.join(__dirname, 'dist-demo'),
     filename: 'client-bundle.js',
-    publicPath: '/dist/'
+    publicPath: '/dist-demo/'
   },
   module: {
     rules: [{
