@@ -1,4 +1,5 @@
 .history
+dist-demo
 examples
 images
 public
@@ -7,4 +8,5 @@ src
 .eslintrc.js
 .gitignore
 jsconfig.json
+react-lifecycle-visualizer-*.tgz
 webpack.config.js

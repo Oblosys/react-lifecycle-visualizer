@@ -1,3 +1,5 @@
 /node_modules/
 /dist/*
+/dist-demo/*
 npm-debug.log
+react-lifecycle-visualizer-*.tgz
