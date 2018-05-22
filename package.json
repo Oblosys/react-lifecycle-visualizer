@@ -1,6 +1,6 @@
 {
   "name": "react-lifecycle-visualizer",
-  "version": "2.0.0-beta.1",
+  "version": "2.0.0-beta.2",
   "description": "Visualizer for React lifecycle methods",
   "main": "dist/index.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "test": "npm run lint && jest",
     "start": "webpack-dev-server --hot --mode development",
     "build-demo": "webpack --mode development",
-    "clean-lib": "rm -r dist",
+    "clean-lib": "rm -rf dist",
     "build-lib": "npm run clean-lib && node-sass src/react-lifecycle-visualizer.scss -o dist && BABEL_ENV=production babel src -d dist --ignore react-lifecycle-visualizer.scss --copy-files",
     "prepublishOnly": "npm run test && npm run build-lib"
   },
