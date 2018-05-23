@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import hoistStatics from 'hoist-non-react-statics';
 import PropTypes from 'prop-types';
 
 import * as constants from './constants';
@@ -193,5 +194,5 @@ export default function traceLifecycle(ComponentToTrace) {
     delete TracedComponent.prototype.componentWillUpdate;
   }
 
-  return TracingComponent;
+  return hoistStatics(TracingComponent, ComponentToTrace);
 }

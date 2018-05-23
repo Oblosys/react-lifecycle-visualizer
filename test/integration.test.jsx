@@ -49,6 +49,12 @@ afterEach(() => {
   clearLog();
 });
 
+describe('traceLifecycle', () => {
+  it('preserves static properties', () => {
+    expect(TracedChild.staticProperty).toBe('a static property');
+  });
+});
+
 describe('LifecyclePanel', () => {
   it('shows which methods are implemented', () => {
     wrapper.setState({isShowingChild: true}); // Mount TracedChild

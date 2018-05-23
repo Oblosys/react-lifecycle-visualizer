@@ -4,6 +4,8 @@ import { traceLifecycle } from '../src';
 class Child extends Component {
   state = {}
 
+  static staticProperty = 'a static property'
+
   constructor(props, context, trace) {
     super(props, context, trace);
     trace('custom:constructor');
