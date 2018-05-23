@@ -54,6 +54,10 @@ export default function traceLifecycle(ComponentToTrace) {
         constants.DEPRECATED_THIS_TRACE,
         props.trace
       );
+      if (!isLegacy && typeof this.state === 'undefined') {
+        this.state = {};
+        // Initialize state if it is undefined, otherwise the addition of getDerivedStateFromProps will cause a warning.
+      }
     }
 
     componentWillMount() {
