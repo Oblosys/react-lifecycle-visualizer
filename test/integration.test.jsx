@@ -107,9 +107,9 @@ describe('Log', () => {
   });
 
   it('logs all new lifecycle methods', () => {
-    wrapper.setState({isShowingChild: true});           // Mount TracedChild
+    wrapper.setState({isShowingChild: true});                      // Mount TracedChild
     wrapper.find(TracedChild).childAt(0).instance().updateState(); // Update TracedChild state
-    wrapper.setState({isShowingChild: false});          // Unmount TracedChild
+    wrapper.setState({isShowingChild: false});                     // Unmount TracedChild
     jest.runAllTimers();
     wrapper.update();
 
@@ -128,6 +128,8 @@ describe('Log', () => {
       'setState',
       'setState:update fn',
       'custom:setState update fn',
+      'static getDerivedStateFromProps',
+      'custom:getDerivedStateFromProps',
       'shouldComponentUpdate',
       'custom:shouldComponentUpdate',
       'render',

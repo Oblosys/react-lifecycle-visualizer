@@ -37,6 +37,7 @@ module.exports = {
     'react/sort-comp': 0,
     'class-methods-use-this': 0,
     'default-case': 0,
+    'no-mixed-operators': 0,
 
     // Maybe enable later:
     'jsx-a11y/click-events-have-key-events': 0,
