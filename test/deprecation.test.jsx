@@ -5,8 +5,6 @@ import { clearInstanceIdCounters, clearLog, Log, resetInstanceIdCounters,
          traceLifecycle, VisualizerProvider } from '../src';
 
 class Deprecated extends Component {
-  state = {}
-
   render() {
     this.trace('deprecated trace');
     return <this.LifecyclePanel/>;
@@ -14,7 +12,9 @@ class Deprecated extends Component {
 }
 const TracedDeprecated = traceLifecycle(Deprecated);
 
-const warnSpy = jest.spyOn(global.console, 'warn');
+// Override console.warn for this test file
+const warnSpy = jest.fn();
+console.warn = warnSpy; // eslint-disable-line no-console
 
 let wrapper;
 
