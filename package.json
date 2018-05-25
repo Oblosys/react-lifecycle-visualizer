@@ -2,7 +2,8 @@
   "name": "react-lifecycle-visualizer",
   "version": "2.0.0-beta.3",
   "description": "Visualizer for React lifecycle methods",
-  "main": "dist/index.js",
+  "main": "./dist/index.js",
+  "typings": "./index.d.ts",
   "scripts": {
     "lint": "eslint --ext js,jsx --max-warnings 0 src test examples",
     "test": "npm run lint && jest",
