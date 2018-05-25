@@ -1,0 +1,28 @@
+{
+    "files": [
+        "../../index.d.ts",
+        "react-lifecycle-visualizer-typings-test.tsx"
+    ],
+    "compilerOptions": {
+        "module": "commonjs",
+        "lib": [
+            "es6",
+            "dom"
+        ],
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "strictNullChecks": true,
+        "strictFunctionTypes": true,
+        "experimentalDecorators": true,
+        "baseUrl": "../..",
+        "jsx": "react",
+        "typeRoots": [
+            "../.."
+        ],
+        "types": [],
+        "noEmit": true,
+        "paths": {
+          "react-lifecycle-visualizer": ["index.d.ts"]
+        }
+    }
+}
