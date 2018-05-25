@@ -79,7 +79,7 @@ resetInstanceIdCounters(); // clear instance counters on hot reload
 
 This isn't strictly necessary, but without it, instance counters will keep increasing on each hot reload, making the log less readable.
 
-#### Trace components
+#### Tracing components
 
 To trace a component (e.g. `ComponentToTrace`,) apply the `traceLifecycle` HOC to it. This is most easily done with a decorator.
 
@@ -112,7 +112,21 @@ class ComponentToTraceOrg extends React.Component {...}
 const ComponentToTrace = traceLifeCycle(ComponentToTraceOrg);
 ```
 
-A `this.props.trace` method gets added to component and can be used to log specific information:
+#### Traced component props: `LifecyclePanel` and `trace`
+
+The traced component receives two additional props: `LifecyclePanel` and `trace`. The `LifecyclePanel` prop is a component that can be included in the rendering with `<this.props.LifecyclePanel/>` to display the lifecycle methods of the traced component.
+
+```jsx
+render() {
+  return (
+    ..
+    <this.props.LifecyclePanel/>
+    ..
+  );
+}
+```
+
+The `trace` prop is a function of type `(msg: string) => void` that can be used to log custom messages:
 
 ```jsx
 componentDidUpdate(prevProps, prevState) {
@@ -120,11 +134,21 @@ componentDidUpdate(prevProps, prevState) {
 }
 ```
 
-Because we cannot use `this` to refer to the component instance in the static `getDerivedStateFromProps`, `trace` is passed as a third parameter to this method:
+In the constructor we can use `this.props.trace` after the call to `super`, or access `trace` on the `props` parameter:
 
 ```jsx
-static getDerivedStateFromProps(nextProps, prevState, trace) {
-    trace('nextProps: ' + JSON.stringify(nextProps));
+constructor(props) {
+  props.trace('before super(props)');
+  super(props);
+  this.props.trace('after super(props)');
+}
+```
+
+In the static `getDerivedStateFromProps` we cannot use `this` to refer to the component instance, but we can access `trace` on the `nextProps` parameter:
+
+```jsx
+static getDerivedStateFromProps(nextProps, prevState) {
+    nextProps.trace('nextProps: ' + JSON.stringify(nextProps));
     ..
 }
 ```

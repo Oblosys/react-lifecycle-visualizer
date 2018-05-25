@@ -6,9 +6,9 @@ class Child extends Component {
 
   static staticProperty = 'a static property'
 
-  constructor(props, context, trace) {
-    super(props, context, trace);
-    trace('custom:constructor');
+  constructor(props, context) {
+    super(props, context);
+    props.trace('custom:constructor');
   }
 
   // eslint-disable-next-line no-unused-vars

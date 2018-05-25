@@ -4,9 +4,9 @@ import { traceLifecycle } from '../src';
 class LegacyChild extends Component {
   state = {}
 
-  constructor(props, context, trace) {
-    super(props, context, trace);
-    trace('custom:constructor');
+  constructor(props, context) {
+    super(props, context);
+    props.trace('custom:constructor');
   }
 
   componentWillMount() {

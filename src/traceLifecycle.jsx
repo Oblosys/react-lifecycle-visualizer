@@ -45,7 +45,7 @@ export default function traceLifecycle(ComponentToTrace) {
   class TracedComponent extends ComponentToTrace {
     constructor(props, context) {
       props.trace(MConstructor);
-      super(props, context, props.trace);
+      super(props, context);
       this.LifecyclePanel = withDeprecationWarning(
         constants.DEPRECATED_THIS_LIFECYCLE_PANEL,
         props.LifecyclePanel
@@ -70,7 +70,7 @@ export default function traceLifecycle(ComponentToTrace) {
     static getDerivedStateFromProps(nextProps, prevState) {
       nextProps.trace(MGetDerivedState);
       return ComponentToTrace.getDerivedStateFromProps
-               ? ComponentToTrace.getDerivedStateFromProps(nextProps, prevState, nextProps.trace)
+               ? ComponentToTrace.getDerivedStateFromProps(nextProps, prevState)
                : null;
     }
 
