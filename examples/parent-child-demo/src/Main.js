@@ -71,6 +71,12 @@ export default class Main extends Component {
               checked={this.state.isShowingParent}
               onChange={this.onCheckboxChange}
             />
+            <a
+              className='github-link'
+              href='https://github.com/Oblosys/react-lifecycle-visualizer#readme'
+            >
+              GitHub
+            </a>
           </div>
         </div>
         <div className='traced-component'>

@@ -1,9 +1,9 @@
 import React from 'react';
 
 const LabeledCheckbox = ({label, checked, onChange}) => (
-  <label>
+  <label className='labeled-checkbox'>
     <input type='checkbox' checked={checked} onChange={onChange}/>
-    {label}
+    <div>{label}</div>
   </label>
 );
 

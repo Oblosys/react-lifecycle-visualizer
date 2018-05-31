@@ -7,7 +7,7 @@ const Tagged = ({name, showProps, children}) => {
     ).join(' ');
 
   return (
-    <div>
+    <div className='tagged'>
       { (React.Children.count(children) === 0)
         ? <span className='tag'>{'<' + name + shownProps + '/>'}</span>
         : <Fragment>

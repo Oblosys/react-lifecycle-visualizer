@@ -1,3 +1,6 @@
+$codeFont: Consolas, monospace;
+$uiFont: arial, sans-serif;
+
 .log {
   padding: 3px 8px 5px 8px;
   flex-shrink: 0;
@@ -5,20 +8,20 @@
   flex-direction: column;
 
   .header {
+    font-family: $uiFont;
     flex-basis: 3ex;
     flex-shrink: 0;
     user-select: none;
-    line-height: 24px;
 
     .controls {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      line-height: 22px;
 
       .title {
         font-size: 130%;
         font-weight: bold;
-        // margin-right: 20px;
       }
 
       .buttons {
@@ -28,13 +31,21 @@
         .emoji-button {
           font-size: 140%;
           position: relative;
-          top: 3px;
+          top: 0.5px;
         }
       }
+    }
+
+    .hint {
+      padding-top: 2px;
+      font-family: $codeFont;
+      line-height: 20px;
+      text-align: left;
     }
   }
 
   .entries {
+    font-family: $codeFont;
     flex-grow: 1;
     overflow-y: scroll;
     background-color: #f0f0f0;
@@ -44,11 +55,15 @@
       animation-name: emphasize;
       animation-duration: 10s;
     }
+
     @keyframes emphasize {
       from {background-color: lightblue;}
       to {background-color: inherit;}
     }
+
     .entry {
+      padding-left: 2px;
+      padding-right: 2px;
       white-space: pre;
       cursor: default;
     }
@@ -59,9 +74,10 @@
 
   .simple-button {
     display: inline-block;
-    padding: 2px 3px 0 3px;
+    padding: 1px 3px 0 3px;
     margin-bottom: 2px;
-    line-height: 15px;
+    height: 13px;
+    line-height: 12px;
     font-size: 12px;
     border: solid #aaa 1px;
     border-radius: 4px;
@@ -77,6 +93,7 @@
   padding: 2px 0 2px 0;
 }
 .lifecycle-panel-inner {
+  font-family: $codeFont;
   display: inline-flex;
   flex-shrink: 0;
   flex-direction: column;
@@ -95,6 +112,7 @@
     right: 0px;
     padding-right: 4px;
   }
+
   .lifecycle-method::BEFORE {
     content: '-';
   }

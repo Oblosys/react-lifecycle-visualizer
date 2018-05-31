@@ -51,14 +51,16 @@ class Log extends Component {
               <span className='emoji-button'     onClick={() => this.props.stepLog(1)}>{'\u23E9'}</span>
             </div>
             <div>
-              Delay:
+              Delay:{' '}
               <DelaySelector
                 value={this.props.replayTimerDelay}
                 onChange={(evt) => this.props.setDelay(+evt.currentTarget.value)}
               />
             </div>
           </div>
-          <div>(hover to highlight, shift-up/down to navigate)</div>
+          <div className='hint'>
+            (hover to highlight, shift-up/down to navigate)
+          </div>
         </div>
         <LogEntries
           entries={this.props.logEntries}

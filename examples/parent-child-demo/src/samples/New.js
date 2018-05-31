@@ -30,7 +30,7 @@ export default class Parent extends Component {
     return (
       <Tagged name='Parent'>
         <div>state = {JSON.stringify(this.state)}</div>
-        <div>
+        <div className='controls'>
           <SimpleButton value='forceUpdate' onClick={() => this.forceUpdate()}/>
           <SimpleButton value='inc x'       onClick={this.incX}/>
           <LabeledCheckbox
@@ -76,7 +76,7 @@ class Child extends Component {
     return (
       <Tagged name='Child' showProps={{x: this.props.x}}>
         <div>state = {JSON.stringify(this.state)}</div>
-        <div>
+        <div className='controls'>
           <SimpleButton value='forceUpdate' onClick={() => this.forceUpdate()}/>
           <SimpleButton value='inc x'       onClick={() => this.props.incX()}/>
           <SimpleButton value='inc y'       onClick={() => this.incY()}/>
