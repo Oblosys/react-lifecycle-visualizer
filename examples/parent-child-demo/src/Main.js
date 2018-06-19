@@ -73,6 +73,8 @@ export default class Main extends Component {
             />
             <a
               className='github-link'
+              target='_blank'
+              rel='noopener noreferrer'
               href='https://github.com/Oblosys/react-lifecycle-visualizer#readme'
             >
               GitHub
