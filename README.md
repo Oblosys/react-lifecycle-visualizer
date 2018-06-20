@@ -2,7 +2,7 @@
 
 An npm package ([`react-lifecycle-visualizer`](https://www.npmjs.com/package/react-lifecycle-visualizer)) for tracing & visualizing lifecycle methods of arbitrary React components.
 
-To trace a component, apply the higher-order component `traceLifecycle` to it, and all its lifecycle-method calls will show up in a replayable log component. Additionally, traced components may include a `<this.props.LifecyclePanel/>` element in their rendering to show a panel with lifecycle methods that are highlighted when the corresponding log entry is selected.
+To trace a component, apply the higher-order component `traceLifecycle` to it, and all its lifecycle-method calls will show up in a replayable log component. Additionally, traced components may include a `<this.props.LifecyclePanel/>` element in their rendering to show a panel with lifecycle methods, which are highlighted when the corresponding log entry is selected.
 
 <p align="center">
   <a href="https://stackblitz.com/github/Oblosys/react-lifecycle-visualizer/tree/master/examples/parent-child-demo?file=src/samples/New.js">
@@ -17,7 +17,7 @@ To trace a component, apply the higher-order component `traceLifecycle` to it, a
 ## Usage
 
 The easiest way to get started is to
- open the [StackBlitz project](https://stackblitz.com/github/Oblosys/react-lifecycle-visualizer/tree/master/examples/parent-child-demo?file=src/samples/New.js) and edit the sample components in `src/samples`. (For a better view of the log, press the 'Open in New Window' button in the top-right.)
+ open the [StackBlitz project](https://stackblitz.com/github/Oblosys/react-lifecycle-visualizer/tree/master/examples/parent-child-demo?file=src/samples/New.js) and edit the sample components in `src/samples`. (For a better view of the log, press the 'Open in New Window' button in the top-right corner.)
 
 The panel shows the new React 16.3 lifecycle methods, unless the component defines at least one legacy method and no new methods. On a component that has both legacy and new methods, React ignores the legacy methods, so the panel shows the new methods.
 
@@ -73,7 +73,7 @@ If you're using a WebPack dev-server with hot reloading, you can include a call 
 ```jsx
 import { resetInstanceIdCounters } from 'react-lifecycle-visualizer';
 ..
-resetInstanceIdCounters(); // clear instance counters on hot reload
+resetInstanceIdCounters(); // reset instance counters on hot reload
 ..
 ```
 
