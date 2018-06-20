@@ -5,7 +5,7 @@ An npm package ([`react-lifecycle-visualizer`](https://www.npmjs.com/package/rea
 To trace a component, apply the higher-order component `traceLifecycle` to it, and all its lifecycle-method calls will show up in a replayable log component. Additionally, traced components may include a `<this.props.LifecyclePanel/>` element in their rendering to show a panel with lifecycle methods that are highlighted when the corresponding log entry is selected.
 
 <p align="center">
-  <a href="https://stackblitz.com/github/Oblosys/react-lifecycle-visualizer/tree/master/examples/parent-child-demo">
+  <a href="https://stackblitz.com/github/Oblosys/react-lifecycle-visualizer/tree/master/examples/parent-child-demo?file=src/samples/New.js">
     <img
       alt="Parent-child demo"
       src="https://raw.githubusercontent.com/Oblosys/react-lifecycle-visualizer/master/images/parent-child-demo.gif"
@@ -17,9 +17,9 @@ To trace a component, apply the higher-order component `traceLifecycle` to it, a
 ## Usage
 
 The easiest way to get started is to
- open the [StackBlitz project](https://stackblitz.com/github/Oblosys/react-lifecycle-visualizer/tree/master/examples/parent-child-demo?file=src/samples/New.js) and edit the sample components in `src/samples`.
+ open the [StackBlitz project](https://stackblitz.com/github/Oblosys/react-lifecycle-visualizer/tree/master/examples/parent-child-demo?file=src/samples/New.js) and edit the sample components in `src/samples`. (For a better view of the log, press the 'Open in New Window' button in the top-right.)
 
-The panel shows the new v16.3 lifecycle methods, unless the component defines at least one legacy method and no new methods. On a component that has both legacy and new methods, React ignores the legacy methods, so the panel shows the new methods.
+The panel shows the new React 16.3 lifecycle methods, unless the component defines at least one legacy method and no new methods. On a component that has both legacy and new methods, React ignores the legacy methods, so the panel shows the new methods.
 
 Though technically not lifecycle methods, `setState` & `render` are also traced. A single `setState(update, [callback])` call may generate up to three log entries:
 
@@ -153,6 +153,50 @@ static getDerivedStateFromProps(nextProps, prevState) {
 }
 ```
 
+## TypeScript
+
+There's no need to install additional TypeScript typings, as these are already included in the package. The interface `TraceProps` declares the `trace` and `LifecyclePanel` props. Its definition is
+
+```typescript
+export interface TraceProps {
+  trace: (msg: string) => void,
+  LifecyclePanel : React.SFC
+}
+```
+
+With the exception of tracing a component, the TypeScript setup is the same as the JavaScript setup above. Here's an example of a traced component in TypeScript:
+
+<!-- GitHub doesn't recognize ```tsx -->
+```jsx
+import { traceLifecycle, TraceProps } from 'react-lifecycle-visualizer';
+..
+interface ComponentToTraceProps extends TraceProps {}; // add trace & LifecyclePanel props
+interface ComponentToTraceState {}
+
+class ComponentToTrace extends React.Component<ComponentToTraceProps, ComponentToTraceState> {
+  constructor(props: ComponentToTraceProps, context?: any) {
+    props.trace('before super(props)');
+    super(props, context);
+    this.props.trace('after super(props)');
+  }
+
+  static getDerivedStateFromProps(nextProps : ComponentToTraceProps, nextState: ComponentToTraceState) {
+    nextProps.trace('deriving');
+    return null;
+  }
+
+  render() {
+    return <this.props.LifecyclePanel/>;
+  }
+}
+
+```
+
+The only difference is that we cannot use `traceLifecycle` as a decorator in TypeScript, because it changes the signature of the parameter class (see this [issue](https://github.com/DefinitelyTyped/DefinitelyTyped/issues/20796)). Instead, we simply apply it as a function:
+
+```tsx
+const TracedComponent = traceLifecycle(ComponentToTrace);
+```
 
 <!-- ## API
 
