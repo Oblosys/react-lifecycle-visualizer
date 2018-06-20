@@ -1,6 +1,5 @@
 {
     "files": [
-        "../../index.d.ts",
         "react-lifecycle-visualizer-typings-test.tsx"
     ],
     "compilerOptions": {
