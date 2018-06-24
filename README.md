@@ -99,17 +99,17 @@ class ComponentToTrace extends React.Component {
 }
 ```
 
-Alternatively, apply `traceLifeCycle` directly to the class, like this:
+Alternatively, apply `traceLifecycle` directly to the class, like this:
 
 ```jsx
-const ComponentToTrace = traceLifeCycle(class ComponentToTrace extends React.Component {...});
+const ComponentToTrace = traceLifecycle(class ComponentToTrace extends React.Component {...});
 ```
 
 or
 
 ```jsx
 class ComponentToTraceOrg extends React.Component {...}
-const ComponentToTrace = traceLifeCycle(ComponentToTraceOrg);
+const ComponentToTrace = traceLifecycle(ComponentToTraceOrg);
 ```
 
 #### Traced component props: `LifecyclePanel` and `trace`
