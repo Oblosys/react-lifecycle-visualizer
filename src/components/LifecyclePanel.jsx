@@ -5,7 +5,7 @@ import * as constants from '../constants';
 
 const LifecyclePanel = (props) => {
   const {componentName, isLegacy, instanceId, highlightedMethod, implementedMethods} = props;
-  const lifecycleMethodNames = isLegacy ? constants.lifecycleMethodNamesLegacy : constants.lifecycleMethodNames;
+  const lifecycleMethodNames = isLegacy ? constants.lifecycleMethodNamesLegacyNoUnsafe : constants.lifecycleMethodNames;
 
   return (
     <div className='lifecycle-panel'>

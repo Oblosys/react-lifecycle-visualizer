@@ -17,13 +17,20 @@ export const MWillMount        = 'componentWillMount';
 export const MWillReceiveProps = 'componentWillReceiveProps';
 export const MWillUpdate       = 'componentWillUpdate';
 
+export const MUnsafeWillMount        = 'UNSAFE_componentWillMount';
+export const MUnsafeWillReceiveProps = 'UNSAFE_componentWillReceiveProps';
+export const MUnsafeWillUpdate       = 'UNSAFE_componentWillUpdate';
+
 const lifecycleMethods = [
   {isLegacy: false, isNew: false, name: MConstructor},
   {isLegacy: true,  isNew: false, name: MWillMount},
+  {isLegacy: true,  isNew: false, name: MUnsafeWillMount},
   {isLegacy: false, isNew: true,  name: MGetDerivedState},
   {isLegacy: true,  isNew: false, name: MWillReceiveProps},
+  {isLegacy: true,  isNew: false, name: MUnsafeWillReceiveProps},
   {isLegacy: false, isNew: false, name: MShouldUpdate},
   {isLegacy: true,  isNew: false, name: MWillUpdate},
+  {isLegacy: true,  isNew: false, name: MUnsafeWillUpdate},
   {isLegacy: false, isNew: false, name: MRender},
   {isLegacy: false, isNew: false, name: MDidMount},
   {isLegacy: false, isNew: true,  name: MGetSnapshot},
@@ -35,8 +42,11 @@ const lifecycleMethods = [
 export const lifecycleMethodNames =
   lifecycleMethods.filter((mthd) => !mthd.isLegacy).map(({name}) => name);
 
-export const lifecycleMethodNamesLegacy =
-  lifecycleMethods.filter((mthd) => !mthd.isNew).map(({name}) => name);
+// We don't show UNSAFE_ methods in the panel, but just use the shorter old names.
+export const lifecycleMethodNamesLegacyNoUnsafe =
+  lifecycleMethods.filter(
+    (mthd) => !mthd.isNew && !mthd.name.startsWith('UNSAFE_')
+  ).map(({name}) => name);
 
 export const lifecycleMethodNamesNewOnly =
   lifecycleMethods.filter((mthd) => mthd.isNew).map(({name}) => name);

@@ -7,8 +7,9 @@ import * as ActionCreators from './redux/actionCreators';
 import { withDeprecationWarning } from './util';
 import LifecyclePanel from './components/LifecyclePanel';
 import { MConstructor, MShouldUpdate, MRender, MDidMount,
-         MDidUpdate, MWillUnmount, MSetState, MGetDerivedState,
-         MGetSnapshot, MWillMount, MWillReceiveProps, MWillUpdate } from './constants';
+         MDidUpdate, MWillUnmount, MSetState, MGetDerivedState, MGetSnapshot,
+         MWillMount, MWillReceiveProps, MWillUpdate,
+         MUnsafeWillMount, MUnsafeWillReceiveProps, MUnsafeWillUpdate} from './constants';
 
 const instanceIdCounters = {};
 
@@ -67,6 +68,13 @@ export default function traceLifecycle(ComponentToTrace) {
       }
     }
 
+    UNSAFE_componentWillMount() { // eslint-disable-line camelcase
+      this.props.trace(MWillMount); // trace it as 'componentWillMount' for brevity
+      if (super.UNSAFE_componentWillMount) {
+        super.UNSAFE_componentWillMount();
+      }
+    }
+
     static getDerivedStateFromProps(nextProps, prevState) {
       nextProps.trace(MGetDerivedState);
       return ComponentToTrace.getDerivedStateFromProps
@@ -95,6 +103,13 @@ export default function traceLifecycle(ComponentToTrace) {
       }
     }
 
+    UNSAFE_componentWillReceiveProps(...args) { // eslint-disable-line camelcase
+      this.props.trace(MWillReceiveProps); // trace it as 'componentWillReceiveProps' for brevity
+      if (super.UNSAFE_componentWillReceiveProps) {
+        super.UNSAFE_componentWillReceiveProps(...args);
+      }
+    }
+
     shouldComponentUpdate(...args) {
       this.props.trace(MShouldUpdate);
       return super.shouldComponentUpdate
@@ -109,12 +124,19 @@ export default function traceLifecycle(ComponentToTrace) {
       }
     }
 
+    UNSAFE_componentWillUpdate(...args) { // eslint-disable-line camelcase
+      this.props.trace(MWillUpdate); // trace it as 'componentWillUpdate' for brevity
+      if (super.UNSAFE_componentWillUpdate) {
+        super.UNSAFE_componentWillUpdate(...args);
+      }
+    }
+
     render() {
       if (super.render) {
         this.props.trace(MRender);
         return super.render();
       }
-      return undefined; // no super.render, this will trigger a React error
+      return undefined; // There's no super.render, which will trigger a React error
     }
 
     getSnapshotBeforeUpdate(...args) {
@@ -134,8 +156,7 @@ export default function traceLifecycle(ComponentToTrace) {
     setState(updater, callback) {
       this.props.trace(MSetState);
 
-      // Unlike the lifecycle methods we only trace the update function and callback
-      // when they are actually defined.
+      // Unlike the lifecycle methods we only trace the update function and callback when they are actually defined.
       const tracingUpdater = typeof updater !== 'function' ? updater : (...args) => {
         this.props.trace(MSetState + ':update fn');
         return updater(...args);
@@ -184,18 +205,36 @@ export default function traceLifecycle(ComponentToTrace) {
       [constants.reduxStoreKey]: PropTypes.object
     }
 
-    static displayName =
-      `traceLifecycle(${componentToTraceName})`;
+    static displayName = `traceLifecycle(${componentToTraceName})`;
   }
 
   // Removing the inappropriate methods is simpler than adding appropriate methods to prototype
   if (isLegacy) {
     delete TracedComponent.getDerivedStateFromProps;
     delete TracedComponent.prototype.getSnapshotBeforeUpdate;
+
+    // Only keep the tracer method corresponding to the implemented super method, unless neither the old or the
+    // UNSAFE_ method is implemented, in which case we keep the UNSAFE_ method.
+    // NOTE: This allows both the old method and the UNSAFE_ version to be traced, but this is correct, as React calls
+    //       both.
+    const deleteOldOrUnsafe = (method, unsafeMethod) => {
+      if (!superMethods.includes(method)) {
+        delete TracedComponent.prototype[method];
+      } else if (!superMethods.includes(unsafeMethod)) {
+        delete TracedComponent.prototype[unsafeMethod];
+      }
+    };
+
+    deleteOldOrUnsafe(MWillMount, MUnsafeWillMount);
+    deleteOldOrUnsafe(MWillReceiveProps, MUnsafeWillReceiveProps);
+    deleteOldOrUnsafe(MWillUpdate, MUnsafeWillUpdate);
   } else {
     delete TracedComponent.prototype.componentWillMount;
     delete TracedComponent.prototype.componentWillReceiveProps;
     delete TracedComponent.prototype.componentWillUpdate;
+    delete TracedComponent.prototype.UNSAFE_componentWillMount;
+    delete TracedComponent.prototype.UNSAFE_componentWillReceiveProps;
+    delete TracedComponent.prototype.UNSAFE_componentWillUpdate;
   }
 
   return hoistStatics(TracingComponent, ComponentToTrace);

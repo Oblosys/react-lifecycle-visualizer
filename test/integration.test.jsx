@@ -5,6 +5,7 @@ import { clearLog, Log, resetInstanceIdCounters, VisualizerProvider } from '../s
 
 import TracedChild from './TracedChild';
 import TracedLegacyChild from './TracedLegacyChild';
+import TracedLegacyUnsafeChild from './TracedLegacyUnsafeChild';
 
 const nNewLifecyclePanelMethods = 9;  // Non-legacy panel has 9 lifecycle methods
 const nLegacyLifecyclePanelMethods = 10;  // Legacy panel has 10 lifecycle methods
@@ -14,8 +15,9 @@ const booleanListOnlyTrueAt = (n, i) => Array.from({length: n}, (_undefined, ix)
 
 class Wrapper extends Component {
   state = {
-    isShowingChild: false,       // For mounting/unmounting TracedChild
-    isShowingLegacyChild: false, // For mounting/unmounting TracedLegacyChild
+    isShowingChild: false,             // For mounting/unmounting TracedChild
+    isShowingLegacyChild: false,       // For mounting/unmounting TracedLegacyChild
+    isShowingLegacyUnsafeChild: false, // For mounting/unmounting TracedLegacyUnsafeChild
     legacyProp: 0                // For updating props on TracedLegacyChild
   }
 
@@ -25,6 +27,7 @@ class Wrapper extends Component {
         <div>
           { this.state.isShowingChild && <TracedChild/> }
           { this.state.isShowingLegacyChild && <TracedLegacyChild prop={this.state.legacyProp}/> }
+          { this.state.isShowingLegacyUnsafeChild && <TracedLegacyUnsafeChild prop={this.state.legacyProp}/> }
           <Log/>
         </div>
       </VisualizerProvider>
@@ -205,6 +208,36 @@ describe('Log', () => {
 
     expect(wrapper.find('.entry').map((node) => node.text()))
       .toEqual(formatLogEntries('LegacyChild-1', expectedLogEntries)
+    );
+  });
+
+  it('logs all legacy UNSAFE_ lifecycle methods', () => {
+    wrapper.setState({isShowingLegacyUnsafeChild: true});                      // Mount TracedLegacyUnsafeChild
+    wrapper.setState({legacyProp: 42});                                        // Update TracedLegacyUnsafeChild props
+
+    jest.runAllTimers();
+    wrapper.update();
+
+    const expectedLogEntries = [
+    // Mount TracedLegacyUnsafeChild
+    'constructor',
+    'componentWillMount',
+    'custom:UNSAFE_componentWillMount',
+    'render',
+    'componentDidMount',
+
+    // Update TracedLegacyUnsafeChild props
+    'componentWillReceiveProps',
+    'custom:UNSAFE_componentWillReceiveProps',
+    'shouldComponentUpdate',
+    'componentWillUpdate',
+    'custom:UNSAFE_componentWillUpdate',
+    'render',
+    'componentDidUpdate',
+    ];
+
+    expect(wrapper.find('.entry').map((node) => node.text()))
+      .toEqual(formatLogEntries('LegacyUnsafeChild-1', expectedLogEntries)
     );
   });
 
