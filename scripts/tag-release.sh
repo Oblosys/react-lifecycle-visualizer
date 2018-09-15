@@ -35,7 +35,8 @@ then
 
   sed -i '' -e "s/\(\"version\": *\"\).*\(\".*\)$/\1${newVersion}\2/" package.json
   sed -i '' -e "s/\(\"react-lifecycle-visualizer\": *\"[\^~]\{0,1\}\).*\(\".*\)$/\1${newVersion}\2/" examples/parent-child-demo/package.json
-  git add package.json examples/parent-child-demo/package.json
+  npm i
+  git add package.json package-lock.json examples/parent-child-demo/package.json
   git commit -m "Release ${newVersion}"
   git tag -a "v${newVersion}" -m "Release ${newVersion}"
 else
