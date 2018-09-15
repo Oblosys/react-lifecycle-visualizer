@@ -15,6 +15,6 @@
     "react": "16.5.1",
     "react-dom": "16.5.1",
     "react-hot-loader": "4.3.8",
-    "react-lifecycle-visualizer": "^2.1.0"
+    "react-lifecycle-visualizer": "^2.1.1"
   }
 }
