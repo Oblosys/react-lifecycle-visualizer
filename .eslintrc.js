@@ -38,9 +38,16 @@ module.exports = {
     'class-methods-use-this': 0,
     'default-case': 0,
     'no-mixed-operators': 0,
+    'operator-linebreak': 0,
+    'react/destructuring-assignment': 0,
+    'implicit-arrow-linebreak': 0,
+    'react/jsx-one-expression-per-line': 0,
+    'react/jsx-props-no-multi-spaces': 0,
+    'react/jsx-wrap-multilines': 0,
 
     // Maybe enable later:
     'jsx-a11y/click-events-have-key-events': 0,
+    'jsx-a11y/label-has-associated-control': 0,
     'jsx-a11y/label-has-for': 0,
     'jsx-a11y/no-static-element-interactions': 0,
     'prefer-template': 0,
@@ -49,6 +56,7 @@ module.exports = {
     'object-curly-newline': 0,
     'react/jsx-indent': 0,
     'react/prop-types': 0,
+    'react/forbid-prop-types': 0,
 
     // For importing react-lifecycle-visualizer from /src instead of /node_modules:
     'import/no-unresolved': [2, { ignore: ['^react-lifecycle-visualizer$'] }],

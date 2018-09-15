@@ -29,9 +29,11 @@ class Log extends Component {
       }
     }
   }
+
   componentDidMount() {
     document.addEventListener('keydown', this.onKeyDown);
   }
+
   componentWillUnmount() {
     document.removeEventListener('keydown', this.onKeyDown);
   }

@@ -5,20 +5,25 @@ import * as util from '../util';
 
 // Primitive actions:
 
-const addLogEntry = (componentName, instanceId, methodName) =>
-  ({type: 'ADD_LOG_ENTRY', componentName, instanceId, methodName});
+const addLogEntry = (componentName, instanceId, methodName) => (
+  {type: 'ADD_LOG_ENTRY', componentName, instanceId, methodName}
+);
 
-const clearLogEntries = () =>
-  ({type: 'CLEAR_LOG_ENTRIES'});
+const clearLogEntries = () => (
+  {type: 'CLEAR_LOG_ENTRIES'}
+);
 
-const setHighlight = (highlightedIndex) =>
-  ({type: 'SET_HIGHLIGHT', highlightedIndex});
+const setHighlight = (highlightedIndex) => (
+  {type: 'SET_HIGHLIGHT', highlightedIndex}
+);
 
-const setReplayTimerId = (replayTimerId) =>
-  ({type: 'SET_REPLAY_TIMER_ID', replayTimerId});
+const setReplayTimerId = (replayTimerId) => (
+  {type: 'SET_REPLAY_TIMER_ID', replayTimerId}
+);
 
-const setReplayTimerDelayPrim = (replayTimerDelay) =>
-  ({type: 'SET_REPLAY_TIMER_DELAY', replayTimerDelay});
+const setReplayTimerDelayPrim = (replayTimerDelay) => (
+  {type: 'SET_REPLAY_TIMER_DELAY', replayTimerDelay}
+);
 
 // Thunk actions:
 

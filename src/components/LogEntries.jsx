@@ -4,11 +4,13 @@ export default class LogEntries extends Component {
   highlight = (index) => {
     this.props.highlight(index);
   }
+
   componentDidUpdate(prevProps) {
     if (prevProps.entries.length !== this.props.entries.length) {
       this.messagesElt.scrollTop = this.messagesElt.scrollHeight - this.messagesElt.clientHeight;
     }
   }
+
   render() {
     const indexWidth = Math.max(2, 1 + Math.log10(this.props.entries.length));
     const componentNameWidth = 2 +
@@ -23,8 +25,9 @@ export default class LogEntries extends Component {
                 className='entry'
                 data-is-highlighted={i === this.props.highlightedIndex}
                 onMouseEnter={() => this.highlight(i)}
-              >{ ('' + i).padStart(indexWidth) +  ' ' +
-                 (componentName + '-' + instanceId + ':').padEnd(componentNameWidth) +
+              >
+              { ('' + i).padStart(indexWidth) +  ' ' +
+                (componentName + '-' + instanceId + ':').padEnd(componentNameWidth) +
                  methodName }
               </div>
             </div>

@@ -1,4 +1,4 @@
-/* eslint camelcase: 0, react/no-multi-comp: 0 */
+/* eslint camelcase: 0, react/no-multi-comp: 0, lines-between-class-members: 0 */
 import React, { Component } from 'react';
 import { mount } from 'enzyme';
 import { traceLifecycle, VisualizerProvider } from '../src';
@@ -14,7 +14,7 @@ describe('unsafe', () => {
       }
     });
 
-    const tracedInstance = mount(<VisualizerProvider><Comp/></VisualizerProvider>).find('TracedComponent').instance();
+    const tracedInstance = mount(<VisualizerProvider><Comp/></VisualizerProvider>).find('Unsafe').instance();
     expect(tracedInstance).toHaveProperty('componentWillMount');
     expect(tracedInstance).toHaveProperty('componentWillReceiveProps');
     expect(tracedInstance).toHaveProperty('componentWillUpdate');
@@ -33,7 +33,7 @@ describe('unsafe', () => {
       }
     });
 
-    const tracedInstance = mount(<VisualizerProvider><Comp/></VisualizerProvider>).find('TracedComponent').instance();
+    const tracedInstance = mount(<VisualizerProvider><Comp/></VisualizerProvider>).find('Unsafe').instance();
     expect(tracedInstance).not.toHaveProperty('componentWillMount');
     expect(tracedInstance).not.toHaveProperty('componentWillReceiveProps');
     expect(tracedInstance).not.toHaveProperty('componentWillUpdate');
@@ -51,7 +51,7 @@ describe('unsafe', () => {
         return '';
       }
     });
-    const tracedInstance = mount(<VisualizerProvider><Comp/></VisualizerProvider>).find('TracedComponent').instance();
+    const tracedInstance = mount(<VisualizerProvider><Comp/></VisualizerProvider>).find('Unsafe').instance();
     expect(tracedInstance).not.toHaveProperty('componentWillReceiveProps');
     expect(tracedInstance).not.toHaveProperty('componentWillUpdate');
     expect(tracedInstance).toHaveProperty('UNSAFE_componentWillReceiveProps');
@@ -65,7 +65,7 @@ describe('unsafe', () => {
         return '';
       }
     });
-    const tracedInstance = mount(<VisualizerProvider><Comp/></VisualizerProvider>).find('TracedComponent').instance();
+    const tracedInstance = mount(<VisualizerProvider><Comp/></VisualizerProvider>).find('Unsafe').instance();
     expect(tracedInstance).not.toHaveProperty('componentWillMount');
     expect(tracedInstance).toHaveProperty('UNSAFE_componentWillMount');
   });
@@ -84,7 +84,7 @@ describe('unsafe', () => {
       }
     });
 
-    const tracedInstance = mount(<VisualizerProvider><Comp/></VisualizerProvider>).find('TracedComponent').instance();
+    const tracedInstance = mount(<VisualizerProvider><Comp/></VisualizerProvider>).find('Unsafe').instance();
     expect(tracedInstance).toHaveProperty('componentWillMount');
     expect(tracedInstance).toHaveProperty('componentWillReceiveProps');
     expect(tracedInstance).toHaveProperty('componentWillUpdate');
