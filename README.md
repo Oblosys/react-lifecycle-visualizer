@@ -27,7 +27,7 @@ Though technically not lifecycle methods, `setState` & `render` are also traced.
   2. If `update` is a function instead of an object, `'setState:update fn'` is logged when that function is evaluated.
   3. If a `callback` function is provided, `'setState:callback'` is logged when it's called.
 
-To save space, the lifecycle panel only contains `setState`, which gets highlighted for any of the three events above.
+To save space, the lifecycle panel only contains `setState`, which gets highlighted on any of the three events above.
 
 
 ## Run the demo locally
@@ -52,7 +52,7 @@ $ npm i react-lifecycle-visualizer
 
 #### Setup
 
-The set up tracing, wrap the root or some other ancestor component in a `<VisualizerProvider>` and include the `<Log/>` component somewhere. For example:
+To set up tracing, wrap the root or some other ancestor component in a `<VisualizerProvider>` and include the `<Log/>` component somewhere. For example:
 
 ```jsx
 import { Log, VisualizerProvider } from 'react-lifecycle-visualizer';
@@ -197,22 +197,3 @@ The only difference is that we cannot use `traceLifecycle` as a decorator in Typ
 ```tsx
 const TracedComponent = traceLifecycle(ComponentToTrace);
 ```
-
-<!-- ## API
-
-### `VisualizerProvider`
-
-Wrap component tree in this. similar to redux
-
-### `traceLifecycle`
-
- either dec.
-
-
-### `Log`
-
-### `clearLog`
-
-### `resetInstanceIdCounters`
-
- -->
