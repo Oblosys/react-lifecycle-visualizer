@@ -1,15 +1,17 @@
 {
-  "presets": ["env", "stage-2", "react"],
-  "plugins": [
-  ],
+  "presets": ["@babel/env", "@babel/react"],
+  "plugins": [["@babel/plugin-proposal-class-properties", { "loose": false }]],
   "env": {
     "production": {
-        "plugins": [
-          [ "transform-rename-import", {
-              "original": "./react-lifecycle-visualizer.scss",
-              "replacement": "./react-lifecycle-visualizer.css"
-          }]
+      "plugins": [
+        [
+          "transform-rename-import",
+          {
+            "original": "./react-lifecycle-visualizer.scss",
+            "replacement": "./react-lifecycle-visualizer.css"
+          }
         ]
+      ]
     }
   }
 }

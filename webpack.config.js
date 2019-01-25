@@ -15,7 +15,12 @@ module.exports = {
       use: [{
         loader: 'babel-loader',
         options: {
-          plugins: ['react-hot-loader/babel', 'transform-react-jsx-source', 'transform-decorators-legacy']
+          presets: ['@babel/preset-env', '@babel/preset-react'],
+          plugins: [
+            ['@babel/plugin-proposal-decorators', { legacy: true }], // NOTE: needs to precede ..-class-properties!
+            ['@babel/plugin-proposal-class-properties', {loose: false}],
+            'react-hot-loader/babel'
+          ]
         }
       }, {
         loader: 'eslint-loader',
