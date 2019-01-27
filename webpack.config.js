@@ -1,6 +1,6 @@
 const path = require('path');
 
-const devServerPort = 8001;
+const devServerPort = 8000;
 
 module.exports = {
   entry: path.join(__dirname, 'examples/parent-child-demo/src/index.js'),

@@ -41,7 +41,7 @@ npm install
 npm start
 ```
 
-The demo runs on http://localhost:8001/.
+The demo runs on http://localhost:8000/.
 
 
 ## Using the npm package
