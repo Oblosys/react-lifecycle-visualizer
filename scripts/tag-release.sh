@@ -27,8 +27,8 @@ then
   vMajorNew=$vMajor
   vMinorNew=$vMinor
   vPatchNew=$vPatch
-  if [[ $1 == major ]]; then vMajorNew=$(( $vMajor + 1 )); fi
-  if [[ $1 == minor ]]; then vMinorNew=$(( $vMinor + 1 )); fi
+  if [[ $1 == major ]]; then vMajorNew=$(( $vMajor + 1 )); vMinorNew=0; vPatchNew=0; fi
+  if [[ $1 == minor ]]; then vMinorNew=$(( $vMinor + 1 )); vPatchNew=0; fi
   if [[ $1 == patch ]]; then vPatchNew=$(( $vPatch + 1 )); fi
   newVersion=$vMajorNew.$vMinorNew.$vPatchNew
   echo "Bumping version from ${vMajor}.${vMinor}.${vPatch} to ${newVersion}"
