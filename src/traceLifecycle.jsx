@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import hoistStatics from 'hoist-non-react-statics';
-import PropTypes from 'prop-types';
 
 import * as constants from './constants';
 import * as ActionCreators from './redux/actionCreators';
@@ -10,6 +9,7 @@ import { MConstructor, MShouldUpdate, MRender, MDidMount,
          MDidUpdate, MWillUnmount, MSetState, MGetDerivedState, MGetSnapshot,
          MWillMount, MWillReceiveProps, MWillUpdate,
          MUnsafeWillMount, MUnsafeWillReceiveProps, MUnsafeWillUpdate} from './constants';
+import { store as lifecycleVisualizerStore } from './redux/VisualizerProvider';
 
 const instanceIdCounters = {};
 
@@ -189,26 +189,21 @@ export default function traceLifecycle(ComponentToTrace) {
       this.LifecyclePanel = WrappedLifecyclePanel;
 
       this.trace = (methodName) => {
-          this.context[constants.reduxStoreKey].dispatch(
-            ActionCreators.trace(componentToTraceName, instanceId, methodName)
-          );
-        };
+        // Just dispatch on lifecycleVisualizerStore directly, rather than introducing complexity by using context.
+        lifecycleVisualizerStore.dispatch(
+          ActionCreators.trace(componentToTraceName, instanceId, methodName)
+        );
+      };
     }
 
     render() {
       return <TracedComponent LifecyclePanel={this.LifecyclePanel} trace={this.trace} {...this.props}/>;
     }
 
-    // Get store directly from context, to prevent introducing extra `Connect` component.
-    static contextTypes = {
-      ...ComponentToTrace.contextTypes, // preserve contextTypes from ComponentToTrace
-      [constants.reduxStoreKey]: PropTypes.object
-    }
-
     static displayName = `traceLifecycle(${componentToTraceName})`;
   }
 
-  // Removing the inappropriate methods is simpler than adding appropriate methods to prototype
+  // Removing the inappropriate methods is simpler than adding appropriate methods to prototype.
   if (isLegacy) {
     delete TracedComponent.getDerivedStateFromProps;
     delete TracedComponent.prototype.getSnapshotBeforeUpdate;

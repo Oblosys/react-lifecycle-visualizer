@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import * as constants from '../constants';
 import * as ActionCreators from '../redux/actionCreators';
+import { LifecycleVisualizerContext } from '../redux/VisualizerProvider';
 import LogEntries from './LogEntries';
 import SimpleButton from './SimpleButton';
 
@@ -77,4 +78,4 @@ class Log extends Component {
 const mapStateToProps = ({logEntries, highlightedIndex, replayTimerId, replayTimerDelay}) =>
   ({logEntries, highlightedIndex, replayTimerId, replayTimerDelay});
 
-export default connect(mapStateToProps, ActionCreators, null, {storeKey: constants.reduxStoreKey})(Log);
+export default connect(mapStateToProps, ActionCreators, null, {context: LifecycleVisualizerContext})(Log);

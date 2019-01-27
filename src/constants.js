@@ -42,7 +42,7 @@ const lifecycleMethods = [
 export const lifecycleMethodNames =
   lifecycleMethods.filter((mthd) => !mthd.isLegacy).map(({name}) => name);
 
-// We don't show UNSAFE_ methods in the panel, but just use the shorter old names.
+// We don't show 'UNSAFE_..' in the panel, but just use the shorter old names.
 export const lifecycleMethodNamesLegacyNoUnsafe =
   lifecycleMethods.filter(
     (mthd) => !mthd.isNew && !mthd.name.startsWith('UNSAFE_')
@@ -53,8 +53,6 @@ export const lifecycleMethodNamesNewOnly =
 
 export const lifecycleMethodNamesLegacyOnly =
   lifecycleMethods.filter((mthd) => mthd.isLegacy).map(({name}) => name);
-
-export const reduxStoreKey = 'lifecycleVisualizerStore';
 
 const sessionStorageKey = '@@react-lifecycle-visualizer--persistent-state:';
 export const sessionReplayTimerDelayKey = sessionStorageKey + 'replayTimerDelay';
