@@ -76,7 +76,7 @@ export const trace = (componentName, instanceId, methodName) => (dispatch, getSt
 
   setTimeout(() => { // Async, so we can log from render
     const {logEntries, replayTimerId} = getState();
-    dispatch(addLogEntry(componentName, instanceId, methodName));
+    dispatch(addLogEntry(componentName, instanceId, '' + methodName));
     if (replayTimerId === null) {
       dispatch(setHighlight(logEntries.length));
       dispatch(startReplay());
