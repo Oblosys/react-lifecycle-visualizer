@@ -8,13 +8,13 @@
   "start": "echo \"Error: This dummy package.json is only for StackBlitz deployment. Use top-level package.json instead.\" && exit 1"
   },
   "devDependencies": {
-    "react-scripts": "^2.1.8"
+    "react-scripts": "^3.0.1"
   },
   "dependencies": {
     "prop-types": "^15.7.2",
     "react": "16.8.6",
     "react-dom": "16.8.6",
-    "react-hot-loader": "4.8.4",
+    "react-hot-loader": "4.11.1",
     "react-lifecycle-visualizer": "^2.2.3"
   }
 }
