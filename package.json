@@ -1,6 +1,6 @@
 {
   "name": "react-lifecycle-visualizer",
-  "version": "2.2.3",
+  "version": "2.2.4",
   "description": "Visualizer for React lifecycle methods",
   "main": "./dist/index.js",
   "typings": "./index.d.ts",
