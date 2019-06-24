@@ -9,6 +9,11 @@ module.exports = {
     filename: 'client-bundle.js',
     publicPath: '/dist-demo/'
   },
+  resolve: {
+    alias: {
+      'react-dom': '@hot-loader/react-dom'
+    }
+  },
   module: {
     rules: [{
       test: /\.(js|jsx)$/,

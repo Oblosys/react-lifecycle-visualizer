@@ -1,5 +1,5 @@
 import React from 'react';
-import { hot } from 'react-hot-loader';
+import { hot } from 'react-hot-loader/root';
 import { resetInstanceIdCounters, Log } from 'react-lifecycle-visualizer';
 
 import './style.scss';
@@ -14,5 +14,7 @@ const App = () => (
   </div>
 );
 
-// Don't set up hot reloading on StackBlitz (where `module` is not defined.)
-export default typeof module === 'undefined' ? App : hot(module)(App);
+const isOnStackBlitz = module && module.id.match(/https:\/\/.+\.github\.stackblitz\.io\//);
+
+// StackBlitz already does hot reloading, and setting it up here again causes errors, so we disable it.
+export default  isOnStackBlitz ? App : hot(App);

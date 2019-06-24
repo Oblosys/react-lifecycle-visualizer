@@ -55,6 +55,7 @@
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-stage-2": "^7.0.0",
+    "@hot-loader/react-dom": "^16.8.6",
     "@types/react": "^16.8.22",
     "@types/react-dom": "^16.8.4",
     "ajv": "^6.10.0",
