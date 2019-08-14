@@ -1,3 +1,4 @@
+/* eslint max-classes-per-file: 0, react/jsx-props-no-spreading: 0, react/static-property-placement: 0 */
 import React, { Component } from 'react';
 import hoistStatics from 'hoist-non-react-statics';
 

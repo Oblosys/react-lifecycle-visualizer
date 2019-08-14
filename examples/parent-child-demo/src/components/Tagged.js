@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 
 const Tagged = ({name, showProps, children}) => {
   const shownProps = !showProps ? '' : ' ' +
@@ -10,11 +10,11 @@ const Tagged = ({name, showProps, children}) => {
     <div className='tagged'>
       { (React.Children.count(children) === 0)
         ? <span className='tag'>{'<' + name + shownProps + '/>'}</span>
-        : <Fragment>
+        : <>
             <span className='tag'>{'<' + name + shownProps + '>'}</span>
             <div className='indented'>{children}</div>
             <span className='tag'>{'</' + name + '>'}</span>
-          </Fragment>
+          </>
       }
     </div>
   );

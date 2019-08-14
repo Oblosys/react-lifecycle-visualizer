@@ -1,4 +1,4 @@
-/* eslint camelcase: 0, react/no-multi-comp: 0, lines-between-class-members: 0 */
+/* eslint camelcase: 0, max-classes-per-file: 0, lines-between-class-members: 0 */
 import React, { Component } from 'react';
 import { mount } from 'enzyme';
 import { traceLifecycle, VisualizerProvider } from '../src';

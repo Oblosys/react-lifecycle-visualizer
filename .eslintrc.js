@@ -13,7 +13,7 @@ module.exports = {
     "max-len": [1, 120],
     "no-multiple-empty-lines": [1, { max: 2, maxBOF: 0, maxEOF: 0 }],
     "no-trailing-spaces": 1,
-    "react/jsx-tag-spacing": { beforeSelfClosing: "allow" },
+    "react/jsx-tag-spacing": [1, { beforeSelfClosing: "never" }],
     "arrow-parens": [1, "always"],
     "import/no-extraneous-dependencies": [1, { devDependencies: true }],
     "react/jsx-filename-extension": [1, { extensions: [".js", ".jsx"] }],
@@ -49,6 +49,8 @@ module.exports = {
     "react/jsx-one-expression-per-line": 0,
     "react/jsx-props-no-multi-spaces": 0,
     "react/jsx-wrap-multilines": 0,
+    "react/state-in-constructor": 0,
+    "react/jsx-curly-newline": 0,
 
     // Maybe enable later:
     "jsx-a11y/click-events-have-key-events": 0,
