@@ -13,7 +13,7 @@
   "dependencies": {
     "prop-types": "^15.7.2",
     "react": "^16.9.0",
-    "react-dom": "16.9.0",
+    "react-dom": "^16.9.0",
     "react-hot-loader": "^4.12.11",
     "react-lifecycle-visualizer": "^2.2.5"
   }
