@@ -11,8 +11,10 @@ module.exports = {
   },
   resolve: {
     alias: {
-      'react-dom': '@hot-loader/react-dom'
-    }
+      'react-dom': '@hot-loader/react-dom',
+      'react-lifecycle-visualizer': path.join(__dirname, 'src'),
+    },
+    extensions: ['.js', '.jsx']
   },
   module: {
     rules: [{
@@ -42,17 +44,12 @@ module.exports = {
         {
           loader: 'sass-loader',
           options: {
+            // eslint-disable-next-line global-require
             implementation: require('sass')
           }
         }
       ]
     }]
-  },
-  resolve: {
-    alias: {
-      'react-lifecycle-visualizer': path.join(__dirname, 'src'),
-    },
-    extensions: ['.js', '.jsx']
   },
   devServer: {
     host: '0.0.0.0',
