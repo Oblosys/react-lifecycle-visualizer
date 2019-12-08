@@ -1,3 +1,4 @@
+/* eslint react/no-deprecated: 0 */
 import React, { Component } from 'react';
 import { traceLifecycle } from '../src';
 

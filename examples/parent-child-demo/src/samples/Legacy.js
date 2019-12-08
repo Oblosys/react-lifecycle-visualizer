@@ -1,4 +1,5 @@
 /* eslint arrow-body-style: 0, max-classes-per-file: 0, no-unused-vars: [1, { "args": "none" }] */
+/* eslint react/no-deprecated: 0 */
 import React, { Component } from 'react';
 import { traceLifecycle } from 'react-lifecycle-visualizer';
 
