@@ -1,11 +1,11 @@
 module.exports = {
+  extends: ["airbnb", "plugin:jest/recommended"],
   parser: "babel-eslint",
   parserOptions: {
     ecmaFeatures: {
       legacyDecorators: true
     }
   },
-  extends: ["airbnb", "plugin:jest/recommended"],
   rules: {
     indent: [1, "spaces"],
     "linebreak-style": [1, "unix"],
@@ -67,6 +67,5 @@ module.exports = {
 
     // For importing react-lifecycle-visualizer from /src instead of /node_modules:
     "import/no-unresolved": [2, { ignore: ["^react-lifecycle-visualizer$"] }],
-    "import/extensions": [2, "ignorePackages"]
   }
 };
