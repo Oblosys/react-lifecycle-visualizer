@@ -1,5 +1,6 @@
 {
   "name": "react-lifecycle-visualizer",
+  "author": "Martijn Schrage (https://www.oblomov.com)",
   "version": "2.2.10",
   "description": "Visualizer for React lifecycle methods",
   "main": "./dist/index.js",
@@ -26,7 +27,6 @@
     "visualize",
     "animated"
   ],
-  "author": "Martijn Schrage",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Oblosys/react-lifecycle-visualizer/issues"
