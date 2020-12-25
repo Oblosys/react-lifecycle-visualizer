@@ -54,6 +54,6 @@ module.exports = {
   devServer: {
     host: '0.0.0.0',
     port: devServerPort,
-    contentBase: './public'
+    static: [path.join(__dirname, 'public')]
   }
 };
