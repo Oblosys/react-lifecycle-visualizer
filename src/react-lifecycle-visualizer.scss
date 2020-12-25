@@ -28,10 +28,12 @@ $uiFont: arial, sans-serif;
       display: flex;
       align-items: center;
 
+        .simple-button {
+          position: relative;
+          top: 1px;
+        }
         .emoji-button {
           font-size: 140%;
-          position: relative;
-          top: 0.5px;
         }
       }
     }
