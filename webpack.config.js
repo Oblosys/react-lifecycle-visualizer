@@ -1,4 +1,5 @@
 const path = require('path');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 const devServerPort = 8000;
 
@@ -16,6 +17,7 @@ module.exports = {
     },
     extensions: ['.js', '.jsx']
   },
+  plugins: [new ESLintPlugin({ emitWarning: true })],
   module: {
     rules: [{
       test: /\.(js|jsx)$/,
@@ -28,11 +30,6 @@ module.exports = {
             ['@babel/plugin-proposal-class-properties', {loose: false}],
             'react-hot-loader/babel'
           ]
-        }
-      }, {
-        loader: 'eslint-loader',
-        options: {
-          emitWarning: true
         }
       }],
       exclude: /node_modules/
