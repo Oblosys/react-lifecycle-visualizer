@@ -4,7 +4,6 @@ import hoistStatics from 'hoist-non-react-statics';
 
 import * as constants from './constants';
 import * as ActionCreators from './redux/actionCreators';
-import { withDeprecationWarning } from './util';
 import LifecyclePanel from './components/LifecyclePanel';
 import { MConstructor, MShouldUpdate, MRender, MDidMount,
          MDidUpdate, MWillUnmount, MSetState, MGetDerivedState, MGetSnapshot,
@@ -17,11 +16,6 @@ const instanceIdCounters = {};
 export const resetInstanceIdCounters = () => {
   Object.keys(instanceIdCounters).forEach((k) => delete instanceIdCounters[k]);
 };
-
-export const clearInstanceIdCounters = withDeprecationWarning(
-  constants.DEPRECATED_CLEAR_COUNTERS,
-  resetInstanceIdCounters
-);
 
 const mkInstanceId = (componentName) => {
   if (!Object.prototype.hasOwnProperty.call(instanceIdCounters, componentName)) {
@@ -48,14 +42,6 @@ export default function traceLifecycle(ComponentToTrace) {
     constructor(props, context) {
       props.trace(MConstructor);
       super(props, context);
-      this.LifecyclePanel = withDeprecationWarning(
-        constants.DEPRECATED_THIS_LIFECYCLE_PANEL,
-        props.LifecyclePanel
-      );
-      this.trace = withDeprecationWarning(
-        constants.DEPRECATED_THIS_TRACE,
-        props.trace
-      );
       if (!isLegacy && typeof this.state === 'undefined') {
         this.state = {};
         // Initialize state if it is undefined, otherwise the addition of getDerivedStateFromProps will cause a warning.
