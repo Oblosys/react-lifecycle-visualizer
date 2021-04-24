@@ -12,7 +12,6 @@ module.exports = {
   },
   resolve: {
     alias: {
-      'react-dom': '@hot-loader/react-dom',
       'react-lifecycle-visualizer': path.join(__dirname, 'src'),
     },
     extensions: ['.js', '.jsx']
