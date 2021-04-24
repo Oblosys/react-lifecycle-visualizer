@@ -18,7 +18,7 @@ export default class LogEntries extends Component {
        ({componentName, instanceId}) => componentName.length + ('' + instanceId).length + 1)
       );
     return (
-      <div className='entries' ref={(elt) => { this.messagesElt = elt; }}>
+      <div className='entries' data-testid='log-entries' ref={(elt) => { this.messagesElt = elt; }}>
         { this.props.entries.map(({componentName, instanceId, methodName}, i) => (
             <div className='entry-wrapper' key={i}>
               <div

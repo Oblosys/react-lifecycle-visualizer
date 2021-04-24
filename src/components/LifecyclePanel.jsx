@@ -9,7 +9,7 @@ const LifecyclePanel = (props) => {
   const lifecycleMethodNames = isLegacy ? constants.lifecycleMethodNamesLegacyNoUnsafe : constants.lifecycleMethodNames;
 
   return (
-    <div className='lifecycle-panel'>
+    <div className='lifecycle-panel' data-testid='lifecycle-panel'>
       <div className='lifecycle-panel-inner'>
         <div className='component-instance'>{componentName + '-' + instanceId}</div>
         { lifecycleMethodNames.map((methodName) => (

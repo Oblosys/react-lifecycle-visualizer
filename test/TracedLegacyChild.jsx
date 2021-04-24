@@ -29,7 +29,12 @@ class LegacyChild extends Component {
 
   render() {
     this.props.trace('custom:render');
-    return <this.props.LifecyclePanel/>;
+    return (
+      <div>
+        <input type='button' data-testid='state-update-button' onClick={this.updateState}/>
+        <this.props.LifecyclePanel/>
+      </div>
+    );
   }
 
   componentDidMount() {

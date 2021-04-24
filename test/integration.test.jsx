@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
-import { mount } from 'enzyme';
+import React from 'react';
+import { render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
-import { clearLog, Log, resetInstanceIdCounters, VisualizerProvider } from '../src';
+import { clearLog, resetInstanceIdCounters } from '../src';
 
+import { Wrapper } from './Wrapper';
 import TracedChild from './TracedChild';
 import TracedLegacyChild from './TracedLegacyChild';
 import TracedLegacyUnsafeChild from './TracedLegacyUnsafeChild';
@@ -10,47 +12,12 @@ import TracedLegacyUnsafeChild from './TracedLegacyUnsafeChild';
 const nNewLifecyclePanelMethods = 9;  // Non-legacy panel has 9 lifecycle methods
 const nLegacyLifecyclePanelMethods = 10;  // Legacy panel has 10 lifecycle methods
 
-// Return boolean array of length `n` which is true only at index `i`.
-const booleanListOnlyTrueAt = (n, i) => Array.from({length: n}, (_undefined, ix) => ix === i);
-
-class Wrapper extends Component {
-  state = {
-    isShowingChild: false,             // For mounting/unmounting TracedChild
-    isShowingLegacyChild: false,       // For mounting/unmounting TracedLegacyChild
-    isShowingLegacyUnsafeChild: false, // For mounting/unmounting TracedLegacyUnsafeChild
-    legacyProp: 0                // For updating props on TracedLegacyChild
-  }
-
-  render() {
-    return (
-      <VisualizerProvider>
-        <div>
-          { this.state.isShowingChild && <TracedChild/> }
-          { this.state.isShowingLegacyChild && <TracedLegacyChild prop={this.state.legacyProp}/> }
-          { this.state.isShowingLegacyUnsafeChild && <TracedLegacyUnsafeChild prop={this.state.legacyProp}/> }
-          <Log/>
-        </div>
-      </VisualizerProvider>
-    );
-  }
-}
+// Return array of length `n` which is 'true' at index `i` and 'false' everywhere else.
+const booleanStringListOnlyTrueAt = (n, i) => Array.from({length: n}, (_undefined, ix) => `${ix === i}`);
 
 const formatLogEntries = (instanceName, logMethods) => logMethods.map((e, i) =>
   ('' + i).padStart(2) + ` ${instanceName}: ` + e // NOTE: padding assumes <=100 entries
 );
-
-let wrapper;
-
-beforeEach(() => {
-  wrapper = mount(<Wrapper/>);
-});
-
-afterEach(() => {
-  wrapper.unmount();
-  jest.runAllTimers();
-  resetInstanceIdCounters();
-  clearLog();
-});
 
 describe('traceLifecycle', () => {
   it('preserves static properties', () => {
@@ -60,61 +27,76 @@ describe('traceLifecycle', () => {
 
 describe('LifecyclePanel', () => {
   it('shows which methods are implemented', () => {
-    wrapper.setState({isShowingChild: true}); // Mount TracedChild
-    wrapper.find('.lifecycle-method').forEach((node) => {
-      expect(node.prop('data-is-implemented')).toEqual(true);
+    render(<Wrapper renderChild={() => <TracedChild/>}/>);
+    const methods = [...screen.getByTestId('lifecycle-panel').querySelectorAll('.lifecycle-method')];
+
+    methods.forEach((node) => {
+      expect(node).toHaveAttribute('data-is-implemented', 'true');
     });
   });
 
   it('shows new methods for non-legacy component', () => {
-    wrapper.setState({isShowingChild: true}); // Mount TracedChild
-    expect(wrapper.find('.lifecycle-method')).toHaveLength(nNewLifecyclePanelMethods);
+    render(<Wrapper renderChild={() => <TracedChild/>}/>);
+    const methods = [...screen.getByTestId('lifecycle-panel').querySelectorAll('.lifecycle-method')];
+
+    expect(methods).toHaveLength(nNewLifecyclePanelMethods);
   });
 
   it('shows legacy methods for legacy component', () => {
-    wrapper.setState({isShowingLegacyChild: true}); // Mount TracedLegacyChild
-    expect(wrapper.find('.lifecycle-method')).toHaveLength(nLegacyLifecyclePanelMethods);
+    /* eslint-disable no-console */
+  // Disable console.warn to suppress React warnings about using legacy methods (emitted once per method).
+    const consoleWarn = console.warn;
+    console.warn = () => {};
+    render(<Wrapper renderChild={() => <TracedLegacyChild/>}/>);
+    console.warn = consoleWarn;
+    /* eslint-enable no-console */
+
+    const methods = [...screen.getByTestId('lifecycle-panel').querySelectorAll('.lifecycle-method')];
+
+    expect(methods).toHaveLength(nLegacyLifecyclePanelMethods);
   });
 });
 
 describe('Log', () => {
   it('sequentially highlights log entries', () => {
-    wrapper.setState({isShowingChild: true}); // Mount TracedChild
+    render(<Wrapper renderChild={() => <TracedChild/>}/>);
     jest.runOnlyPendingTimers(); // log entries are generated asynchronously, so run timers once
-    wrapper.update();
 
-    const nLogEntries = wrapper.find('.entry').length;
+    const entries = [...screen.getByTestId('log-entries').querySelectorAll('.entry')];
+    const nLogEntries = entries.length;
+
     expect(nLogEntries).toBeGreaterThan(0);
 
     for (let i = 0; i < nLogEntries; i++) {
-      expect(wrapper.find('.entry').map((node) => node.prop('data-is-highlighted'))).toEqual(
-        booleanListOnlyTrueAt(nLogEntries, i)
+      expect(entries.map((node) => node.getAttribute('data-is-highlighted'))).toEqual(
+        booleanStringListOnlyTrueAt(nLogEntries, i)
       );
       jest.runOnlyPendingTimers(); // not necessary for last iteration, but harmless
-      wrapper.update();
     }
   });
 
   it('highlights the corresponding panel method', () => {
-    wrapper.setState({isShowingChild: true}); // Mount TracedChild
+    render(<Wrapper renderChild={() => <TracedChild/>}/>);
+    const logEntries = within(screen.getByTestId('log-entries'));
+    const panel = within(screen.getByTestId('lifecycle-panel'));
+
     jest.runOnlyPendingTimers(); // log entries are generated asynchronously, so run timers once
-    wrapper.update();
-    wrapper.find('.entry').at(0).simulate('mouseEnter'); // Hover over 'constructor' log entry
-    expect(wrapper.find('.lifecycle-method').map((node) => node.prop('data-is-highlighted'))).toEqual(
-      booleanListOnlyTrueAt(9, 0) // panel method 0 is 'constructor'
-    );
-    wrapper.find('.entry').at(4).simulate('mouseEnter'); //  Hover over 'render' log entry
-    expect(wrapper.find('.lifecycle-method').map((node) => node.prop('data-is-highlighted'))).toEqual(
-      booleanListOnlyTrueAt(nNewLifecyclePanelMethods, 3) // panel method 3 is 'render'
-    );
+
+    expect(panel.getByText('render')).toHaveAttribute('data-is-highlighted', 'false');
+    userEvent.hover(logEntries.getByText('4 Child-1: render'));
+    expect(panel.getByText('render')).toHaveAttribute('data-is-highlighted', 'true');
+
+    expect(panel.getByText('constructor')).toHaveAttribute('data-is-highlighted', 'false');
+    userEvent.hover(logEntries.getByText('0 Child-1: constructor'));
+    expect(panel.getByText('constructor')).toHaveAttribute('data-is-highlighted', 'true');
   });
 
   it('logs all new lifecycle methods', () => {
-    wrapper.setState({isShowingChild: true});                      // Mount TracedChild
-    wrapper.find(TracedChild).childAt(0).instance().updateState(); // Update TracedChild state
-    wrapper.setState({isShowingChild: false});                     // Unmount TracedChild
+    render(<Wrapper renderChild={({prop}) => <TracedChild prop={prop}/>}/>); // Mount TracedChild
+    userEvent.click(screen.getByTestId('prop-value-checkbox'));              // Update TracedChild prop
+    userEvent.click(screen.getByTestId('state-update-button'));              // Update TracedChild state
+    userEvent.click(screen.getByTestId('show-child-checkbox'));              // Unmount TracedChild
     jest.runAllTimers();
-    wrapper.update();
 
     const expectedLogEntries = [
       // Mount TracedChild
@@ -126,6 +108,18 @@ describe('Log', () => {
       'custom:render',
       'componentDidMount',
       'custom:componentDidMount',
+
+      // Update TracedChild prop
+      'static getDerivedStateFromProps',
+      'custom:getDerivedStateFromProps',
+      'shouldComponentUpdate',
+      'custom:shouldComponentUpdate',
+      'render',
+      'custom:render',
+      'getSnapshotBeforeUpdate',
+      'custom:getSnapshotBeforeUpdate',
+      'componentDidUpdate',
+      'custom:componentDidUpdate',
 
       // Update TracedChild state
       'setState',
@@ -149,19 +143,18 @@ describe('Log', () => {
       'custom:componentWillUnmount',
     ];
 
-    expect(wrapper.find('.entry').map((node) => node.text()))
+    const entries = [...screen.getByTestId('log-entries').querySelectorAll('.entry')];
+    expect(entries.map((node) => node.textContent))
       .toEqual(formatLogEntries('Child-1', expectedLogEntries)
     );
   });
 
   it('logs all legacy lifecycle methods', () => {
-    wrapper.setState({isShowingLegacyChild: true});                      // Mount TracedLegacyChild
-    wrapper.setState({legacyProp: 42});                                  // Update TracedLegacyChild props
-    wrapper.find(TracedLegacyChild).childAt(0).instance().updateState(); // Update TracedLegacyChild state
-    wrapper.setState({isShowingLegacyChild: false});                     // Unmount TracedLegacyChild
-
+    render(<Wrapper renderChild={({prop}) => <TracedLegacyChild prop={prop}/>}/>); // Mount TracedLegacyChild
+    userEvent.click(screen.getByTestId('prop-value-checkbox'));                    // Update TracedLegacyChild prop
+    userEvent.click(screen.getByTestId('state-update-button'));                    // Update TracedLegacyChild state
+    userEvent.click(screen.getByTestId('show-child-checkbox'));                    // Unmount TracedLegacyChild
     jest.runAllTimers();
-    wrapper.update();
 
     const expectedLogEntries = [
       // Mount TracedLegacyChild
@@ -174,7 +167,7 @@ describe('Log', () => {
       'componentDidMount',
       'custom:componentDidMount',
 
-      // Update TracedLegacyChild props
+      // Update TracedLegacyChild prop
       'componentWillReceiveProps',
       'custom:componentWillReceiveProps',
       'shouldComponentUpdate',
@@ -206,17 +199,17 @@ describe('Log', () => {
       'custom:componentWillUnmount',
     ];
 
-    expect(wrapper.find('.entry').map((node) => node.text()))
+    const entries = [...screen.getByTestId('log-entries').querySelectorAll('.entry')];
+    expect(entries.map((node) => node.textContent))
       .toEqual(formatLogEntries('LegacyChild-1', expectedLogEntries)
     );
   });
 
   it('logs all legacy UNSAFE_ lifecycle methods', () => {
-    wrapper.setState({isShowingLegacyUnsafeChild: true});                      // Mount TracedLegacyUnsafeChild
-    wrapper.setState({legacyProp: 42});                                        // Update TracedLegacyUnsafeChild props
-
+    // Mount TracedLegacyUnsafeChild
+    render(<Wrapper renderChild={({prop}) => <TracedLegacyUnsafeChild prop={prop}/>}/>);
+    userEvent.click(screen.getByTestId('prop-value-checkbox')); // Update TracedLegacyUnsafeChild prop
     jest.runAllTimers();
-    wrapper.update();
 
     const expectedLogEntries = [
     // Mount TracedLegacyUnsafeChild
@@ -226,7 +219,7 @@ describe('Log', () => {
     'render',
     'componentDidMount',
 
-    // Update TracedLegacyUnsafeChild props
+    // Update TracedLegacyUnsafeChild prop
     'componentWillReceiveProps',
     'custom:UNSAFE_componentWillReceiveProps',
     'shouldComponentUpdate',
@@ -236,55 +229,58 @@ describe('Log', () => {
     'componentDidUpdate',
     ];
 
-    expect(wrapper.find('.entry').map((node) => node.text()))
+    const entries = [...screen.getByTestId('log-entries').querySelectorAll('.entry')];
+    expect(entries.map((node) => node.textContent))
       .toEqual(formatLogEntries('LegacyUnsafeChild-1', expectedLogEntries)
     );
   });
 
   it('is cleared by clearLog()', () => {
-    wrapper.setState({isShowingChild: true}); // Mount TracedChild
+    render(<Wrapper renderChild={() => <TracedChild/>}/>);
     jest.runAllTimers();
-    wrapper.update();
 
-    expect(wrapper.find('.entry')).not.toHaveLength(0);
+    const entries = [...screen.getByTestId('log-entries').querySelectorAll('.entry')];
+    expect(entries).not.toHaveLength(0);
 
     clearLog();
-    wrapper.update();
 
-    expect(wrapper.find('.entry')).toHaveLength(0);
+    const clearedEntries = [...screen.getByTestId('log-entries').querySelectorAll('.entry')];
+    expect(clearedEntries).toHaveLength(0);
   });
 });
 
 describe('instanceId counter', () => {
   it('starts at 1', () => {
-    wrapper.setState({isShowingChild: true}); // Mount TracedChild
+    render(<Wrapper renderChild={() => <TracedChild/>}/>);
     jest.runAllTimers();
-    wrapper.update();
 
-    expect(wrapper.find('.entry').first().text()).toMatch(/^ ?\d+ Child-1/);
+    const entries = [...screen.getByTestId('log-entries').querySelectorAll('.entry')];
+    expect(entries[0]).toHaveTextContent(/^ ?\d+ Child-1/);
   });
 
   it('increments on remount', () => {
-    wrapper.setState({isShowingChild: true}); // Mount TracedChild
-    wrapper.setState({isShowingChild: false}); // Unmount TracedChild
+    render(<Wrapper renderChild={() => <TracedChild/>}/>);      // Mount TracedChild
+    userEvent.click(screen.getByTestId('show-child-checkbox')); // Unmount TracedChild
     jest.runAllTimers();
     clearLog();
-    wrapper.setState({isShowingChild: true}); // Mount TracedChild
+    userEvent.click(screen.getByTestId('show-child-checkbox')); // Mount TracedChild
     jest.runAllTimers();
-    wrapper.update();
 
-    expect(wrapper.find('.entry').first().text()).toMatch(/^ ?\d+ Child-2/);
+    const entries = [...screen.getByTestId('log-entries').querySelectorAll('.entry')];
+    expect(entries[0]).toHaveTextContent(/^ ?\d+ Child-2/);
   });
 
   it('is reset by resetInstanceIdCounters', () => {
-    wrapper.setState({isShowingChild: false}); // Unmount TracedChild
+    render(<Wrapper renderChild={() => <TracedChild/>}/>);      // Mount TracedChild
+    userEvent.click(screen.getByTestId('show-child-checkbox')); // Unmount TracedChild
     jest.runAllTimers();
     clearLog();
     resetInstanceIdCounters();
-    wrapper.setState({isShowingChild: true}); // Mount TracedChild
-    jest.runAllTimers();
-    wrapper.update();
 
-    expect(wrapper.find('.entry').first().text()).toMatch(/^ ?\d+ Child-1/);
+    userEvent.click(screen.getByTestId('show-child-checkbox')); // Mount TracedChild
+    jest.runAllTimers();
+
+    const entries = [...screen.getByTestId('log-entries').querySelectorAll('.entry')];
+    expect(entries[0]).toHaveTextContent(/^ ?\d+ Child-1/);
   });
 });
