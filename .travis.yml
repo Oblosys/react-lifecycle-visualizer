@@ -1,6 +1,7 @@
 language: node_js
 node_js:
   - "10"
+  - "12"
   - "stable"
 git:
   depth: 5
@@ -8,7 +9,7 @@ cache:
   directories:
   - "$HOME/.npm"
 install:
-  - npm i -g npm@6.14.5
+  - npm i -g npm@7.11.1
   - npm ci
 script:
   - npm test
