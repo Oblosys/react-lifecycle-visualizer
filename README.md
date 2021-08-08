@@ -1,4 +1,4 @@
-# React Lifecycle Visualizer [![npm version](https://badge.fury.io/js/react-lifecycle-visualizer.svg)](https://badge.fury.io/js/react-lifecycle-visualizer) [![Build Status](https://travis-ci.com/Oblosys/react-lifecycle-visualizer.svg?branch=master)](https://travis-ci.com/Oblosys/react-lifecycle-visualizer)
+# React Lifecycle Visualizer [![npm version](https://badge.fury.io/js/react-lifecycle-visualizer.svg)](https://badge.fury.io/js/react-lifecycle-visualizer) [![Build Status](https://github.com/Oblosys/react-lifecycle-visualizer/actions/workflows/build-test.yml/badge.svg?branch=master)](https://github.com/Oblosys/react-lifecycle-visualizer/actions/workflows/build-test.yml?query=branch%3Amaster)
 
 An npm package ([`react-lifecycle-visualizer`](https://www.npmjs.com/package/react-lifecycle-visualizer)) for tracing & visualizing lifecycle methods of arbitrary React components.
 
