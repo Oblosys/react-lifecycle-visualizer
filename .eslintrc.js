@@ -7,7 +7,6 @@ module.exports = {
     }
   },
   rules: {
-    indent: [1, "spaces"],
     "linebreak-style": [1, "unix"],
     quotes: [1, "single"],
     "max-len": [1, 120],
