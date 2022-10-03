@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, within } from '@testing-library/react';
+import { act, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { clearLog, resetInstanceIdCounters } from '../src';
@@ -18,6 +18,8 @@ const booleanStringListOnlyTrueAt = (n, i) => Array.from({length: n}, (_undefine
 const formatLogEntries = (instanceName, logMethods) => logMethods.map((e, i) =>
   ('' + i).padStart(2) + ` ${instanceName}: ` + e // NOTE: padding assumes <=100 entries
 );
+
+const setupUser = () => userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
 
 describe('traceLifecycle', () => {
   it('preserves static properties', () => {
@@ -44,7 +46,7 @@ describe('LifecyclePanel', () => {
 
   it('shows legacy methods for legacy component', () => {
     /* eslint-disable no-console */
-  // Disable console.warn to suppress React warnings about using legacy methods (emitted once per method).
+    // Disable console.warn to suppress React warnings about using legacy methods (emitted once per method).
     const consoleWarn = console.warn;
     console.warn = () => {};
     render(<Wrapper renderChild={() => <TracedLegacyChild/>}/>);
@@ -60,7 +62,7 @@ describe('LifecyclePanel', () => {
 describe('Log', () => {
   it('sequentially highlights log entries', () => {
     render(<Wrapper renderChild={() => <TracedChild/>}/>);
-    jest.runOnlyPendingTimers(); // log entries are generated asynchronously, so run timers once
+    act(() => jest.runOnlyPendingTimers()); // log entries are generated asynchronously, so run timers once
 
     const entries = [...screen.getByTestId('log-entries').querySelectorAll('.entry')];
     const nLogEntries = entries.length;
@@ -71,32 +73,33 @@ describe('Log', () => {
       expect(entries.map((node) => node.getAttribute('data-is-highlighted'))).toEqual(
         booleanStringListOnlyTrueAt(nLogEntries, i)
       );
-      jest.runOnlyPendingTimers(); // not necessary for last iteration, but harmless
+      act(() => jest.runOnlyPendingTimers()); // not necessary for last iteration, but harmless
     }
   });
 
-  it('highlights the corresponding panel method', () => {
+  it('highlights the corresponding panel method', async () => {
+    const user = setupUser();
     render(<Wrapper renderChild={() => <TracedChild/>}/>);
     const logEntries = within(screen.getByTestId('log-entries'));
     const panel = within(screen.getByTestId('lifecycle-panel'));
-
-    jest.runOnlyPendingTimers(); // log entries are generated asynchronously, so run timers once
+    act(() => jest.runOnlyPendingTimers()); // log entries are generated asynchronously, so run timers once
 
     expect(panel.getByText('render')).toHaveAttribute('data-is-highlighted', 'false');
-    userEvent.hover(logEntries.getByText('4 Child-1: render'));
+    await user.hover(logEntries.getByText('4 Child-1: render'));
     expect(panel.getByText('render')).toHaveAttribute('data-is-highlighted', 'true');
 
     expect(panel.getByText('constructor')).toHaveAttribute('data-is-highlighted', 'false');
-    userEvent.hover(logEntries.getByText('0 Child-1: constructor'));
+    await user.hover(logEntries.getByText('0 Child-1: constructor'));
     expect(panel.getByText('constructor')).toHaveAttribute('data-is-highlighted', 'true');
   });
 
-  it('logs all new lifecycle methods', () => {
+  it('logs all new lifecycle methods', async () => {
+    const user = setupUser();
     render(<Wrapper renderChild={({prop}) => <TracedChild prop={prop}/>}/>); // Mount TracedChild
-    userEvent.click(screen.getByTestId('prop-value-checkbox'));              // Update TracedChild prop
-    userEvent.click(screen.getByTestId('state-update-button'));              // Update TracedChild state
-    userEvent.click(screen.getByTestId('show-child-checkbox'));              // Unmount TracedChild
-    jest.runAllTimers();
+    await user.click(screen.getByTestId('prop-value-checkbox'));             // Update TracedChild prop
+    await user.click(screen.getByTestId('state-update-button'));             // Update TracedChild state
+    await user.click(screen.getByTestId('show-child-checkbox'));             // Unmount TracedChild
+    act(() => jest.runOnlyPendingTimers());
 
     const expectedLogEntries = [
       // Mount TracedChild
@@ -149,12 +152,21 @@ describe('Log', () => {
     );
   });
 
-  it('logs all legacy lifecycle methods', () => {
+  it('logs all legacy lifecycle methods', async () => {
+    const user = setupUser();
+
+    /* eslint-disable no-console */
+    // Disable console.warn to suppress React warnings about using legacy methods.
+    const consoleWarn = console.warn;
+    console.warn = () => {};
     render(<Wrapper renderChild={({prop}) => <TracedLegacyChild prop={prop}/>}/>); // Mount TracedLegacyChild
-    userEvent.click(screen.getByTestId('prop-value-checkbox'));                    // Update TracedLegacyChild prop
-    userEvent.click(screen.getByTestId('state-update-button'));                    // Update TracedLegacyChild state
-    userEvent.click(screen.getByTestId('show-child-checkbox'));                    // Unmount TracedLegacyChild
-    jest.runAllTimers();
+    console.warn = consoleWarn;
+    /* eslint-enable no-console */
+
+    await user.click(screen.getByTestId('prop-value-checkbox'));                   // Update TracedLegacyChild prop
+    await user.click(screen.getByTestId('state-update-button'));                   // Update TracedLegacyChild state
+    await user.click(screen.getByTestId('show-child-checkbox'));                   // Unmount TracedLegacyChild
+    act(() => jest.runOnlyPendingTimers());
 
     const expectedLogEntries = [
       // Mount TracedLegacyChild
@@ -205,11 +217,12 @@ describe('Log', () => {
     );
   });
 
-  it('logs all legacy UNSAFE_ lifecycle methods', () => {
+  it('logs all legacy UNSAFE_ lifecycle methods', async () => {
+    const user = setupUser();
     // Mount TracedLegacyUnsafeChild
     render(<Wrapper renderChild={({prop}) => <TracedLegacyUnsafeChild prop={prop}/>}/>);
-    userEvent.click(screen.getByTestId('prop-value-checkbox')); // Update TracedLegacyUnsafeChild prop
-    jest.runAllTimers();
+    await user.click(screen.getByTestId('prop-value-checkbox')); // Update TracedLegacyUnsafeChild prop
+    act(() => jest.runOnlyPendingTimers());
 
     const expectedLogEntries = [
     // Mount TracedLegacyUnsafeChild
@@ -237,12 +250,12 @@ describe('Log', () => {
 
   it('is cleared by clearLog()', () => {
     render(<Wrapper renderChild={() => <TracedChild/>}/>);
-    jest.runAllTimers();
+    act(() => jest.runOnlyPendingTimers());
 
     const entries = [...screen.getByTestId('log-entries').querySelectorAll('.entry')];
     expect(entries).not.toHaveLength(0);
 
-    clearLog();
+    act(() => clearLog());
 
     const clearedEntries = [...screen.getByTestId('log-entries').querySelectorAll('.entry')];
     expect(clearedEntries).toHaveLength(0);
@@ -252,33 +265,36 @@ describe('Log', () => {
 describe('instanceId counter', () => {
   it('starts at 1', () => {
     render(<Wrapper renderChild={() => <TracedChild/>}/>);
-    jest.runAllTimers();
+    act(() => jest.runOnlyPendingTimers());
 
     const entries = [...screen.getByTestId('log-entries').querySelectorAll('.entry')];
     expect(entries[0]).toHaveTextContent(/^ ?\d+ Child-1/);
   });
 
-  it('increments on remount', () => {
-    render(<Wrapper renderChild={() => <TracedChild/>}/>);      // Mount TracedChild
-    userEvent.click(screen.getByTestId('show-child-checkbox')); // Unmount TracedChild
-    jest.runAllTimers();
-    clearLog();
-    userEvent.click(screen.getByTestId('show-child-checkbox')); // Mount TracedChild
-    jest.runAllTimers();
+  it('increments on remount', async () => {
+    const user = setupUser();
+    render(<Wrapper renderChild={() => <TracedChild/>}/>);       // Mount TracedChild
+    await user.click(screen.getByTestId('show-child-checkbox')); // Unmount TracedChild
+    act(() => jest.runOnlyPendingTimers());
+    act(() => clearLog());
+    await user.click(screen.getByTestId('show-child-checkbox')); // Mount TracedChild
+    act(() => jest.runOnlyPendingTimers());
 
     const entries = [...screen.getByTestId('log-entries').querySelectorAll('.entry')];
     expect(entries[0]).toHaveTextContent(/^ ?\d+ Child-2/);
   });
 
-  it('is reset by resetInstanceIdCounters', () => {
-    render(<Wrapper renderChild={() => <TracedChild/>}/>);      // Mount TracedChild
-    userEvent.click(screen.getByTestId('show-child-checkbox')); // Unmount TracedChild
-    jest.runAllTimers();
-    clearLog();
+  it('is reset by resetInstanceIdCounters', async () => {
+    const user = setupUser();
+    render(<Wrapper renderChild={() => <TracedChild/>}/>);       // Mount TracedChild
+    await user.click(screen.getByTestId('show-child-checkbox')); // Unmount TracedChild
+    act(() => jest.runOnlyPendingTimers());
+    act(() => clearLog());
+
     resetInstanceIdCounters();
 
-    userEvent.click(screen.getByTestId('show-child-checkbox')); // Mount TracedChild
-    jest.runAllTimers();
+    await user.click(screen.getByTestId('show-child-checkbox')); // Mount TracedChild
+    act(() => jest.runOnlyPendingTimers());
 
     const entries = [...screen.getByTestId('log-entries').querySelectorAll('.entry')];
     expect(entries[0]).toHaveTextContent(/^ ?\d+ Child-1/);
