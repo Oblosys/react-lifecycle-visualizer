@@ -27,7 +27,6 @@ module.exports = {
           plugins: [
             ['@babel/plugin-proposal-decorators', { legacy: true }], // NOTE: needs to precede ..-class-properties!
             ['@babel/plugin-proposal-class-properties', {loose: false}],
-            'react-hot-loader/babel'
           ]
         }
       }],
