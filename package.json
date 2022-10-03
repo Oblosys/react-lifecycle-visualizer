@@ -12,7 +12,7 @@
     "start": "webpack-dev-server --mode development",
     "build-demo": "webpack --mode development",
     "clean-lib": "rm -rf dist",
-    "build-lib": "npm run clean-lib && sass src/react-lifecycle-visualizer.scss dist/react-lifecycle-visualizer.css && BABEL_ENV=production babel src -d dist --ignore react-lifecycle-visualizer.scss --copy-files",
+    "build-lib": "npm run clean-lib && sass --embed-sources src/react-lifecycle-visualizer.scss dist/react-lifecycle-visualizer.css && BABEL_ENV=production babel src -d dist --ignore react-lifecycle-visualizer.scss --copy-files",
     "prepublishOnly": "npm run test && npm run build-lib"
   },
   "repository": {
