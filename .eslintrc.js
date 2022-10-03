@@ -1,10 +1,12 @@
 module.exports = {
   extends: ["airbnb", "plugin:jest/recommended"],
-  parser: "babel-eslint",
+  parser: "@babel/eslint-parser",
   parserOptions: {
+    requireConfigFile: false,
     ecmaFeatures: {
       legacyDecorators: true
-    }
+    },
+    babelOptions: { configFile: './.babelrc' },
   },
   rules: {
     "linebreak-style": [1, "unix"],
@@ -50,6 +52,7 @@ module.exports = {
     "react/jsx-wrap-multilines": 0,
     "react/state-in-constructor": 0,
     "react/jsx-curly-newline": 0,
+    "react/function-component-definition": 0,
 
     // Maybe enable later:
     "jsx-a11y/click-events-have-key-events": 0,
