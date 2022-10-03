@@ -165,6 +165,7 @@ export default function traceLifecycle(ComponentToTrace) {
 
       const instanceId = mkInstanceId(ComponentToTrace.name);
 
+      // eslint-disable-next-line react/no-unstable-nested-components
       const WrappedLifecyclePanel = () => (
           <LifecyclePanel
             componentName={componentToTraceName}

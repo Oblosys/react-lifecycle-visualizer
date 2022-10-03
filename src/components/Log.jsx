@@ -29,7 +29,7 @@ class Log extends Component {
           break;
       }
     }
-  }
+  };
 
   componentDidMount() {
     document.addEventListener('keydown', this.onKeyDown);

@@ -10,6 +10,7 @@ const initialState = {
   replayTimerDelay: sessionReplayTimerDelay ? +sessionReplayTimerDelay : constants.delayValues[1],
 };
 
+// eslint-disable-next-line default-param-last
 export const reducer = (state = initialState, action) => {
   // console.log('reducing', action, state);
   switch (action.type) {

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 export default class LogEntries extends Component {
   highlight = (index) => {
     this.props.highlight(index);
-  }
+  };
 
   componentDidUpdate(prevProps) {
     if (prevProps.entries.length !== this.props.entries.length) {

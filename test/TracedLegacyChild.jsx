@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { traceLifecycle } from '../src';
 
 class LegacyChild extends Component {
-  state = {}
+  state = {};
 
   constructor(props, context) {
     super(props, context);
@@ -56,7 +56,7 @@ class LegacyChild extends Component {
     }, () => {
       this.props.trace('custom:setState callback');
     });
-  }
+  };
 }
 
 const TracedLegacyChild = traceLifecycle(LegacyChild);

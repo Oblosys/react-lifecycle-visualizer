@@ -12,20 +12,20 @@ export default class Parent extends Component {
   state = {
     showLastChild: true,
     x: 42
-  }
+  };
 
   onCheckboxChange = (evt) => {
     this.setState({
       showLastChild: evt.currentTarget.checked
     });
-  }
+  };
 
   incX = () => {
     this.props.trace('Custom message, calling incX');
     this.setState(({x}) => {
       return {x: x + 1};
     });
-  }
+  };
 
   componentWillMount() {
     this.props.trace('Don\'t use componentWillMount!');
@@ -58,13 +58,13 @@ class Child extends Component {
   state = {
     y: 1,
     squaredX: this.props.x ** 2
-  }
+  };
 
   incY = () => {
     this.setState((prevState) => {
       return {y: prevState.y + 1};
     });
-  }
+  };
 
   componentWillReceiveProps(nextProps) {
     this.setState({squaredX: nextProps.x ** 2});

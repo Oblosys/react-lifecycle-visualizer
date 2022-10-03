@@ -33,20 +33,20 @@ export default class Main extends Component {
   state = {
     selectedSampleIx: sessionSelectedSampleIx ? +sessionSelectedSampleIx : 0,
     isShowingParent: true
-  }
+  };
 
   onCheckboxChange = (evt) => {
     this.setState({
       isShowingParent: evt.currentTarget.checked
     });
-  }
+  };
 
   onSelectSample = (evt) => {
     const selectedSampleIx = +evt.currentTarget.value;
     this.setState({selectedSampleIx});
     sessionStorage.setItem(sessionSelectedSampleIxKey, selectedSampleIx);
     clearLog();
-  }
+  };
 
   render() {
     const selectedSample = sampleComponents[this.state.selectedSampleIx];

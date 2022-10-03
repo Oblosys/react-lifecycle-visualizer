@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { traceLifecycle } from '../src';
 
 class Child extends Component {
-  state = {}
+  state = {};
 
-  static staticProperty = 'a static property'
+  static staticProperty = 'a static property';
 
   constructor(props, context) {
     super(props, context);
@@ -56,7 +56,7 @@ class Child extends Component {
     }, () => {
       this.props.trace('custom:setState callback');
     });
-  }
+  };
 }
 
 const TracedChild = traceLifecycle(Child);
