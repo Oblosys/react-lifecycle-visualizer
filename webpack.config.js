@@ -22,13 +22,7 @@ module.exports = {
       test: /\.(js|jsx)$/,
       use: [{
         loader: 'babel-loader',
-        options: {
-          presets: ['@babel/preset-env', '@babel/preset-react'],
-          plugins: [
-            ['@babel/plugin-proposal-decorators', { legacy: true }], // NOTE: needs to precede ..-class-properties!
-            ['@babel/plugin-proposal-class-properties', {loose: false}],
-          ]
-        }
+        options: { configFile: './.babelrc' }
       }],
       exclude: /node_modules/
     }, {

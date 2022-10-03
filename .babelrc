@@ -1,6 +1,7 @@
 {
   "presets": ["@babel/env", "@babel/react"],
   "plugins": [
+    // NOTE: plugin-proposal-decorators needs to precede plugin-proposal-class-properties.
     ["@babel/plugin-proposal-decorators", { "legacy": true }],
     ["@babel/plugin-proposal-class-properties", { "loose": false }]
   ],
