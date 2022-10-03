@@ -10,7 +10,7 @@ export class Log extends React.Component<{}, {}> {}
 
 export interface TraceProps {
   trace: (msg: string) => void,
-  LifecyclePanel : React.SFC
+  LifecyclePanel : () => JSX.Element
 }
 
 // Diff / Omit from https://github.com/Microsoft/TypeScript/issues/12215#issuecomment-311923766
