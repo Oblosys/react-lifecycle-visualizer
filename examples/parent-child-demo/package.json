@@ -1,11 +1,11 @@
 {
   "name": "react-lifecycle-visualizer-demo",
   "version": "1.0",
-  "description": "Dummy configuration for StackBlitz deployment. Don't use this to build the demo; use the top-level package.json instead",
+  "description": "Dummy configuration for CodeSandbox deployment. Don't use this to build the demo; use the top-level package.json instead",
   "main": "src/index.jsx",
-  "homepage": "https://stackblitz.com/github/Oblosys/react-lifecycle-visualizer/tree/master/examples/parent-child-demo",
+  "homepage": "https://codesandbox.io/s/github/Oblosys/react-lifecycle-visualizer/tree/master/examples/parent-child-demo?file=/src/samples/New.js",
   "scripts": {
-  "start": "echo \"Error: This dummy package.json is only for StackBlitz deployment. Use top-level package.json instead.\" && exit 1"
+  "start": "echo \"Error: This dummy package.json is only for CodeSandbox deployment. Use top-level package.json instead.\" && exit 1"
   },
   "devDependencies": {
     "react-scripts": "^5.0.1"

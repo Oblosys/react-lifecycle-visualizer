@@ -34,7 +34,7 @@ then
   echo "Bumping version from ${vMajor}.${vMinor}.${vPatch} to ${newVersion}"
 
   sed -i '' -e "s/\(\"version\": *\"\).*\(\".*\)$/\1${newVersion}\2/" package.json
-  # Don't update demo dependency on release, as StackBlitz still has problems seeing newly released packages.
+  # Demo dependency is updated manually after release, when the new version has been verified to run on CodeSandbox.
   # sed -i '' -e "s/\(\"react-lifecycle-visualizer\": *\"[\^~]\{0,1\}\).*\(\".*\)$/\1${newVersion}\2/" examples/parent-child-demo/package.json
   npm i
   git add package.json package-lock.json examples/parent-child-demo/package.json

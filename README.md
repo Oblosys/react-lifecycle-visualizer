@@ -5,7 +5,7 @@ An npm package ([`react-lifecycle-visualizer`](https://www.npmjs.com/package/rea
 To trace a component, apply the higher-order component `traceLifecycle` to it, and all its lifecycle-method calls will show up in a replayable log component. Additionally, traced components may include a `<this.props.LifecyclePanel/>` element in their rendering to show a panel with lifecycle methods, which are highlighted when the corresponding log entry is selected.
 
 <p align="center">
-  <a href="https://stackblitz.com/github/Oblosys/react-lifecycle-visualizer/tree/master/examples/parent-child-demo?file=src/samples/New.js">
+  <a href="https://codesandbox.io/s/github/Oblosys/react-lifecycle-visualizer/tree/master/examples/parent-child-demo?file=/src/samples/New.js">
     <img
       alt="Parent-child demo"
       src="https://raw.githubusercontent.com/Oblosys/react-lifecycle-visualizer/master/images/parent-child-demo.gif"
@@ -17,7 +17,7 @@ To trace a component, apply the higher-order component `traceLifecycle` to it, a
 ## Usage
 
 The easiest way to get started is to
- open the [StackBlitz project](https://stackblitz.com/github/Oblosys/react-lifecycle-visualizer/tree/master/examples/parent-child-demo?file=src/samples/New.js) and edit the sample components in `src/samples`. (For a better view of the log, press the 'Open in New Window' button in the top-right corner.)
+ open the [CodeSandbox playground](https://codesandbox.io/s/github/Oblosys/react-lifecycle-visualizer/tree/master/examples/parent-child-demo?file=/src/samples/New.js) and edit the sample components in `src/samples`. (For a better view of the log, press the 'Open in New Window' button in the top-right corner.)
 
 The panel shows the new React 16.3 lifecycle methods, unless the component defines at least one legacy method and no new methods. On a component that has both legacy and new methods, React ignores the legacy methods, so the panel shows the new methods.
 
@@ -32,7 +32,7 @@ To save space, the lifecycle panel only contains `setState`, which gets highligh
 
 ## Run the demo locally
 
-To run a local copy of the StackBlitz demo, simply clone the repo, and run `npm install` & `npm start`:
+To run a local copy of the CodeSandbox demo, simply clone the repo, and run `npm install` & `npm start`:
 
 ```
 git clone git@github.com:Oblosys/react-lifecycle-visualizer.git

@@ -12,9 +12,9 @@ const sampleComponents = [
   { label: 'Legacy lifecycle methods', component: SampleLegacy, filename: 'Legacy.js' }
 ];
 
-const getStackBlitzUrl = (filename) =>
-  'https://stackblitz.com/github/Oblosys/react-lifecycle-visualizer/tree/master/' +
-  'examples/parent-child-demo?file=src/samples/' + filename;
+const getCodeSandboxUrl = (filename) =>
+  'https://codesandbox.io/s/github/Oblosys/react-lifecycle-visualizer/tree/master/' +
+  'examples/parent-child-demo?file=/src/samples/' + filename;
 
 const sessionStorageKey = '@@react-lifecycle-visualizer-demo--persistent-state:';
 export const sessionSelectedSampleIxKey = sessionStorageKey + 'selectedSampleIx';
@@ -62,7 +62,7 @@ export default class Main extends Component {
                 onChange={this.onSelectSample}
               />
             </span>
-            <a href={getStackBlitzUrl(selectedSample.filename)} target='_blanc'>edit source</a>
+            <a href={getCodeSandboxUrl(selectedSample.filename)} target='_blanc'>edit source</a>
           </div>
           <div>
             <SimpleButton value='forceUpdate' onClick={() => this.forceUpdate()}/>
