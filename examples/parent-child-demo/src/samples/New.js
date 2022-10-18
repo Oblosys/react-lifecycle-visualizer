@@ -7,7 +7,7 @@ import LabeledCheckbox from '../components/LabeledCheckbox';
 import Tagged from '../components/Tagged';
 
 @traceLifecycle
-export default class Parent extends Component {
+class Parent extends Component {
   state = {
     showLastChild: true,
     x: 42
@@ -87,3 +87,5 @@ class Child extends Component {
     );
   }
 }
+
+export default Parent;
