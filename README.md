@@ -1,6 +1,6 @@
 # React Lifecycle Visualizer [![npm version](https://badge.fury.io/js/react-lifecycle-visualizer.svg)](https://badge.fury.io/js/react-lifecycle-visualizer) [![Build Status](https://github.com/Oblosys/react-lifecycle-visualizer/actions/workflows/build-test.yml/badge.svg?branch=master)](https://github.com/Oblosys/react-lifecycle-visualizer/actions/workflows/build-test.yml?query=branch%3Amaster)
 
-An npm package ([`react-lifecycle-visualizer`](https://www.npmjs.com/package/react-lifecycle-visualizer)) for tracing & visualizing lifecycle methods of arbitrary React components.
+An npm package ([`react-lifecycle-visualizer`](https://www.npmjs.com/package/react-lifecycle-visualizer)) for tracing & visualizing lifecycle methods of React class components. (For function components and hooks, check out [`react-hook-tracer`](https://github.com/Oblosys/react-hook-tracer#readme) instead.)
 
 To trace a component, apply the higher-order component `traceLifecycle` to it, and all its lifecycle-method calls will show up in a replayable log component. Additionally, traced components may include a `<this.props.LifecyclePanel/>` element in their rendering to show a panel with lifecycle methods, which are highlighted when the corresponding log entry is selected.
 
